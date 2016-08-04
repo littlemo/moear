@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Moore.Huang <moore@moorehy.com>
 
+import json
 import requests
 # import time
 
@@ -17,3 +18,8 @@ news = requests.get('http://news-at.zhihu.com/api/4/news/latest', headers=header
 print news.url, news.status_code
 print news.text
 
+
+class Utils(object):
+    @staticmethod
+    def json_dumps(raw):
+        return json.dumps(raw, indent=None, encoding="UTF-8", ensure_ascii=False)
