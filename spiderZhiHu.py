@@ -4,7 +4,6 @@
 
 import sys
 import requests
-# import time
 
 from model.Utils import Utils
 
