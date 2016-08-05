@@ -18,6 +18,13 @@ class Article(object):
         self.top = 0
         self.tags = u''  # 若为多个tag, 则以','分隔
 
+    def __str__(self):
+        top_str = u''
+        if self.top:
+            top_str = u'[TOP]'
+        return u'<%s>[%d][%5s]%s%s' % (Utils.encode_time_to_str(self.timestamp),
+                                       self.article_id, u'*' * self.star, top_str, self.title)
+
     def init_with_time_and_data(self, timestamp, data):
         self.timestamp = timestamp
         try:
