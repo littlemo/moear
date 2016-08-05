@@ -22,8 +22,9 @@ class Article(object):
         top_str = u''
         if self.top:
             top_str = u'[TOP]'
-        return u'<%s>[%d][%5s]%s%s' % (Utils.encode_time_to_str(self.timestamp),
-                                       self.article_id, u'*' * self.star, top_str, self.title)
+        return u'<%s>[%d][%5s]%s%s|%s' % (Utils.encode_time_to_str(self.timestamp),
+                                          self.article_id, u'*' * self.star, top_str, self.title,
+                                          self.images.split(','))
 
     def init_with_time_and_data(self, timestamp, data):
         self.timestamp = timestamp
