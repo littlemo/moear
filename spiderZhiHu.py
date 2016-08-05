@@ -13,14 +13,18 @@ from model.Utils import Utils
 # TODO 3) 将DB中的文章请求并保存到本地
 # TODO 4) 将本地保存的文章生成为mobi文件, 并发送到Kindle
 
-headers = {'Host': 'news-at.zhihu.com',
-           'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) '
-                         'AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
-news = requests.get('http://news-at.zhihu.com/api/4/news/latest', headers=headers)
-# print news.url, news.status_code
-# print news.text
-if news.status_code != 200:
-    print(u'获取最新文章列表失败: [%s]%s' % (news.status_code, news.text))
-    sys.exit(1)
 
-news_content = Utils.json_loads(news.text)
+def get_news_by_net():
+    headers = {'Host': 'news-at.zhihu.com',
+               'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) '
+                             'AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
+    news = requests.get('http://news-at.zhihu.com/api/4/news/latest', headers=headers)
+    # print news.url, news.status_code
+    # print news.text
+    if news.status_code != 200:
+        print(u'获取最新文章列表失败: [%s]%s' % (news.status_code, news.text))
+        sys.exit(1)
+    return news.text
+
+content = get_news_by_net()
+news_content = Utils.json_loads(content)
