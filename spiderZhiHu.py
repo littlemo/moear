@@ -30,3 +30,5 @@ def get_news_by_net():
 
 content = get_news_by_net()
 news_content = Utils.json_loads(content)
+date = Utils.decode_str_to_time(news_content['date'])
+Utils.print_log(u'日期时间戳: <%s>%d' % (news_content['date'], date), prefix=u'[测试]')
