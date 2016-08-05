@@ -3,7 +3,6 @@
 # Author: Moore.Huang <moore@moorehy.com>
 
 import sys
-import json
 import requests
 # import time
 
@@ -21,13 +20,3 @@ news = requests.get('http://news-at.zhihu.com/api/4/news/latest', headers=header
 if news.status_code != 200:
     print(u'获取最新文章列表失败: [%s]%s' % (news.status_code, news.text))
     sys.exit(1)
-
-
-class Utils(object):
-    @staticmethod
-    def json_loads(raw):
-        return json.loads(raw, encoding="UTF-8")
-
-    @staticmethod
-    def json_dumps(raw):
-        return json.dumps(raw, indent=None, encoding="UTF-8", ensure_ascii=False)
