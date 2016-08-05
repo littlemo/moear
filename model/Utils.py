@@ -9,6 +9,32 @@ import time
 
 class Utils(object):
     @staticmethod
+    def print_log(log, newline=True, prefix=u''):
+        debug = True
+        out = u''
+        if prefix != u'':
+            out = u'%s' % prefix
+        if type(log) == list:
+            if not newline and len(log) > 0:
+                out += u'| '
+            if newline and len(log) > 0:
+                out += u'\n'
+            for item in log:
+                if newline:
+                    out += u'%s\n' % item.encode('utf8')
+                else:
+                    out += u'%s | ' % item.encode('utf8')
+            if not newline:
+                out = out.rstrip()
+                out += u'\n'
+        elif type(log) in [unicode, str]:
+            out += u'%s\n' % log.encode('utf8')
+        else:
+            out += u'%s\n' % log
+        if debug:
+            print out,
+
+    @staticmethod
     def json_loads(raw):
         return json.loads(raw, encoding="UTF-8")
 
@@ -23,5 +49,5 @@ class Utils(object):
             timestamp = int(time.mktime(time_array))
             return timestamp
         except Exception as e:
-            # Utils.print_log(u'解码时间戳字符串错误: %s' % e)
+            Utils.print_log(u'解码时间戳字符串错误: %s' % e)
             sys.exit(1)
