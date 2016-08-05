@@ -43,6 +43,12 @@ class Utils(object):
         return json.dumps(raw, indent=None, encoding="UTF-8", ensure_ascii=False)
 
     @staticmethod
+    def encode_time_to_str(timestamp):
+        time_array = time.localtime(timestamp)
+        other_style_time = time.strftime("%Y-%m-%d", time_array)
+        return other_style_time
+
+    @staticmethod
     def decode_str_to_time(time_str):
         try:
             time_array = time.strptime(time_str, "%Y%m%d")
