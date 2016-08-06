@@ -19,7 +19,7 @@ class Article(object):
         self.tags = u''  # 若为多个tag, 则以','分隔
 
     def __str__(self):
-        top_str = u''
+        top_str = u'[   ]'
         if self.top:
             top_str = u'[TOP]'
         return u'<%s>[%d][%5s]%s%s|%s' % (Utils.encode_time_to_str(self.timestamp),
