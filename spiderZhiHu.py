@@ -3,10 +3,11 @@
 # Author: Moore.Huang <moore@moorehy.com>
 
 import sys
+
 import requests
 
-from model.Utils import Utils
 from model.Article import Article
+from model.Utils import Utils
 
 reload(sys)
 sys.setdefaultencoding('utf8')
