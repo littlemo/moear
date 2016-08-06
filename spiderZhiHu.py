@@ -38,16 +38,19 @@ news_content = Utils.json_loads(content)
 date = Utils.decode_str_to_time(news_content['date'])
 Utils.print_log(u'日期时间戳: <%s>%d' % (news_content['date'], date), prefix=u'[测试]')
 
+# 生成文章列表
 articles = []
 for a in news_content['stories']:
     article = Article().init_with_time_and_data(date, a)
     articles.append(article)
     # Utils.print_log(article)
 
+# 从文章列表中提取文章ID列表
 article_ids = []
 for a in articles:
     article_ids.append(a.article_id)
 
+# 若数据包中包含top_stories字段, 则更新文章列表中对象的TOP属性
 if 'top_stories' in news_content:
     for top in news_content['top_stories']:
         top_article_id = top['id']
@@ -57,5 +60,6 @@ if 'top_stories' in news_content:
                     a.top = 1
                     break
 
+# 打印文章列表
 for a in articles:
     Utils.print_log(a)
