@@ -6,6 +6,10 @@ import json
 import sys
 import time
 
+import MySQLdb
+
+from ReturnCodeModel import ReturnCodeModel
+
 
 class Utils(object):
     @staticmethod
@@ -33,6 +37,25 @@ class Utils(object):
             out += u'%s\n' % log
         if debug:
             print out,
+
+    @staticmethod
+    def process_database(cb, tag, log=True):
+        # rcm = ReturnCodeModel(ReturnCodeModel.Code_Bad_Database_Process, u'数据库操作失败')
+        try:
+            conn = MySQLdb.connect(host='localhost', user='moore', passwd='LittleMO418',
+                                   db='mo_zhihu_daily', port=3306, charset='utf8')
+            cur = conn.cursor()
+            rcm = cb(cur, conn)
+            cur.close()
+            conn.close()
+            if log:
+                Utils.print_log(rcm, prefix=u'[%s]' % tag)
+            return rcm
+        except MySQLdb.Error as e:
+            print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+            rcm = ReturnCodeModel(e.args[0], e.args[1].decode('utf8'))
+            Utils.print_log(rcm, prefix=u'[%s]' % tag)
+            return rcm
 
     @staticmethod
     def json_loads(raw):
