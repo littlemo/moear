@@ -6,6 +6,7 @@ import sys
 import requests
 
 from model.Utils import Utils
+from model.Article import Article
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -34,3 +35,9 @@ content = '{"date":"20160804","stories":[{"images":["http:\/\/pic2.zhimg.com\/17
 news_content = Utils.json_loads(content)
 date = Utils.decode_str_to_time(news_content['date'])
 Utils.print_log(u'日期时间戳: <%s>%d' % (news_content['date'], date), prefix=u'[测试]')
+
+articles = []
+for a in news_content['stories']:
+    article = Article().init_with_time_and_data(date, a)
+    articles.append(article)
+    # Utils.print_log(article)
