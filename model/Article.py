@@ -48,11 +48,14 @@ class Article(object):
         rcm = Utils.process_database(select_article, u'插入文章信息')
         return bool(rcm.obj)
 
-    def __insert(self):
+    def insert(self):
+        if self.__is_article_exits():
+            return ReturnCodeModel(ReturnCodeModel.Code_Duplicate, u'目标文章ID(%s)已存在于DB无法插入' % self.article_id)
+
         def insert_article(cur, conn):
             count = cur.execute(u"INSERT INTO `mo_zhihu_daily`.`article` (`id`, `timestamp`, `article_id`, `title`, "
                                 u"`images`, `star`, `top`, `tags`) "
-                                u"VALUES (NULL, '%d', '%d', '%s', '%s', '%d', '%d', NULL);"
+                                u"VALUES (NULL, '%d', '%d', '%s', '%s', '%d', '%d', NULL)"
                                 % (self.timestamp, self.article_id, self.title, self.images, self.star, self.top))
             if count != 1:
                 return ReturnCodeModel(ReturnCodeModel.Code_Bad_Database_Process,
