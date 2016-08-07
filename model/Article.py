@@ -45,7 +45,7 @@ class Article(object):
             conn.commit()
             return ReturnCodeModel(obj=count)
 
-        rcm = Utils.process_database(select_article, u'插入文章信息')
+        rcm = Utils.process_database(select_article, u'插入文章信息', log=False)
         return bool(rcm.obj)
 
     def insert(self):
@@ -63,5 +63,5 @@ class Article(object):
             conn.commit()
             return ReturnCodeModel()
 
-        rcm = Utils.process_database(insert_article, u'插入文章信息')
+        rcm = Utils.process_database(insert_article, u'插入文章信息', log=False)
         return rcm
