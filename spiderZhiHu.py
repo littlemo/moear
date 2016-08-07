@@ -66,5 +66,7 @@ if 'top_stories' in news_content:
 
 # 打印文章列表
 for a in articles:
-    Utils.print_log(a.insert())
+    rcm = a.insert()
+    if not rcm.is_success():
+        Utils.print_log(rcm)
     Utils.print_log(a)
