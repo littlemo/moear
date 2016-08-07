@@ -63,4 +63,5 @@ if 'top_stories' in news_content:
 
 # 打印文章列表
 for a in articles:
+    Utils.print_log(a.insert())
     Utils.print_log(a)
