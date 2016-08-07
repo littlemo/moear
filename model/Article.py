@@ -4,6 +4,7 @@
 
 import sys
 
+from ReturnCodeModel import ReturnCodeModel
 from Utils import Utils
 
 
@@ -36,3 +37,18 @@ class Article(object):
             Utils.print_log(u'初始化解析data字典异常: %s' % e, prefix=u'[Err]')
             sys.exit(1)
         return self
+
+    def __insert(self):
+        def insert_article(cur, conn):
+            count = cur.execute(u"INSERT INTO `mo_zhihu_daily`.`article` (`id`, `timestamp`, `article_id`, `title`, "
+                                u"`images`, `star`, `top`, `tags`) "
+                                u"VALUES (NULL, '%d', '%d', '%s', '%s', '%d', '%d', NULL);"
+                                % (self.timestamp, self.article_id, self.title, self.images, self.star, self.top))
+            if count != 1:
+                return ReturnCodeModel(ReturnCodeModel.Code_Bad_Database_Process,
+                                       u'插入文章信息异常: 结果不为一(%d)' % count)
+            conn.commit()
+            return ReturnCodeModel()
+
+        rcm = Utils.process_database(insert_article, u'插入文章信息')
+        return rcm
