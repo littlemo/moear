@@ -38,6 +38,16 @@ class Article(object):
             sys.exit(1)
         return self
 
+    def __is_article_exits(self):
+        def select_article(cur, conn):
+            count = cur.execute(u"SELECT * FROM `article` WHERE `article_id` LIKE '%s'"
+                                % self.article_id)
+            conn.commit()
+            return ReturnCodeModel(obj=count)
+
+        rcm = Utils.process_database(select_article, u'插入文章信息')
+        return bool(rcm.obj)
+
     def __insert(self):
         def insert_article(cur, conn):
             count = cur.execute(u"INSERT INTO `mo_zhihu_daily`.`article` (`id`, `timestamp`, `article_id`, `title`, "
