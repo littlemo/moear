@@ -19,11 +19,14 @@ sys.setdefaultencoding('utf8')
 # TODO 4) 将本地保存的文章生成为mobi文件, 并发送到Kindle
 
 
-def get_news_by_net():
+def get_news_by_net(date=None):
     headers = {'Host': 'news-at.zhihu.com',
                'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) '
                              'AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
-    news = requests.get('http://news-at.zhihu.com/api/4/news/latest', headers=headers)
+    request_url = u'http://news-at.zhihu.com/api/4/news/latest'
+    if date:
+        request_url = u'http://news.at.zhihu.com/api/4/news/before/%s' % date
+    news = requests.get(request_url, headers=headers)
     # print news.url, news.status_code
     # print news.text
     if news.status_code != 200:
