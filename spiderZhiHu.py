@@ -43,7 +43,8 @@ Utils.print_log(u'日期时间戳: <%s>%d' % (news_content['date'], date), prefi
 
 # 生成文章列表
 articles = []
-stories_list = news_content['stories'].reverse()
+stories_list = news_content['stories']
+stories_list.reverse()
 for a in stories_list:
     article = Article().init_with_time_and_data(date, a)
     articles.append(article)
@@ -56,7 +57,8 @@ for a in articles:
 
 # 若数据包中包含top_stories字段, 则更新文章列表中对象的TOP属性
 if 'top_stories' in news_content:
-    top_stories_list = news_content['top_stories'].reverse()
+    top_stories_list = news_content['top_stories']
+    top_stories_list.reverse()
     for top in top_stories_list:
         top_article_id = top['id']
         if top_article_id in article_ids:
