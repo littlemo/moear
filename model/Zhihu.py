@@ -63,3 +63,14 @@ class Zhihu(object):
                         if top_article_id == a.article_id:
                             a.top = 1
                             break
+
+    def print_articles(self):
+        # 打印文章列表
+        if len(self.articles) == 0:
+            Utils.print_log(u'文章列表内容为空!', prefix=u'[打印文章列表]')
+            sys.exit(1)
+        for a in self.articles:
+            rcm = a.insert()
+            if not rcm.is_success():
+                Utils.print_log(rcm)
+            Utils.print_log(a)

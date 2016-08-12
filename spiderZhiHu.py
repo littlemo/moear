@@ -18,10 +18,4 @@ sys.setdefaultencoding('utf8')
 
 zhihu = Zhihu()
 zhihu.spider_articles_from_net()
-
-# 打印文章列表
-for a in zhihu.articles:
-    rcm = a.insert()
-    if not rcm.is_success():
-        Utils.print_log(rcm)
-    Utils.print_log(a)
+zhihu.print_articles()
