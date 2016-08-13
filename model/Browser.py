@@ -13,9 +13,9 @@ from Utils import Utils
 
 
 class Browser(object):
-    def __init__(self):
+    def __init__(self, path=None):
         self.driver = None
-        self.download_abs_path = './archive'
+        self.download_abs_path = './archive' if path is None else path
 
     def __init_webdriver(self, date_str=None):
         # 实例化一个火狐配置文件
