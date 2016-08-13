@@ -2,9 +2,14 @@
 # -*- coding: utf-8 -*-
 # Author: Moore.Huang <moore@moorehy.com>
 
+import codecs
 import os
+import sys
 
+import requests
 from selenium import webdriver
+
+from Utils import Utils
 
 
 class Browser(object):
@@ -38,5 +43,33 @@ class Browser(object):
         fp.set_preference("pdfjs.disabled", True)
 
         # 启动一个火狐浏览器进程，以刚才的浏览器参数
+        if self.driver is not None:
+            self.driver.quit()
         self.driver = webdriver.Firefox(firefox_profile=fp)
         self.driver.implicitly_wait(5)
+
+    @staticmethod
+    def __get_article_info_by_id(aid):
+        headers = {'Host': 'news-at.zhihu.com',
+                   'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) '
+                                 'AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
+        request_url = u'http://news-at.zhihu.com/api/4/news/%s' % aid
+        news = requests.get(request_url, headers=headers)
+        # print news.url, news.status_code
+        # print news.text
+        if news.status_code != 200:
+            Utils.print_log(u'获取指定文章信息失败: [%s]%s' % (news.status_code, news.text), prefix=u'[请求文章信息]')
+            sys.exit(1)
+        return news.text
+
+    def save_web_with_articles(self, articles):
+        for a in articles:
+            article_info = Utils.json_loads(self.__get_article_info_by_id(a.article_id))
+            path = u'%s/%s' % (self.download_abs_path, Utils.encode_time_to_str(a.timestamp))
+            if not os.path.exists(path):
+                os.mkdir(path)
+            output = u'%s/%s.html' % (path, a.title)
+            fd = codecs.open(output, 'w', 'utf-8')
+            fd.write(article_info['body'])
+            fd.flush()
+            fd.close()
