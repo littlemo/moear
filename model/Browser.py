@@ -14,6 +14,10 @@ from Utils import Utils
 
 
 class Browser(object):
+    headers = {'Host': 'news-at.zhihu.com',
+               'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) '
+                             'AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50'}
+
     def __init__(self, path=None):
         self.driver = None
         self.download_abs_path = './archive' if path is None else path
@@ -81,7 +85,10 @@ class Browser(object):
             for i in img_list:
                 img_link = i.get('src')
                 img_name = img_link.split('/')[-1]
-                img_rsp = requests.get(img_link, stream=True)
+                if u'equation?tex=' in img_name or u'.' not in img_name:
+                    Utils.print_log(u'遇到无法识别的img: %s' % img_link, prefix=u'[本地化图片资源]')
+                    break
+                img_rsp = requests.get(img_link, stream=True, headers=self.headers)
                 img_content = img_rsp.content
                 try:
                     with open(u'%s/%s' % (img_path, img_name), 'wb') as img:
