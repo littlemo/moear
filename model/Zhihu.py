@@ -7,6 +7,7 @@ import sys
 import requests
 
 from Article import Article
+from Browser import Browser
 from Utils import Utils
 
 
@@ -64,13 +65,28 @@ class Zhihu(object):
                             a.top = 1
                             break
 
+        for a in self.articles:
+            rcm = a.insert()
+            if not rcm.is_success():
+                Utils.print_log(rcm)
+
+    def spider_articles_html(self, date, path=None):
+        """
+        通过日期加载文章列表并保存到指定路径下
+
+        :type date: str
+        :type path: str
+        :param date: 时间字符串, 格式为"YYYYmmdd", 如: 20160813
+        :param path: 保存文章的根路径
+        """
+        # 抓取文章html页并保存到指定的路径下
+        self.articles = Article().load_article_list_with_date(date)
+        Browser(path).save_web_with_articles(self.articles)
+
     def print_articles(self):
         # 打印文章列表
         if len(self.articles) == 0:
             Utils.print_log(u'文章列表内容为空!', prefix=u'[打印文章列表]')
             sys.exit(1)
         for a in self.articles:
-            rcm = a.insert()
-            if not rcm.is_success():
-                Utils.print_log(rcm)
             Utils.print_log(a)
