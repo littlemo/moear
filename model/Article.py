@@ -67,6 +67,37 @@ class Article(object):
             Utils.print_log(u'加载文章失败: %s' % article_id, prefix=u'[加载文章对象]')
             sys.exit(1)
         self.init_with_article(article)
+        return self
+
+    @staticmethod
+    def load_article_list_with_date(date):
+        """
+        通过日期加载文章列表
+
+        :type date: string 时间字符串, 格式为"YYYYmmdd", 如: 20160813
+        """
+        def select_article_id(cur, conn):
+            count = cur.execute(u"SELECT `article_id` FROM `article` WHERE `timestamp`=%d"
+                                % Utils.decode_str_to_time(date))
+
+            article_id_list = []
+            if count > 0:
+                results = cur.fetchall()
+                for r in results:
+                    article_id_list.append(r[0])
+
+            conn.commit()
+            return ReturnCodeModel(obj=article_id_list)
+
+        rcm = Utils.process_database(select_article_id, u'查询文章ID列表', log=False)
+        if not rcm.is_success():
+            Utils.print_log(rcm, prefix=u'[查询文章ID列表]')
+            sys.exit(1)
+
+        article_list = []
+        for a in rcm.obj:
+            article_list.append(Article().load_with_article_id(a))
+        return article_list
 
     def __is_article_exits(self, article_id):
         def select_article(cur, conn):
