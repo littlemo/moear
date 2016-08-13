@@ -34,7 +34,15 @@ class Zhihu(object):
         return news.text
 
     def spider_articles_from_net(self, date=None):
-        content = self.__get_news_by_net(date)
+        date_offset = None
+        if date:
+            date = date.replace('-', '')
+            if len(date) != 8:
+                Utils.print_log(u'日期校验不通过, 长度为: %d' % len(date), prefix=u'[抓取文件列表]')
+            date_int = Utils.decode_str_to_time(date, 1)
+            date_offset = Utils.encode_time_to_str(date_int).replace('-', '')
+            Utils.print_log(u'传入日期: %s, 处理日期: %s' % (date, date_offset), prefix=u'[抓取文件列表]')
+        content = self.__get_news_by_net(date_offset)
 
         news_content = Utils.json_loads(content)
         self.date_str = news_content['date']
