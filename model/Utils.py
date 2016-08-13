@@ -5,6 +5,7 @@
 import json
 import sys
 import time
+import datetime
 
 import MySQLdb
 
@@ -67,15 +68,19 @@ class Utils(object):
 
     @staticmethod
     def encode_time_to_str(timestamp):
+        if timestamp is None:
+            timestamp = datetime.date.today()
         time_array = time.localtime(timestamp)
         other_style_time = time.strftime("%Y-%m-%d", time_array)
         return other_style_time
 
     @staticmethod
-    def decode_str_to_time(time_str):
+    def decode_str_to_time(time_str, day_offset=0):
         try:
             time_array = time.strptime(time_str, "%Y%m%d")
             timestamp = int(time.mktime(time_array))
+            if day_offset != 0:
+                timestamp += (int(day_offset) * 24 * 3600)
             return timestamp
         except Exception as e:
             Utils.print_log(u'解码时间戳字符串错误: %s' % e)
