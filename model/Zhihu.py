@@ -13,6 +13,7 @@ from Utils import Utils
 
 class Zhihu(object):
     def __init__(self):
+        self.date_str = u''
         self.articles = []
         self.article_ids = []
 
@@ -36,7 +37,8 @@ class Zhihu(object):
         content = self.__get_news_by_net(date)
 
         news_content = Utils.json_loads(content)
-        date = Utils.decode_str_to_time(news_content['date'])
+        self.date_str = news_content['date']
+        date = Utils.decode_str_to_time(self.date_str)
         Utils.print_log(u'日期时间戳: <%s>%d' % (news_content['date'], date), prefix=u'[测试]')
 
         # 生成文章列表
