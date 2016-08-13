@@ -89,6 +89,7 @@ class Article(object):
             conn.commit()
             return ReturnCodeModel(obj=article_id_list)
 
+        Utils.print_log(u'准备从DB加载指定日期数据: %s' % date, prefix=u'[加载文章列表]')
         rcm = Utils.process_database(select_article_id, u'查询文章ID列表', log=False)
         if not rcm.is_success():
             Utils.print_log(rcm, prefix=u'[查询文章ID列表]')
