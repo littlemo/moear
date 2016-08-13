@@ -102,3 +102,5 @@ class Browser(object):
             fd.write(body)
             fd.flush()
             fd.close()
+
+        Utils.print_log(u'共保存%d篇文章' % len(articles), prefix=u'[保存文章列表]')

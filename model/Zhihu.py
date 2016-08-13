@@ -90,3 +90,4 @@ class Zhihu(object):
             sys.exit(1)
         for a in self.articles:
             Utils.print_log(a)
+        Utils.print_log(u'共打印%d篇文章' % len(self.articles), prefix=u'[打印文章列表]')
