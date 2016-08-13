@@ -88,7 +88,7 @@ class Browser(object):
                 if u'equation?tex=' in img_name or u'.' not in img_name:
                     Utils.print_log(u'遇到无法识别的img: %s' % img_link, prefix=u'[本地化图片资源]')
                     break
-                img_rsp = requests.get(img_link, stream=True, headers=self.headers)
+                img_rsp = requests.get(img_link, stream=True)
                 img_content = img_rsp.content
                 try:
                     with open(u'%s/%s' % (img_path, img_name), 'wb') as img:
