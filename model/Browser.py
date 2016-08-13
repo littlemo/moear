@@ -68,7 +68,10 @@ class Browser(object):
             path = u'%s/%s' % (self.download_abs_path, Utils.encode_time_to_str(a.timestamp))
             if not os.path.exists(path):
                 os.mkdir(path)
-            output = u'%s/%s.html' % (path, a.title)
+            title = a.title.replace('/', '|')
+            output = u'%s/%s.html' % (path, title)
+            # Utils.print_log(u'路径名: %s' % output)
+            Utils.print_log(a)
             fd = codecs.open(output, 'w', 'utf-8')
             fd.write(article_info['body'])
             fd.flush()
