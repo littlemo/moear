@@ -69,7 +69,7 @@ class Utils(object):
     @staticmethod
     def encode_time_to_str(timestamp):
         if timestamp is None:
-            timestamp = datetime.date.today()
+            timestamp = int(time.mktime(datetime.date.today().timetuple()))
         time_array = time.localtime(timestamp)
         other_style_time = time.strftime("%Y-%m-%d", time_array)
         return other_style_time
