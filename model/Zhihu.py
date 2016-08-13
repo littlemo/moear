@@ -80,17 +80,25 @@ class Zhihu(object):
             if not rcm.is_success():
                 Utils.print_log(rcm)
 
-    def spider_articles_html(self, date, path=None):
+    def load_articles_from_db(self, date):
         """
-        通过日期加载文章列表并保存到指定路径下
+        通过日期加载文章列表
 
         :type date: str
-        :type path: str
         :param date: 时间字符串, 格式为"YYYYmmdd", 如: 20160813
+        """
+        if date is None:
+            date = Utils.encode_time_to_str(date).replace('-', '')
+        self.articles = Article().load_article_list_with_date(date)
+
+    def spider_articles_html(self, path=None):
+        """
+        将文章列表保存到指定路径下
+
+        :type path: str
         :param path: 保存文章的根路径
         """
         # 抓取文章html页并保存到指定的路径下
-        self.articles = Article().load_article_list_with_date(date)
         Browser(path).save_web_with_articles(self.articles)
 
     def print_articles(self):
