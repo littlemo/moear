@@ -19,6 +19,29 @@ class Article(object):
         self.top = 0
         self.tags = u''  # 若为多个tag, 则以','分隔
 
+    def init_with_article(self, article):
+        self.aid = article.aid
+        self.timestamp = article.timestamp
+        self.article_id = article.article_id
+        self.title = article.title
+        self.images = article.images
+        self.star = article.star
+        self.top = article.top
+        self.tags = article.tags
+
+    @staticmethod
+    def get_article_obj_with_list(data):
+        a = Article()
+        a.aid = data[0]
+        a.timestamp = data[1]
+        a.article_id = data[2]
+        a.title = data[3]
+        a.images = data[4]
+        a.star = data[5]
+        a.top = data[6]
+        a.tags = data[7]
+        return a
+
     def __str__(self):
         top_str = u'[   ]'
         if self.top:
@@ -38,18 +61,30 @@ class Article(object):
             sys.exit(1)
         return self
 
-    def __is_article_exits(self):
+    def load_with_article_id(self, article_id):
+        article = self.__is_article_exits(article_id)
+        if article is None:
+            Utils.print_log(u'加载文章失败: %s' % article_id, prefix=u'[加载文章对象]')
+            sys.exit(1)
+        self.init_with_article(article)
+
+    def __is_article_exits(self, article_id):
         def select_article(cur, conn):
             count = cur.execute(u"SELECT * FROM `article` WHERE `article_id` LIKE '%s'"
-                                % self.article_id)
+                                % article_id)
+            article = None
+            if count == 1:
+                result = cur.fetchone()
+                article = self.get_article_obj_with_list(result)
+
             conn.commit()
-            return ReturnCodeModel(obj=count)
+            return ReturnCodeModel(obj=article)
 
         rcm = Utils.process_database(select_article, u'插入文章信息', log=False)
-        return bool(rcm.obj)
+        return rcm.obj
 
     def insert(self):
-        if self.__is_article_exits():
+        if self.__is_article_exits(self.article_id):
             return ReturnCodeModel(ReturnCodeModel.Code_Duplicate, u'目标文章ID(%s)已存在于DB无法插入' % self.article_id)
 
         def insert_article(cur, conn):
