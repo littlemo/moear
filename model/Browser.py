@@ -7,6 +7,7 @@ import os
 import sys
 
 import requests
+from bs4 import BeautifulSoup
 from selenium import webdriver
 
 from Utils import Utils
@@ -65,14 +66,39 @@ class Browser(object):
     def save_web_with_articles(self, articles):
         for a in articles:
             article_info = Utils.json_loads(self.__get_article_info_by_id(a.article_id))
-            path = u'%s/%s' % (self.download_abs_path, Utils.encode_time_to_str(a.timestamp))
-            if not os.path.exists(path):
-                os.mkdir(path)
+            base_path = u'%s/%s' % (self.download_abs_path, Utils.encode_time_to_str(a.timestamp))
+            if not os.path.exists(base_path):
+                os.mkdir(base_path)
+
+            # 创建图片资源存放路径
+            img_path = u'%s/%s' % (base_path, u'img')
+            if not os.path.exists(img_path):
+                os.mkdir(img_path)
+
+            body = article_info['body']
+            soup = BeautifulSoup(body, "lxml")
+            img_list = soup.find_all('img')
+            for i in img_list:
+                img_link = i.get('src')
+                img_name = img_link.split('/')[-1]
+                img_rsp = requests.get(img_link, stream=True)
+                img_content = img_rsp.content
+                try:
+                    with open(u'%s/%s' % (img_path, img_name), 'wb') as img:
+                        img.write(img_content)
+                except Exception as e:
+                    Utils.print_log(u'保存图片异常: %s' % e, prefix=u'[保存图片资源]')
+                    sys.exit(1)
+                i['src'] = u'img/' + img_name
+
+            body = soup.prettify(encoding='utf8')
+
+            # 保存页面
             title = a.title.replace('/', '|')
-            output = u'%s/%s.html' % (path, title)
+            output = u'%s/%s.html' % (base_path, title)
             # Utils.print_log(u'路径名: %s' % output)
             Utils.print_log(a)
             fd = codecs.open(output, 'w', 'utf-8')
-            fd.write(article_info['body'])
+            fd.write(body)
             fd.flush()
             fd.close()
