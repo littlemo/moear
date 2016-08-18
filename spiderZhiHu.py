@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # Author: Moore.Huang <moore@moorehy.com>
 
+# API说明参考: https://github.com/izzyleung/ZhihuDailyPurify/wiki/知乎日报-API-分析
+
 import argparse
 import sys
 
