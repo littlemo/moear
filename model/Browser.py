@@ -85,7 +85,7 @@ class Browser(object):
             for i in img_list:
                 img_link = i.get('src')
                 img_name = img_link.split('/')[-1]
-                if u'equation?tex=' in img_name or u'.' not in img_name:
+                if u'equation?tex=' in img_name:
                     Utils.print_log(u'遇到无法识别的img: %s' % img_link, prefix=u'[本地化图片资源]')
                     continue
                 img_rsp = requests.get(img_link, stream=True)
