@@ -18,6 +18,7 @@ class Article(object):
         self.star = 0
         self.top = 0
         self.tags = u''  # 若为多个tag, 则以','分隔
+        self.comment = u''
 
     def init_with_article(self, article):
         self.aid = article.aid
@@ -28,6 +29,7 @@ class Article(object):
         self.star = article.star
         self.top = article.top
         self.tags = article.tags
+        self.comment = article.comment
 
     @staticmethod
     def get_article_obj_with_list(data):
@@ -40,6 +42,7 @@ class Article(object):
         a.star = data[5]
         a.top = data[6]
         a.tags = data[7]
+        a.comment = data[8]
         return a
 
     def __str__(self):
@@ -121,8 +124,8 @@ class Article(object):
 
         def insert_article(cur, conn):
             count = cur.execute(u"INSERT INTO `mo_zhihu_daily`.`article` (`id`, `timestamp`, `article_id`, `title`, "
-                                u"`images`, `star`, `top`, `tags`) "
-                                u"VALUES (NULL, '%d', '%d', '%s', '%s', '%d', '%d', NULL)"
+                                u"`images`, `star`, `top`, `tags`, `comment`) "
+                                u"VALUES (NULL, '%d', '%d', '%s', '%s', '%d', '%d', NULL, NULL)"
                                 % (self.timestamp, self.article_id, self.title, self.images, self.star, self.top))
             if count != 1:
                 return ReturnCodeModel(ReturnCodeModel.Code_Bad_Database_Process,
