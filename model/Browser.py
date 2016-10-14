@@ -84,6 +84,8 @@ class Browser(object):
             img_list = soup.find_all('img')
             for i in img_list:
                 img_link = i.get('src')
+                if img_link is None:
+                    continue
                 img_name = img_link.split('/')[-1]
                 if u'equation?tex=' in img_name:
                     Utils.print_log(u'遇到无法识别的img: %s' % img_link, prefix=u'[本地化图片资源]')
