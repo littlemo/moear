@@ -9,7 +9,7 @@ import datetime
 
 import MySQLdb
 
-from ReturnCodeModel import ReturnCodeModel
+from model.ReturnCodeModel import ReturnCodeModel
 
 
 class Utils(object):
@@ -26,18 +26,17 @@ class Utils(object):
                 out += u'\n'
             for item in log:
                 if newline:
-                    out += u'%s\n' % item.encode('utf8')
+                    out += u'%s\n' % item
                 else:
-                    out += u'%s | ' % item.encode('utf8')
+                    out += u'%s | ' % item
             if not newline:
                 out = out.rstrip()
-                out += u'\n'
-        elif type(log) in [unicode, str]:
-            out += u'%s\n' % log.encode('utf8')
+        elif type(log) in [str]:
+            out += u'%s' % log
         else:
-            out += u'%s\n' % log
+            out += u'%s' % log
         if debug:
-            print out,
+            print(out)
 
     @staticmethod
     def process_database(cb, tag, log=True):
@@ -53,7 +52,7 @@ class Utils(object):
                 Utils.print_log(rcm, prefix=u'[%s]' % tag)
             return rcm
         except MySQLdb.Error as e:
-            print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+            print("Mysql Error %d: %s" % (e.args[0], e.args[1]))
             rcm = ReturnCodeModel(e.args[0], e.args[1].decode('utf8'))
             Utils.print_log(rcm, prefix=u'[%s]' % tag)
             return rcm

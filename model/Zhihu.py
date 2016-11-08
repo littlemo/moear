@@ -6,9 +6,9 @@ import sys
 
 import requests
 
-from Article import Article
-from Browser import Browser
-from Utils import Utils
+from model.Article import Article
+from model.Browser import Browser
+from model.Utils import Utils
 
 
 class Zhihu(object):

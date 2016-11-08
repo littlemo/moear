@@ -4,8 +4,8 @@
 
 import sys
 
-from ReturnCodeModel import ReturnCodeModel
-from Utils import Utils
+from model.ReturnCodeModel import ReturnCodeModel
+from model.Utils import Utils
 
 
 class Article(object):

@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-from Utils import Utils
+from model.Utils import Utils
 
 
 class Browser(object):
@@ -100,16 +100,14 @@ class Browser(object):
                     sys.exit(1)
                 i['src'] = u'img/' + img_name
 
-            body = soup.prettify(encoding='utf8')
+            body = soup.prettify()
 
             # 保存页面
             title = a.title.replace('/', '|')
             output = u'%s/%s.html' % (base_path, title)
             # Utils.print_log(u'路径名: %s' % output)
             Utils.print_log(a)
-            fd = codecs.open(output, 'w', 'utf-8')
-            fd.write(body)
-            fd.flush()
-            fd.close()
+            with open(output, 'w') as fd:
+                fd.write(body)
 
         Utils.print_log(u'共保存%d篇文章' % len(articles), prefix=u'[保存文章列表]')
