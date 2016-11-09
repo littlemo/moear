@@ -6,9 +6,7 @@ from django.utils.html import format_html
 
 
 class Tag(models.Model):
-    theme = models.CharField(verbose_name='主题',
-                             max_length=50,
-                             unique=True)
+    theme = models.CharField(verbose_name='主题', max_length=50, unique=True)
 
     def __str__(self):
         return self.theme
@@ -39,11 +37,7 @@ class Article(models.Model):
 class ZhihuDaily(models.Model):
     article = models.OneToOneField(Article, on_delete=models.CASCADE, verbose_name='文章')
     daily_id = models.IntegerField(verbose_name='日报ID')
-
-    cover_images = models.CharField(verbose_name='封面图片',
-                                    null=True, default=None,
-                                    max_length=255)
-
+    cover_images = models.CharField(verbose_name='封面图片', null=True, default=None, max_length=255)
     top = models.BooleanField(verbose_name='热文')
 
     def __str__(self):
