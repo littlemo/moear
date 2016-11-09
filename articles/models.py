@@ -34,3 +34,24 @@ class Article(models.Model):
         verbose_name = '文章基本'
         verbose_name_plural = verbose_name
         ordering = ('-pub_datetime',)
+
+
+class ZhihuDaily(models.Model):
+    article = models.OneToOneField(Article, on_delete=models.CASCADE, verbose_name='文章')
+    daily_id = models.IntegerField(verbose_name='日报ID')
+
+    cover_images = models.CharField(verbose_name='封面图片',
+                                    null=True, default=None,
+                                    max_length=255)
+
+    top = models.BooleanField(verbose_name='热文')
+
+    def __str__(self):
+        return self.article
+
+    def fmt_tags_list(self):
+        return '，'.join([str(tag) for tag in Tag.objects.filter(article__pk=self.pk)])
+
+    class Meta:
+        verbose_name = '知乎日报'
+        verbose_name_plural = verbose_name
