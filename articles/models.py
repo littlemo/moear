@@ -16,17 +16,25 @@ class Tag(models.Model):
         verbose_name_plural = verbose_name
 
 
+class Source(models.Model):
+    name = models.CharField(verbose_name='来源名称', max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '文章来源'
+        verbose_name_plural = verbose_name
+
+
 class Article(models.Model):
     pub_datetime = models.DateTimeField(verbose_name='发布时间')
-    title = models.CharField(verbose_name='标题',
-                             max_length=255)
-    local_url = models.CharField(verbose_name='本地URL',
-                                 unique=True,
-                                 max_length=255)
+    title = models.CharField(verbose_name='标题', max_length=255)
+    source = models.ForeignKey(Source, verbose_name='来源')
+    url = models.CharField(verbose_name='原文URL', unique=True, max_length=255)
+    local_url = models.CharField(verbose_name='本地URL', unique=True, null=True, default=None, max_length=255)
 
-    tags = models.ManyToManyField(Tag,
-                                  blank=True,
-                                  verbose_name='标签')
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name='标签')
 
     class Meta:
         verbose_name = '文章基本'
