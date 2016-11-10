@@ -19,6 +19,9 @@ class Tag(models.Model):
 
 
 class Source(models.Model):
+    """
+    文章源组件，用来指示文章来源的名称，以及未来的爬取规则&方法
+    """
     name = models.CharField(verbose_name='来源名称', max_length=50, unique=True)
     # TODO V2.1.0 增加爬取时间规则时，在此处增加相应的 `rules` 属性
 
