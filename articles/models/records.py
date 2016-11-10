@@ -15,6 +15,9 @@ STAR_CHOICES = (
 
 
 class ReadRecord(models.Model):
+    """
+    阅读记录模型，用于保存每位用户对阅读后的文章的打分、读后感、分类标签等信息
+    """
     reader = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='读者')
     article = models.ForeignKey(Article, on_delete=models.SET_NULL, verbose_name='文章')
 
