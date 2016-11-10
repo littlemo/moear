@@ -4,6 +4,9 @@ from .components import Source
 
 
 class Article(models.Model):
+    """
+    文章基本信息，即保证正常逻辑执行的最小信息集
+    """
     pub_datetime = models.DateTimeField(verbose_name='发布时间')
     title = models.CharField(verbose_name='标题', max_length=255)
     source = models.ForeignKey(Source, verbose_name='来源')
@@ -11,7 +14,7 @@ class Article(models.Model):
     local_url = models.CharField(verbose_name='本地URL', unique=True, null=True, default=None, max_length=255)
 
     class Meta:
-        verbose_name = '文章基本'
+        verbose_name = '文章信息'
         verbose_name_plural = verbose_name
         ordering = ('-pub_datetime',)
 
