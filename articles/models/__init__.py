@@ -8,3 +8,6 @@ from .articles import ZhihuDaily
 
 # 导入记录模型
 from .records import ReadRecord
+
+# 导入账户模型
+from .accounts import SubscribeInfo
