@@ -17,6 +17,9 @@ class Article(models.Model):
 
 
 class ZhihuDaily(models.Model):
+    """
+    知乎日报模型，作为对文章类型的扩展，保存知乎日报的一些特定参数
+    """
     article = models.OneToOneField(Article, on_delete=models.CASCADE, verbose_name='文章')
     daily_id = models.IntegerField(verbose_name='日报ID')
     cover_images = models.CharField(verbose_name='封面图片', null=True, default=None, max_length=255)
