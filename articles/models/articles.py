@@ -26,7 +26,7 @@ class ZhihuDaily(models.Model):
     top = models.BooleanField(verbose_name='热文')
 
     def __str__(self):
-        return self.article
+        return '[Top]' if self.top else ''
 
     class Meta:
         verbose_name = '知乎日报'
