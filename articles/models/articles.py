@@ -1,7 +1,6 @@
 from django.db import models
 
 from .components import Source
-from .components import Tag
 
 
 class Article(models.Model):
@@ -10,8 +9,6 @@ class Article(models.Model):
     source = models.ForeignKey(Source, verbose_name='来源')
     url = models.CharField(verbose_name='原文URL', unique=True, max_length=255)
     local_url = models.CharField(verbose_name='本地URL', unique=True, null=True, default=None, max_length=255)
-
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name='标签')
 
     class Meta:
         verbose_name = '文章基本'
@@ -27,9 +24,6 @@ class ZhihuDaily(models.Model):
 
     def __str__(self):
         return self.article
-
-    def fmt_tags_list(self):
-        return '，'.join([str(tag) for tag in Tag.objects.filter(article__pk=self.pk)])
 
     class Meta:
         verbose_name = '知乎日报'
