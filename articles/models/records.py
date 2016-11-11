@@ -18,8 +18,8 @@ class ReadRecord(models.Model):
     """
     阅读记录模型，用于保存每位用户对阅读后的文章的打分、读后感、分类标签等信息
     """
-    reader = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='读者')
-    article = models.ForeignKey(Article, on_delete=models.SET_NULL, verbose_name='文章')
+    reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='读者')
+    article = models.ForeignKey(Article, on_delete=models.SET_NULL, null=True, verbose_name='文章')
 
     star = models.SmallIntegerField(verbose_name='文章评级', default=0, choices=STAR_CHOICES)
     comment = models.TextField(verbose_name='读后感', null=True, default=None)
