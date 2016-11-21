@@ -53,7 +53,7 @@ class Utils(object):
             return rcm
         except MySQLdb.Error as e:
             print("Mysql Error %d: %s" % (e.args[0], e.args[1]))
-            rcm = ReturnCodeModel(e.args[0], e.args[1].decode('utf8'))
+            rcm = ReturnCodeModel(e.args[0], e.args[1])
             Utils.print_log(rcm, prefix=u'[%s]' % tag)
             return rcm
 
