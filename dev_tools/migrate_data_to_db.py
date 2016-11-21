@@ -2,9 +2,6 @@
 # -*- coding: utf-8 -*-
 # Author: Moore.Huang <moore@moorehy.com>
 
-# 此脚本为将 `V1.0.0` 版本中已爬取的数据文件填充入Django相应数据表中
-# 使用方法：将从MySQL导出的article表 `.sql` 文件，放入 `./data` 路径下
-
 import logging
 import os
 import re
@@ -127,8 +124,16 @@ class ItemFormatter(object):
 
         return self
 
+
 """
-# 使用说明
+# migrate data to db
+
+## 功能说明
+此脚本为将 `V1.0.0` 版本中已爬取的数据文件填充入Django相应数据表中
+
+## 准备数据
+在V1.0.0版本的MySQL数据库中，导出article表得到 `.sql` 文件，放入 `./data` 路径下
+
 ## 需配置参数
 1. username 迁移数据时某些数据条目需设置创建人/阅读人等V1.0.0版本中不存在的字段，此处统一设置
 2. sql_path_name 从旧版导出的SQL文件路径名，使用相对路径，相对当前文件的目录
