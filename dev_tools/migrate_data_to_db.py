@@ -127,10 +127,17 @@ class ItemFormatter(object):
 
         return self
 
-
+"""
+# 使用说明
+## 需配置参数
+1. username 迁移数据时某些数据条目需设置创建人/阅读人等V1.0.0版本中不存在的字段，此处统一设置
+2. sql_path_name 从旧版导出的SQL文件路径名，使用相对路径，相对当前文件的目录
+"""
 username = 'moore'
+sql_path_name = 'data/article.sql'
+
 user = User.objects.get(username=username)
-sql_path = os.path.join(BASE_DIR, 'data/article.sql')
+sql_path = os.path.join(BASE_DIR, sql_path_name)
 cnt_item = 0
 for item in yield_item_data(sql_path):
     cnt_item += 1
