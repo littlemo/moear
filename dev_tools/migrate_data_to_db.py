@@ -7,24 +7,24 @@ import os
 import re
 import sys
 
-# 初始化logger
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s [%(name)s][%(filename)s:%(lineno)d][%(levelname)s] %(message)s')
-logger = logging.getLogger('Tool')
-
 # 准备Django环境
-DJANGO_PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 from django.core.wsgi import get_wsgi_application
 
+DJANGO_PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(DJANGO_PROJECT_PATH)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "moear.settings")
 application = get_wsgi_application()
 
+# 导入Django工程相关模块
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from articles.models import *
+
+# 初始化logger
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s [%(name)s][%(filename)s:%(lineno)d][%(levelname)s] %(message)s')
+logger = logging.getLogger('Tool')
 
 # 业务常量
 _matches = lambda l, r: any([r.search(l)])
