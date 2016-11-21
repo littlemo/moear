@@ -8,16 +8,34 @@
 import logging
 import os
 import re
+import sys
 
+# 初始化logger
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s [%(name)s][%(filename)s:%(lineno)d][%(levelname)s] %(message)s')
 logger = logging.getLogger('Tool')
 
+# 准备Django环境
+DJANGO_PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+from django.core.wsgi import get_wsgi_application
+
+sys.path.append(DJANGO_PROJECT_PATH)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "moear.settings")
+application = get_wsgi_application()
+
+from django.utils import timezone
+from django.db import models
+from django.contrib.auth.models import User
+from articles.models import *
+
+# 业务常量
 _matches = lambda l, r: any([r.search(l)])
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 METADATA_RE = re.compile(r'^\(.*\);|,$')
 
 
+# 条目数据迭代生成
 def yield_item_data(sql_file_path):
     sql = os.path.abspath(sql_file_path)
     logger.info('sql文件路径: {}'.format(sql))
@@ -39,6 +57,7 @@ def yield_item_data(sql_file_path):
         logger.info('共处理记录条目：{}'.format(cnt_record))
 
 
+# 条目数据格式化模型
 class ItemFormatter(object):
     RE = re.compile(r"^\((\d+), (\d+), (\d+), '(.+)', '(.+)', (\d+), (\d+), ('(.+)'|NULL), ('(.+)'|NULL)\)[,;]$")
 
@@ -46,17 +65,74 @@ class ItemFormatter(object):
         raw = self.RE.match(item)
         groups = raw.groups()
         logger.debug(groups)
-        self.timestamp = groups[1]
-        self.article_id = groups[2]
+        self.timestamp = float(groups[1])
+        self.article_id = int(groups[2])
         self.title = groups[3]
         self.imgs = groups[4]
-        self.star = groups[5]
-        self.hot = groups[6]
+        self.star = int(groups[5])
+        self.top = groups[6]
         self.tags = groups[8]
         self.comment = groups[10]
 
-    # TODO 将格式化所得数据转换为Django工程DB所需内容，创建相关数据模型，并保存到DB
+    def save_to_db(self):
+        try:
+            src = Source.objects.get(name='知乎日报')
+        except models.ObjectDoesNotExist:
+            src = Source.objects.create(name='知乎日报')
 
+        tag_list = []
+        if any([self.tags]):
+            for tag in self.tags.split(','):
+                try:
+                    t = Tag.objects.get(theme=tag)
+                except models.ObjectDoesNotExist:
+                    t = Tag.objects.create(theme=tag, creater=user)
+                tag_list.append(t)
+
+        url = 'http://daily.zhihu.com/story/{}'.format(self.article_id)
+        pub_datetime = timezone.datetime.fromtimestamp(float(self.timestamp), tz=timezone.get_current_timezone())
+        try:
+            article = Article.objects.get(url=url)
+            article.pub_datetime = pub_datetime
+            article.title = self.title
+            article.source = src
+            article.save()
+        except models.ObjectDoesNotExist:
+            article = Article.objects.create(pub_datetime=pub_datetime,
+                                             title=self.title, source=src,
+                                             url=url)
+
+        try:
+            zhihu = ZhihuDaily.objects.get(article=article)
+            zhihu.daily_id = self.article_id
+            zhihu.cover_image = self.imgs
+            zhihu.top = self.top
+            zhihu.save()
+        except models.ObjectDoesNotExist:
+            zhihu = ZhihuDaily.objects.create(article=article, daily_id=self.article_id,
+                                              cover_images=self.imgs, top=self.top)
+
+        if any([self.star, self.comment]):
+            logger.debug('star: {}, comment: {}, any: {}'.format(self.star, self.comment,
+                                                                 any([self.star, self.comment])))
+            try:
+                read_record = ReadRecord.objects.get(reader=user, article=article)
+                read_record.star = self.star
+                read_record.comment = self.comment
+            except models.ObjectDoesNotExist:
+                read_record = ReadRecord.objects.create(reader=user, article=article,
+                                                        star=self.star, comment=self.comment)
+            read_record.tags = tag_list
+            read_record.save()
+
+        return self
+
+
+username = 'moore'
+user = User.objects.get(username=username)
 sql_path = os.path.join(BASE_DIR, 'data/article.sql')
+cnt_item = 0
 for item in yield_item_data(sql_path):
-    ItemFormatter(item)
+    cnt_item += 1
+    item_formatter = ItemFormatter(item).save_to_db()
+    logger.info('迁移文章数据：[{:5d}]{}'.format(cnt_item, item_formatter.title))
