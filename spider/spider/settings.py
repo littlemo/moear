@@ -8,6 +8,17 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+import os
+import sys
+
+# 想绑定的Django工程路径
+from django.core.wsgi import get_wsgi_application
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DJANGO_PROJECT_PATH = BASE_DIR
+sys.path.append(DJANGO_PROJECT_PATH)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "moear.settings")
+application = get_wsgi_application()
 
 BOT_NAME = 'spider'
 
