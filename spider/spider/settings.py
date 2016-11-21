@@ -11,7 +11,7 @@
 import os
 import sys
 
-# 想绑定的Django工程路径
+# 设置Django工程环境
 from django.core.wsgi import get_wsgi_application
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
