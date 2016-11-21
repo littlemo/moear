@@ -35,8 +35,28 @@ def yield_item_data(sql_file_path):
                 cnt_record += 1
                 l = l.strip()
                 logger.debug(l)
-                # TODO 此处使用一个数据模型格式化条目数据，并进行插入DB的操作
+                yield l
         logger.info('共处理记录条目：{}'.format(cnt_record))
 
 
-print(yield_item_data(os.path.join(BASE_DIR, 'data/article.sql')))
+class ItemFormatter(object):
+    RE = re.compile(r"^\((\d+), (\d+), (\d+), '(.+)', '(.+)', (\d+), (\d+), ('(.+)'|NULL), ('(.+)'|NULL)\)[,;]$")
+
+    def __init__(self, item):
+        raw = self.RE.match(item)
+        groups = raw.groups()
+        logger.debug(groups)
+        self.timestamp = groups[1]
+        self.article_id = groups[2]
+        self.title = groups[3]
+        self.imgs = groups[4]
+        self.star = groups[5]
+        self.hot = groups[6]
+        self.tags = groups[8]
+        self.comment = groups[10]
+
+    # TODO 将格式化所得数据转换为Django工程DB所需内容，创建相关数据模型，并保存到DB
+
+sql_path = os.path.join(BASE_DIR, 'data/article.sql')
+for item in yield_item_data(sql_path):
+    ItemFormatter(item)
