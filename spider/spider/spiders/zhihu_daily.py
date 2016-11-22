@@ -53,15 +53,15 @@ class ZhihuDailySpider(scrapy.Spider):
         self.logger.info('日期：{}'.format(strftime))
         self.persistent_path = '{}/{}'.format(self.name, strftime)
 
-        self.logger.info('头条文章')
+        self.logger.info('处理头条文章')
         for item in content['top_stories']:
             for story in content['stories']:
                 if item['id'] == story['id']:
                     story['top'] = True
                     break
-            self.logger.info(item)
+            self.logger.debug(item)
 
-        self.logger.info('今日文章')
+        self.logger.info('处理今日文章')
         for item in content['stories']:
             self.logger.debug(item)
 
