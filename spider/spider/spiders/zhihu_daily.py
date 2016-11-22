@@ -67,15 +67,20 @@ class ZhihuDailySpider(scrapy.Spider):
         for item in content['stories']:
             self.logger.debug(item)
 
-            # 初步填充ArticleItem数据
+            # 从DB中查询该日报文章ID是否已存在，存在则忽略，不存在继续执行后续逻辑
             z = ZhihuItem(daily_id=item['id'], top=item.get('top', False))
+            if z.exists(spider=self):
+                self.logger.warn('该文章已存在于DB，丢弃：《{}》'.format(item['title']))
+                continue
+
+            # 初步填充ArticleItem数据
             a = ArticleItem()
             a['pub_datetime'] = self.datetime
             a['source'] = self.source
             a['addition_info'] = z
 
-            request = scrapy.Request('http://news-at.zhihu.com/api/4/news/{}'.format(z['daily_id']),
-                                     callback=self.parse_article)
+            url = 'http://news-at.zhihu.com/api/4/news/{}'.format(z['daily_id'])
+            request = scrapy.Request(url, callback=self.parse_article)
             request.meta['item'] = a
             yield request
 
@@ -111,3 +116,11 @@ class ZhihuItem(scrapy.Item):
         except models.ObjectDoesNotExist:
             zhihu = ZhihuDaily.objects.create(article=article, daily_id=self.get('daily_id'),
                                               top=self.get('top'))
+
+    def exists(self, spider):
+        try:
+            zhihu = ZhihuDaily.objects.get(daily_id=self.get('daily_id'))
+            spider.logger.info('测试文章是否存在: {}'.format(self.get('daily_id')))
+            return True
+        except models.ObjectDoesNotExist:
+            return False
