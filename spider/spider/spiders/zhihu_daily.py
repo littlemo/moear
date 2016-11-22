@@ -97,8 +97,13 @@ class ZhihuDailySpider(scrapy.Spider):
 
         # 为图片持久化pipeline执行做数据准备
         a['image_urls'] = [a['cover_image']]
+
         # 格式化content，将其中的img标签src全部导出到image_urls中
         a['image_urls'] += Selector(text=a['content']).css('img::attr(src)').extract()
+        self.logger.debug('待处理的图片url(过滤前): {}'.format(a['image_urls']))
+
+        # 过滤掉image_urls中的公式url，目前未找到好方法将其转换为图片持久化
+        a['image_urls'] = [img for img in a['image_urls'] if 'equation?tex=' not in img]
         self.logger.info('待处理的图片url: {}'.format(a['image_urls']))
         yield a
 
