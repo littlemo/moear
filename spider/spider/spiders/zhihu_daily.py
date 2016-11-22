@@ -37,3 +37,9 @@ class ZhihuDailySpider(scrapy.Spider):
         self.logger.info('头条文章')
         for item in content['top_stories']:
             self.logger.info(item)
+
+
+class ZhihuItem(scrapy.Item):
+    daily_id = scrapy.Field()  # 日报文章ID
+    cover_images = scrapy.Field()  # 文章封面图片
+    top = scrapy.Field()  # 热文标志
