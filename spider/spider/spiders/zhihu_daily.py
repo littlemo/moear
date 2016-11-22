@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 
 import scrapy
 
@@ -19,6 +20,9 @@ class ZhihuDailySpider(scrapy.Spider):
         'http://news-at.zhihu.com/api/4/news/latest',
     )
 
+    def __init__(self, *a, **kw):
+        super(ZhihuDailySpider, self).__init__(*a, **kw)
+        self.datetime = None
     def parse(self, response):
         return self.yield_article_request(response=response)
 
@@ -28,11 +32,12 @@ class ZhihuDailySpider(scrapy.Spider):
         content = json.loads(content_raw, encoding='UTF-8')
         self.logger.debug(content)
 
-        self.logger.info('日期：{}'.format(content['date']))
 
         self.logger.info('今日文章')
         for item in content['stories']:
             self.logger.info(item)
+        self.datetime = time.strptime(content['date'], "%Y%m%d")
+        self.logger.info('日期：{}'.format(self.datetime))
 
         self.logger.info('头条文章')
         for item in content['top_stories']:
