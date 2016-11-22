@@ -66,3 +66,5 @@ class ZhihuItem(scrapy.Item):
     daily_id = scrapy.Field()  # 日报文章ID
     cover_images = scrapy.Field()  # 文章封面图片
     top = scrapy.Field()  # 热文标志
+
+    cover_images_local = scrapy.Field()  # 文章封面图片本地路径

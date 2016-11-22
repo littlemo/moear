@@ -26,6 +26,7 @@ class ZhihuDaily(models.Model):
     article = models.OneToOneField(Article, on_delete=models.CASCADE, verbose_name='文章')
     daily_id = models.IntegerField(verbose_name='日报ID', unique=True)
     cover_images = models.CharField(verbose_name='封面图片', null=True, default=None, max_length=255)
+    cover_images_local = models.CharField(verbose_name='封面图片本地', null=True, default=None, max_length=255)
     top = models.BooleanField(verbose_name='热文')
 
     def __str__(self):
