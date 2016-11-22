@@ -41,6 +41,11 @@ class ZhihuDailySpider(scrapy.Spider):
 
         self.logger.info('头条文章')
         for item in content['top_stories']:
+            for story in content['stories']:
+                if item['id'] == story['id']:
+                    story['top'] = True
+                    story['images'] = [item['image']]
+                    break
             self.logger.info(item)
 
 
