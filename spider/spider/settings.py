@@ -80,6 +80,7 @@ COOKIES_ENABLED = False
 ITEM_PIPELINES = {
     'spider.pipelines.ValidationPipeline': 100,
     'spider.pipelines.MoEarImagesPipeline': 109,
+    'spider.pipelines.PagePersistentPipeline': 110,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -103,6 +104,11 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+# 爬取数据持久化的基路径
+PERSISTENT_STORE_BASE = 'data'
+
 # 图片pipeline的存储路径
-_IMAGES_STORE_SUBDIR = 'data'
-IMAGES_STORE = os.path.join(BASE_DIR, _IMAGES_STORE_SUBDIR)
+IMAGES_STORE = os.path.join(BASE_DIR, PERSISTENT_STORE_BASE)
+
+# 文章页面pipeline的存储路径
+PAGE_STORE = os.path.join(BASE_DIR, PERSISTENT_STORE_BASE)
