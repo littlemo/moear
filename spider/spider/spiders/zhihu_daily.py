@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import json
 import time
 
@@ -29,6 +30,10 @@ class ZhihuDailySpider(scrapy.Spider):
     def __init__(self, *a, **kw):
         super(ZhihuDailySpider, self).__init__(*a, **kw)
         self.datetime = None
+
+        # 此参数为当前Spider爬取数据持久化时的指定子路径，
+        # 需在item流入pipeline前设置，格式采用：`spider.name`/`yyyy-mm-dd`，如：zhihu_daily/2016-11-22
+        self.persistent_path = ''
         self.source = SourceItem(name=self.name, author=self.author, verbose_name=self.verbose_name,
                                  description=self.description).save_to_db()
 
@@ -42,7 +47,11 @@ class ZhihuDailySpider(scrapy.Spider):
         self.logger.debug(content)
 
         self.datetime = time.strptime(content['date'], "%Y%m%d")
-        self.logger.info('日期：{}'.format(self.datetime))
+
+        # 设置persistent_path，即爬取数据经过Pipeline持久化时使用的存储路径
+        strftime = time.strftime("%Y-%m-%d", self.datetime)
+        self.logger.info('日期：{}'.format(strftime))
+        self.persistent_path = '{}/{}'.format(self.name, strftime)
 
         self.logger.info('头条文章')
         for item in content['top_stories']:
