@@ -63,7 +63,7 @@ class ZhihuDailySpider(scrapy.Spider):
             a['addition_info'] = z
             self.logger.info(a)
 
-            request = scrapy.Request('http://news-at.zhihu.com/api/4/news/{}'.format(z['id']),
+            request = scrapy.Request('http://news-at.zhihu.com/api/4/news/{}'.format(z['daily_id']),
                                      callback=self.parse_article)
             request.meta['item'] = a
             yield request
