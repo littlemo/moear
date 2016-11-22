@@ -86,6 +86,15 @@ class PagePersistentPipeline(object):
 
         # 清空content值，为优化log打印信息
         item['content'] = None
+        return item
 
+
+class ItemPersistentPipeline(object):
+    """
+    将item相关字段及附加信息保存到DB
+    """
+
+    def process_item(self, item, spider):
+        item.save_to_db(spider=spider)
         spider.logger.info('保存item到DB: \n%s' % item)
         return item

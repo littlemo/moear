@@ -81,6 +81,7 @@ ITEM_PIPELINES = {
     'spider.pipelines.ValidationPipeline': 100,
     'spider.pipelines.MoEarImagesPipeline': 109,
     'spider.pipelines.PagePersistentPipeline': 110,
+    'spider.pipelines.ItemPersistentPipeline': 120,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
