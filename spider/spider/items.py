@@ -4,11 +4,14 @@
 #
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
+import time
 
 import scrapy
-
-from articles.models import Source
 from django.db import models
+from django.utils import timezone
+
+from articles.models import Article
+from articles.models import Source
 
 
 class ArticleItem(scrapy.Item):
@@ -24,8 +27,33 @@ class ArticleItem(scrapy.Item):
     # 以下参数为pipelines处理时使用
     url_local = scrapy.Field()  # 文章持久化后的本地路径
     cover_image_local = scrapy.Field()  # 文章封面图片持久化后的本地路径
+
     image_urls = scrapy.Field()  # 图片链接
     images = scrapy.Field()  # 图片存储返回
+
+    def save_to_db(self, spider):
+        pub_datetime = timezone.datetime.fromtimestamp(time.mktime(self.get('pub_datetime')),
+                                                       tz=timezone.get_current_timezone())
+        try:
+            article = Article.objects.get(url=self.get('url'))
+            article.pub_datetime = pub_datetime
+            article.title = self.get('title')
+            article.source = self.get('source')
+            article.url_local = self.get('url_local')
+            article.cover_image = self.get('cover_image')
+            article.cover_image_local = self.get('cover_image_local')
+            article.save()
+        except models.ObjectDoesNotExist:
+            article = Article.objects.create(pub_datetime=pub_datetime, title=self.get('title'),
+                                             source=self.get('source'), url=self.get('url'),
+                                             url_local=self.get('url_local'), cover_image=self.get('cover_image'),
+                                             cover_image_local=self.get('cover_image_local'))
+
+        try:
+            if any([self.get('addition_info')]):
+                self.get('addition_info').save_to_db_by_article(article, spider)
+        except Exception as e:
+            spider.logger.error('调用附加信息save_to_db_by_article方法失败：{}'.format(e))
 
 
 class SourceItem(scrapy.Item):

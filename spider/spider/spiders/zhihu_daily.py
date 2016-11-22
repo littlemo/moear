@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-import os
 import json
 import time
 
 import scrapy
+from django.db import models
 from scrapy.selector import Selector
 from spider.items import ArticleItem
 from spider.items import SourceItem
+
+from articles.models import ZhihuDaily
 
 
 class ZhihuDailySpider(scrapy.Spider):
@@ -99,3 +101,13 @@ class ZhihuDailySpider(scrapy.Spider):
 class ZhihuItem(scrapy.Item):
     daily_id = scrapy.Field()  # 日报文章ID
     top = scrapy.Field()  # 热文标志
+
+    def save_to_db_by_article(self, article):
+        try:
+            zhihu = ZhihuDaily.objects.get(article=article)
+            zhihu.daily_id = self.get('daily_id')
+            zhihu.top = self.get('top')
+            zhihu.save()
+        except models.ObjectDoesNotExist:
+            zhihu = ZhihuDaily.objects.create(article=article, daily_id=self.get('daily_id'),
+                                              top=self.get('top'))
