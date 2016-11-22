@@ -3,6 +3,7 @@ import json
 import time
 
 import scrapy
+from scrapy.selector import Selector
 from spider.items import ArticleItem
 from spider.items import SourceItem
 
@@ -61,7 +62,6 @@ class ZhihuDailySpider(scrapy.Spider):
             a['pub_datetime'] = self.datetime
             a['source'] = self.source
             a['addition_info'] = z
-            self.logger.info(a)
 
             request = scrapy.Request('http://news-at.zhihu.com/api/4/news/{}'.format(z['daily_id']),
                                      callback=self.parse_article)
@@ -77,8 +77,13 @@ class ZhihuDailySpider(scrapy.Spider):
         a['url'] = content['share_url']
         a['cover_image'] = content.get('image', content.get('images', [None])[0])
         a['content'] = content['body']
+        self.logger.info(a)
 
-        # TODO 为图片本地化pipeline执行做数据准备
+        # 为图片持久化pipeline执行做数据准备
+        a['image_urls'] = [a['cover_image']]
+        # 格式化content，将其中的img标签src全部导出到image_urls中
+        a['image_urls'] += Selector(text=a['content']).css('img::attr(src)').extract()
+        self.logger.debug('待处理的图片url: {}'.format(a['image_urls']))
         yield a
 
 
