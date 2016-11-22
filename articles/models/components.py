@@ -23,6 +23,7 @@ class Source(models.Model):
     文章源组件，用来指示文章来源的名称，以及未来的爬取规则&方法
     """
     name = models.CharField(verbose_name='来源名称', max_length=50, unique=True)  # 此处为spider对应的name，唯一
+    author = models.CharField(verbose_name='组件作者', max_length=50)
     verbose_name = models.CharField(verbose_name='显示名称', max_length=100)  # 用于界面显示
     description = models.CharField(verbose_name='描述信息', max_length=255, default=None)  # 描述信息
 

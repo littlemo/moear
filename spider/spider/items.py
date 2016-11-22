@@ -31,17 +31,19 @@ class SourceItem(scrapy.Item):
     此模型默认使用spider信息填充，可手动修改
     """
     name = scrapy.Field()  # 来源名称，唯一，长度<50
+    author = scrapy.Field()  # 组件作者，长度<50
     verbose_name = scrapy.Field()  # 显示名称，长度<100
     description = scrapy.Field()  # 描述信息，长度<255
 
     def save_to_db(self):
         try:
             src = Source.objects.get(name=self.get('name'))
+            src.author = self.get('author', None)
             src.verbose_name = self.get('verbose_name')
             src.description = self.get('description', None)
             src.save()
         except models.ObjectDoesNotExist:
-            src = Source.object.create(name=self.get('name'),
+            src = Source.object.create(name=self.get('name'), author=self.get('author', None),
                                        verbose_name=self.get('verbose_name'),
-                                       description=self.get('description'))
+                                       description=self.get('description', None))
         return src

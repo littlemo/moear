@@ -11,6 +11,9 @@ class ZhihuDailySpider(scrapy.Spider):
     # 来源名称，唯一，长度<50，用于文章源模型索引创建后不可修改
     name = "zhihu_daily"
 
+    # 组件作者
+    author = "小貘"
+
     # 显示名称，长度<100，Spider每次运行时更新
     verbose_name = "知乎日报"
 
@@ -25,7 +28,7 @@ class ZhihuDailySpider(scrapy.Spider):
     def __init__(self, *a, **kw):
         super(ZhihuDailySpider, self).__init__(*a, **kw)
         self.datetime = None
-        self.source = SourceItem(name=self.name, verbose_name=self.verbose_name,
+        self.source = SourceItem(name=self.name, author=self.author, verbose_name=self.verbose_name,
                                  description=self.description).save_to_db()
 
     def parse(self, response):
