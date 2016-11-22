@@ -48,14 +48,13 @@ class ZhihuDailySpider(scrapy.Spider):
             for story in content['stories']:
                 if item['id'] == story['id']:
                     story['top'] = True
-                    story['images'] = [item['image']]
                     break
             self.logger.info(item)
 
         self.logger.info('今日文章')
         for item in content['stories']:
             self.logger.debug(item)
-            z = ZhihuItem(daily_id=item['id'], cover_images=item['images'], top=item.get('top', False))
+            z = ZhihuItem(daily_id=item['id'], top=item.get('top', False))
             a = ArticleItem()
             a['pub_datetime'] = self.datetime
             a['title'] = item['title']
@@ -67,7 +66,4 @@ class ZhihuDailySpider(scrapy.Spider):
 
 class ZhihuItem(scrapy.Item):
     daily_id = scrapy.Field()  # 日报文章ID
-    cover_images = scrapy.Field()  # 文章封面图片
     top = scrapy.Field()  # 热文标志
-
-    cover_images_local = scrapy.Field()  # 文章封面图片本地路径

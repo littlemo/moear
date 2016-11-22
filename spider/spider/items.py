@@ -16,12 +16,14 @@ class ArticleItem(scrapy.Item):
     title = scrapy.Field()  # 文章标题
     source = scrapy.Field()  # 文章来源，使用Django的Source模型填充
     url = scrapy.Field()  # 文章URL
+    cover_image = scrapy.Field()  # 文章封面图片
     content = scrapy.Field()  # 文章正文
 
-    addition_info = scrapy.Field()  # 一些具体文章源的附加信息，如知乎日报的封面图、是否热文、文章ID
+    addition_info = scrapy.Field()  # 一些具体文章源的附加信息，如知乎日报的是否热文、文章ID
 
     # 以下参数为pipelines处理时使用
-    local_url = scrapy.Field()  # 文章持久化后的本地路径
+    url_local = scrapy.Field()  # 文章持久化后的本地路径
+    cover_image_local = scrapy.Field()  # 文章封面图片持久化后的本地路径
     image_urls = scrapy.Field()  # 图片链接
     images = scrapy.Field()  # 图片存储返回
 
