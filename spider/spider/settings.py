@@ -78,7 +78,8 @@ COOKIES_ENABLED = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'spider.pipelines.ValidationPipeline': 100,
+    'spider.pipelines.ValidationPipeline': 100,
+    'spider.pipelines.MoEarImagesPipeline': 109,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -101,3 +102,7 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# 图片pipeline的存储路径
+_IMAGES_STORE_SUBDIR = 'data'
+IMAGES_STORE = os.path.join(BASE_DIR, _IMAGES_STORE_SUBDIR)
