@@ -73,9 +73,10 @@ class ItemFormatter(object):
 
     def save_to_db(self):
         try:
-            src = Source.objects.get(name='知乎日报')
+            src = Source.objects.get(name='zhihu_daily')
         except models.ObjectDoesNotExist:
-            src = Source.objects.create(name='知乎日报')
+            src = Source.objects.create(name='zhihu_daily', author='小貘', verbose_name='知乎日报',
+                                        description='每天三次，每次七分钟。在中国，资讯类移动应用的人均阅读时长是 5 分钟，而在知乎日报，这个数字是 21')
 
         tag_list = []
         if any([self.tags]):
@@ -93,21 +94,21 @@ class ItemFormatter(object):
             article.pub_datetime = pub_datetime
             article.title = self.title
             article.source = src
+            article.cover_image = self.imgs
             article.save()
         except models.ObjectDoesNotExist:
             article = Article.objects.create(pub_datetime=pub_datetime,
                                              title=self.title, source=src,
+                                             cover_image=self.imgs,
                                              url=url)
 
         try:
             zhihu = ZhihuDaily.objects.get(article=article)
             zhihu.daily_id = self.article_id
-            zhihu.cover_image = self.imgs
             zhihu.top = self.top
             zhihu.save()
         except models.ObjectDoesNotExist:
-            zhihu = ZhihuDaily.objects.create(article=article, daily_id=self.article_id,
-                                              cover_images=self.imgs, top=self.top)
+            zhihu = ZhihuDaily.objects.create(article=article, daily_id=self.article_id, top=self.top)
 
         if any([self.star, self.comment]):
             logger.debug('star: {}, comment: {}, any: {}'.format(self.star, self.comment,
