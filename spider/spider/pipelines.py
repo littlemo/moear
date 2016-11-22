@@ -32,5 +32,5 @@ class MoEarImagesPipeline(ImagesPipeline):
     def file_path(self, request, response=None, info=None):
         url = super(MoEarImagesPipeline, self).file_path(request, response=response, info=info)
         url = os.path.join(info.spider.persistent_path, 'img', url.split('/')[-1])
-        info.spider.logger.info('保存图片：{}|{}|{}'.format(response, request, url))
+        info.spider.logger.info('保存图片：{} | {} | {}'.format(response, request, url))
         return url
