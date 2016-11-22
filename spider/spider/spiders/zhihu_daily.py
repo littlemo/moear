@@ -3,6 +3,8 @@ import json
 import time
 
 import scrapy
+from spider.items import ArticleItem
+from spider.items import SourceItem
 
 
 class ZhihuDailySpider(scrapy.Spider):
@@ -23,6 +25,9 @@ class ZhihuDailySpider(scrapy.Spider):
     def __init__(self, *a, **kw):
         super(ZhihuDailySpider, self).__init__(*a, **kw)
         self.datetime = None
+        self.source = SourceItem(name=self.name, verbose_name=self.verbose_name,
+                                 description=self.description).save_to_db()
+
     def parse(self, response):
         return self.yield_article_request(response=response)
 
@@ -32,10 +37,6 @@ class ZhihuDailySpider(scrapy.Spider):
         content = json.loads(content_raw, encoding='UTF-8')
         self.logger.debug(content)
 
-
-        self.logger.info('今日文章')
-        for item in content['stories']:
-            self.logger.info(item)
         self.datetime = time.strptime(content['date'], "%Y%m%d")
         self.logger.info('日期：{}'.format(self.datetime))
 
@@ -47,6 +48,18 @@ class ZhihuDailySpider(scrapy.Spider):
                     story['images'] = [item['image']]
                     break
             self.logger.info(item)
+
+        self.logger.info('今日文章')
+        for item in content['stories']:
+            self.logger.debug(item)
+            z = ZhihuItem(daily_id=item['id'], cover_images=item['images'], top=item.get('top', False))
+            a = ArticleItem()
+            a['pub_datetime'] = self.datetime
+            a['title'] = item['title']
+            a['source'] = self.source
+            a['url'] = 'http://daily.zhihu.com/story/{}'.format(item['id'])
+            a['addition_info'] = z
+            self.logger.info(a)
 
 
 class ZhihuItem(scrapy.Item):
