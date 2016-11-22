@@ -5,7 +5,15 @@ import scrapy
 
 
 class ZhihuDailySpider(scrapy.Spider):
+    # 来源名称，唯一，长度<50，用于文章源模型索引创建后不可修改
     name = "zhihu_daily"
+
+    # 显示名称，长度<100，Spider每次运行时更新
+    verbose_name = "知乎日报"
+
+    # 描述信息，长度<255，Spider每次运行时更新
+    description = "每天三次，每次七分钟。在中国，资讯类移动应用的人均阅读时长是 5 分钟，而在知乎日报，这个数字是 21"
+
     allowed_domains = ["zhihu.com"]
     start_urls = (
         'http://news-at.zhihu.com/api/4/news/latest',
