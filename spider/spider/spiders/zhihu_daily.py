@@ -102,7 +102,7 @@ class ZhihuItem(scrapy.Item):
     daily_id = scrapy.Field()  # 日报文章ID
     top = scrapy.Field()  # 热文标志
 
-    def save_to_db_by_article(self, article):
+    def save_to_db_by_article(self, article, spider):
         try:
             zhihu = ZhihuDaily.objects.get(article=article)
             zhihu.daily_id = self.get('daily_id')
