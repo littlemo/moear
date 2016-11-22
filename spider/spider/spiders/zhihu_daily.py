@@ -54,14 +54,32 @@ class ZhihuDailySpider(scrapy.Spider):
         self.logger.info('今日文章')
         for item in content['stories']:
             self.logger.debug(item)
+
+            # 初步填充ArticleItem数据
             z = ZhihuItem(daily_id=item['id'], top=item.get('top', False))
             a = ArticleItem()
             a['pub_datetime'] = self.datetime
-            a['title'] = item['title']
             a['source'] = self.source
-            a['url'] = 'http://daily.zhihu.com/story/{}'.format(item['id'])
             a['addition_info'] = z
             self.logger.info(a)
+
+            request = scrapy.Request('http://news-at.zhihu.com/api/4/news/{}'.format(z['id']),
+                                     callback=self.parse_article)
+            request.meta['item'] = a
+            yield request
+
+    def parse_article(self, response):
+        content = json.loads(response.body.decode(), encoding='UTF-8')
+        a = response.meta['item']
+
+        # 继续填充ArticleItem数据
+        a['title'] = content['title']
+        a['url'] = content['share_url']
+        a['cover_image'] = content.get('image', content.get('images', [None])[0])
+        a['content'] = content['body']
+
+        # TODO 为图片本地化pipeline执行做数据准备
+        yield a
 
 
 class ZhihuItem(scrapy.Item):
