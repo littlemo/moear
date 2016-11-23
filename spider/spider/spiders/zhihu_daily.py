@@ -105,7 +105,7 @@ class ZhihuDailySpider(scrapy.Spider):
 
         # 过滤掉image_urls中的公式url，目前未找到好方法将其转换为图片持久化
         a['image_urls'] = [img for img in a['image_urls'] if 'equation?tex=' not in img]
-        self.logger.info('待处理的图片url: {}'.format(a['image_urls']))
+        self.logger.debug('待处理的图片url: {}'.format(a['image_urls']))
         yield a
 
 

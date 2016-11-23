@@ -38,7 +38,7 @@ class MoEarImagesPipeline(ImagesPipeline):
     def file_path(self, request, response=None, info=None):
         url = super(MoEarImagesPipeline, self).file_path(request, response=response, info=info)
         url = os.path.join(info.spider.persistent_path, 'img', url.split('/')[-1])
-        info.spider.logger.info('保存图片：{} | {} | {}'.format(response, request, url))
+        info.spider.logger.debug('保存图片：{} | {} | {}'.format(response, request, url))
         return url
 
 
@@ -58,7 +58,7 @@ class PagePersistentPipeline(object):
                 if img_src == result['url']:
                     raw_path_list = result['path'].split('/')
                     i['src'] = os.path.join(raw_path_list[-2], raw_path_list[-1])
-                    spider.logger.info('文章({})的正文img保存成功: {}'.format(item['title'], img_src))
+                    spider.logger.debug('文章({})的正文img保存成功: {}'.format(item['title'], img_src))
                     break
         item['content'] = soup.div.prettify(encoding='utf8')
 
