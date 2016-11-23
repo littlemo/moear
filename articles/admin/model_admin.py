@@ -32,3 +32,16 @@ class SourceAdmin(admin.ModelAdmin):
     ]
     list_display = ('name', 'verbose_name', 'author', 'description', 'persistent')
     readonly_fields = ('name', 'verbose_name', 'author', 'description')
+
+
+class ReadRecordAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('阅读记录', {'fields': ['reader', 'article']}),
+        ('打分评论', {'fields': ['star', 'comment']}),
+        ('标签分类', {'fields': ['tags']}),
+    ]
+    list_display = ('reader', 'article', 'star', 'comment', 'fmt_tag_list')
+    list_filter = ('reader', 'tags')
+
+    filter_horizontal = ('tags',)
+    # readonly_fields = ('reader', 'article')
