@@ -10,3 +10,12 @@ class ArticleAdmin(admin.ModelAdmin):
 
     search_fields = ['title']
     date_hierarchy = 'pub_datetime'
+
+
+class ZhihuDailyAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('基础文章', {'fields': ['article']}),
+        ('扩展信息', {'fields': ['daily_id', 'top']}),
+    ]
+    list_display = ('daily_id', 'article', 'top')
+    readonly_fields = ('article',)
