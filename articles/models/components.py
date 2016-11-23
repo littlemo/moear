@@ -31,7 +31,7 @@ class Source(models.Model):
     # TODO V2.1.0 增加爬取时间规则时，在此处增加相应的 `rules` 属性
 
     def __str__(self):
-        return self.name
+        return self.verbose_name
 
     class Meta:
         verbose_name = '文章来源'
