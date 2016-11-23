@@ -19,3 +19,7 @@ class ZhihuDailyAdmin(admin.ModelAdmin):
     ]
     list_display = ('daily_id', 'article', 'top')
     readonly_fields = ('article',)
+
+
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('theme', 'creater')
