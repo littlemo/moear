@@ -65,7 +65,7 @@ class ZhihuDailySpider(scrapy.Spider):
 
         self.logger.info('处理今日文章')
         for item in content['stories']:
-            self.logger.debug(item)
+            self.logger.info(item)
 
             # 从DB中查询该日报文章ID是否已存在，存在则忽略，不存在继续执行后续逻辑
             z = ZhihuItem(daily_id=item['id'], top=item.get('top', False))
