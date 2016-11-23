@@ -23,3 +23,12 @@ class ZhihuDailyAdmin(admin.ModelAdmin):
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ('theme', 'creater')
+
+
+class SourceAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ('组件信息', {'fields': ['name', 'verbose_name', 'author', 'description']}),
+        ('配置信息', {'fields': ['persistent']}),
+    ]
+    list_display = ('name', 'verbose_name', 'author', 'description', 'persistent')
+    readonly_fields = ('name', 'verbose_name', 'author', 'description')
