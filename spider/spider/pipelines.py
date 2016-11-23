@@ -84,8 +84,10 @@ class PagePersistentPipeline(object):
         with open(page_store, 'wb') as f:
             f.write(item['content'])
 
-        # 清空content值，为优化log打印信息
-        item['content'] = None
+        # 为优化log打印信息，清空不需要保存到DB的字段
+        del item['content']
+        del item['image_urls']
+        del item['images']
         return item
 
 
