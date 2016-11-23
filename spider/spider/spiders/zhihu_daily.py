@@ -27,6 +27,7 @@ class ZhihuDailySpider(scrapy.Spider):
     allowed_domains = ["zhihu.com"]
     start_urls = (
         'http://news-at.zhihu.com/api/4/news/latest',
+        # 'http://news.at.zhihu.com/api/4/news/before/20160720',
     )
 
     def __init__(self, *a, **kw):
