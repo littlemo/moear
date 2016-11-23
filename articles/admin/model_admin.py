@@ -25,7 +25,7 @@ class ZhihuDailyAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('theme', 'creater')
+    list_display = ('theme', 'creator')
     search_fields = ['theme']
 
 

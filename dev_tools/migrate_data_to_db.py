@@ -84,7 +84,7 @@ class ItemFormatter(object):
                 try:
                     t = Tag.objects.get(theme=tag)
                 except models.ObjectDoesNotExist:
-                    t = Tag.objects.create(theme=tag, creater=user)
+                    t = Tag.objects.create(theme=tag, creator=user)
                 tag_list.append(t)
 
         url = 'http://daily.zhihu.com/story/{}'.format(self.article_id)

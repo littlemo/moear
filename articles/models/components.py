@@ -8,7 +8,7 @@ class Tag(models.Model):
     文章标签，用户给已阅文章增加的分类标签
     """
     theme = models.CharField(verbose_name='主题', max_length=50, unique=True)
-    creater = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='创建人')
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='创建人')
 
     def __str__(self):
         return self.theme
