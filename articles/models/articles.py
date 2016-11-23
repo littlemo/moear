@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 
 from .components import Source
 
@@ -14,6 +15,16 @@ class Article(models.Model):
     url_local = models.CharField(verbose_name='本地URL', unique=True, null=True, default=None, max_length=255)
     cover_image = models.CharField(verbose_name='封面图片', null=True, default=None, max_length=255)
     cover_image_local = models.CharField(verbose_name='封面图片本地', null=True, default=None, max_length=255)
+
+    def fmt_url_info(self):
+        display = '<a href="{}" target="_blank">原文</a>'.format(self.url)
+        display += '(<a href="/articles/{}" target="_blank">本地</a>)'.format(self.url_local)
+        display += ' |'
+        # display += ' <a href="{}" target="_blank">封面</a>'.format(self.cover_image)
+        display += ' <a href="/articles/{}" target="_blank">封面</a>'.format(self.cover_image_local)
+        return format_html(display)
+
+    fmt_url_info.short_description = '链接信息'
 
     class Meta:
         verbose_name = '文章信息'
