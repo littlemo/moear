@@ -149,7 +149,7 @@ class ZhihuItem(scrapy.Item):
     def exists(self, spider):
         try:
             zhihu = ZhihuDaily.objects.get(daily_id=self.get('daily_id'))
-            spider.logger.info('测试文章是否存在: {}'.format(self.get('daily_id')))
+            spider.logger.debug('测试文章是否存在: {}'.format(self.get('daily_id')))
             return True
         except models.ObjectDoesNotExist:
             return False
