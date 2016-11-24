@@ -40,4 +40,5 @@ def article_view(request, url_local):
     with open(content_path, 'r') as f:
         content = f.read()
     return render(request, 'articles/article.html',
-                  {'article': article, 'cover_image': cover_image, 'content': format_html(content)})
+                  {'article': article, 'cover_image': cover_image,
+                   'content': format_html(content.replace('{', '[').replace('}', ']'))})
