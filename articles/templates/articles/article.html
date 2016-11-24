@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ article.title }}</title>
-    <link rel="stylesheet" href="http://daily.zhihu.com/css/share.css?v=5956a">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'articles/css/share.css' %}">
     <style>
         .global-header .main-wrap a {
             text-decoration: none;
