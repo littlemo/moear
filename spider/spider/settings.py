@@ -106,7 +106,7 @@ AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # 爬取数据持久化的基路径
-PERSISTENT_STORE_BASE = 'data'
+PERSISTENT_STORE_BASE = 'data/spider'
 
 # 图片pipeline的存储路径
 IMAGES_STORE = os.path.join(BASE_DIR, PERSISTENT_STORE_BASE)
