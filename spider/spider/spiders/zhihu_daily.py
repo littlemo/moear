@@ -97,6 +97,12 @@ class ZhihuDailySpider(scrapy.Spider):
             a['source'] = self.source
             a['addition_info'] = z
 
+            # 若对应文章的ZhihuDaily已存在于DB且相应协议中无'top_stories'字段，
+            # 则删除item中的addition_info字段，即不更新该存在的记录
+            if 'top_stories' not in content and z.exists(spider=self):
+                self.logger.warn("附加信息已存在于DB且当前响应中无相关字段，丢弃item['addition_info']")
+                del a['addition_info']
+
             url = 'http://news-at.zhihu.com/api/4/news/{}'.format(z['daily_id'])
             request = scrapy.Request(url, callback=self.parse_article)
             request.meta['item'] = a
