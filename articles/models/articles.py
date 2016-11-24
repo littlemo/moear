@@ -27,7 +27,7 @@ class Article(models.Model):
     fmt_url_info.short_description = '链接信息'
 
     def __str__(self):
-        return '{}'.format(self.title)
+        return '<{}>{}'.format(self.pub_datetime, self.title)
 
     class Meta:
         verbose_name = '文章信息'

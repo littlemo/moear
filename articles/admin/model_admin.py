@@ -20,7 +20,7 @@ class ZhihuDailyAdmin(admin.ModelAdmin):
     list_display = ('daily_id', 'article', 'top')
     readonly_fields = ('article',)
 
-    search_fields = ['article__title']
+    search_fields = ['article__title', 'article__pub_datetime']
     list_filter = ['top']
 
 
