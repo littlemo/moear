@@ -19,9 +19,9 @@ class Article(models.Model):
     def fmt_url_info(self):
         display = '<a href="{}" target="_blank">原文</a>'.format(self.url)
         display += '(<a href="/articles/{}" target="_blank">本地</a>)'.format(self.url_local)
-        display += ' |'
+        # display += ' |'
         # display += ' <a href="{}" target="_blank">封面</a>'.format(self.cover_image)
-        display += ' <a href="/articles/{}" target="_blank">封面</a>'.format(self.cover_image_local)
+        # display += ' <a href="/articles/{}" target="_blank">封面</a>'.format(self.cover_image_local)
         return format_html(display)
 
     fmt_url_info.short_description = '链接信息'
