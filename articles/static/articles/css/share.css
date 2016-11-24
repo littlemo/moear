@@ -181,7 +181,7 @@ table {
 .sprite-ico-Arrow_Right2x,
 .sprite-ico-News_Arrow2x,
 .sprite-ico-Dark_News_Arrow2x {
-    background-image: url('/img/share-icons.png');
+    background-image: url('/static/img/share-icons.png');
     background-repeat: no-repeat;
     display: inline-block;
     vertical-align: middle;
@@ -230,7 +230,7 @@ table {
     .sprite-ico-Arrow_Right2x,
     .sprite-ico-News_Arrow2x,
     .sprite-ico-Dark_News_Arrow2x {
-        background-image: url('/img/share-icons@2x.png');
+        background-image: url('/static/img/share-icons@2x.png');
         -webkit-background-size: 82px 55px;
         -moz-background-size: 82px 55px;
         background-size: 82px 55px;
@@ -267,7 +267,7 @@ ul, ol {
 .web-logo {
     width: 126px;
     height: 42px;
-    background-image: url('/img/Web_Logo.png');
+    background-image: url('/static/img/Web_Logo.png');
     background-repeat: no-repeat;
     display: inline-block;
     vertical-align: middle;
@@ -319,7 +319,7 @@ ul, ol {
     width: 21px;
     height: 21px;
     padding: 19px 12px 20px;
-    background-image: url(/img/download_banner/close.png);
+    background-image: url(/static/img/download_banner/close.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 21px;
@@ -334,7 +334,7 @@ ul, ol {
     width: 41px;
     height: 41px;
     margin: auto;
-    background-image: url(/img/download_banner/app-icon.png);
+    background-image: url(/static/img/download_banner/app-icon.png);
     background-position: center;
     background-size: 41px;
 }
@@ -717,7 +717,7 @@ html.no-touch .footer a:hover {
 }
 
 .icon-arrow-right {
-    background-image: url('/img/share-icons.png');
+    background-image: url('/static/img/share-icons.png');
     background-repeat: no-repeat;
     display: inline-block;
     vertical-align: middle;
@@ -1171,21 +1171,21 @@ html.no-touch .footer a:hover {
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 200 / 100), only screen and (min-device-pixel-ratio: 2) {
     .icon-arrow-right {
-        background-image: url('/img/share-icons@2x.png') !important;
+        background-image: url('/static/img/share-icons@2x.png') !important;
         -webkit-background-size: 82px 55px;
         -moz-background-size: 82px 55px;
         background-size: 82px 55px;
     }
 
     .star {
-        background-image: url('/img/star@2x.png');
+        background-image: url('/static/img/star@2x.png');
         -webkit-background-size: 9px 9px;
         -moz-background-size: 9px 9px;
         background-size: 9px 9px;
     }
 
     .web-logo {
-        background-image: url('/img/Web_Logo@2x.png') !important;
+        background-image: url('/static/img/Web_Logo@2x.png') !important;
         -webkit-background-size: 126px 42px;
         -moz-background-size: 126px 42px;
         background-size: 126px 42px;
