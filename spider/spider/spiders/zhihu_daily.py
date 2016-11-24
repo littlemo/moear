@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import json
 import time
 
@@ -25,13 +26,29 @@ class ZhihuDailySpider(scrapy.Spider):
     description = "每天三次，每次七分钟。在中国，资讯类移动应用的人均阅读时长是 5 分钟，而在知乎日报，这个数字是 21"
 
     allowed_domains = ["zhihu.com"]
-    start_urls = (
-        'http://news-at.zhihu.com/api/4/news/latest',
-        # 'http://news.at.zhihu.com/api/4/news/before/20160720',
-    )
 
-    def __init__(self, *a, **kw):
+    def __init__(self, date=None, force='', *a, **kw):
+        """
+        知乎日报爬虫类，用于爬取&解析知乎日报页面&相关协议
+        :param date: 爬取日期，命令行参数，默认为空，即爬取当日最新，内容格式：yyyymmdd
+        :param force: 是否强制更新，即待抓取文章已存在于DB，是否强制更新DB&持久化数据，可选值：True/False，默认为False
+        """
         super(ZhihuDailySpider, self).__init__(*a, **kw)
+
+        try:
+            # 此处由于知乎日报的协议为爬取指定日期的前一天，故需要将Spider接受的date日期+1天作为爬取参数
+            if date is not None:
+                spider_date = datetime.datetime.strptime(date, '%Y%m%d')
+                spider_date += datetime.timedelta(days=1)
+                spider_date_str = spider_date.strftime('%Y%m%d')
+                self.logger.info('格式化后的知乎爬取日期参数：{}'.format(spider_date_str))
+                self.start_urls = ['http://news.at.zhihu.com/api/4/news/before/{}'.format(spider_date_str)]
+            else:
+                self.start_urls = ['http://news-at.zhihu.com/api/4/news/latest']
+        except ValueError:
+            self.logger.error('指定的爬取日期错误(yyymmdd)：{}'.format(date))
+        self.force = True if force.lower() == 'true' else False
+        self.logger.info('指定爬取参数：date={}, force={}'.format(date, self.force))
 
         # 此参数为当前Spider爬取数据持久化时的指定子路径，
         # 需在item流入pipeline前设置，格式采用：`spider.name`/`yyyy-mm-dd`，如：zhihu_daily/2016-11-22
@@ -70,8 +87,8 @@ class ZhihuDailySpider(scrapy.Spider):
 
             # 从DB中查询该日报文章ID是否已存在，存在则忽略，不存在继续执行后续逻辑
             z = ZhihuItem(daily_id=item['id'], top=item.get('top', False))
-            if z.exists(spider=self):
-                self.logger.warn('该文章已存在于DB，丢弃：《{}》'.format(item['title']))
+            if not self.force and z.exists(spider=self):
+                self.logger.warn('该文章已存在于DB，丢弃任务：《{}》'.format(item['title']))
                 continue
 
             # 初步填充ArticleItem数据
