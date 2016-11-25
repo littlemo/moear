@@ -129,3 +129,37 @@ else:
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
     ]
+
+# Logging Settings
+# https://docs.djangoproject.com/en/1.10/topics/logging/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(name)s:%(lineno)d][%(levelname)s] %(message)s'
+        },
+        'simple': {
+            'format': '[%(levelname)s] %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'articles': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
