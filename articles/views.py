@@ -36,7 +36,7 @@ def article_view(request, url_local):
     cover_image = '/'.join(article.cover_image_local.split('/')[-2:])
 
     content_path = os.path.join(PAGE_STORE, article.url_local)
-    logger.info('文章本地路径：{}'.format(content_path))
+    logger.debug('文章本地路径：{}'.format(content_path))
     with open(content_path, 'r') as f:
         content = f.read()
     return render(request, 'articles/article.html',
