@@ -27,6 +27,9 @@ class ZhihuDailySpider(scrapy.Spider):
 
     allowed_domains = ["zhihu.com"]
 
+    # TODO 增加一个初始化参数，即该参数为True，进行文章源Source的插入&未来的安装流程，不执行爬取操作
+    # 后续设计文章源插件系统时，可对Spider类增加install&remove方法，分别对应安装和卸载操作，由Django通过命令行负责调用执行
+    # install&remove方法描述该插件包的装配信息，用于Django进行相应的安装卸载操作
     def __init__(self, date=None, force='', *a, **kw):
         """
         知乎日报爬虫类，用于爬取&解析知乎日报页面&相关协议
