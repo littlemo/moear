@@ -20,6 +20,7 @@ class ZhihuDailyAdmin(admin.ModelAdmin):
     list_display = ('daily_id', 'article', 'top')
     readonly_fields = ('article',)
 
+    # FIXME 此处通过article__pub_datetime的搜索会存在时区Bug，即搜索时需使用0时区而非本地时区才能搜索到
     search_fields = ['article__title', 'article__pub_datetime']
     list_filter = ['top']
 
