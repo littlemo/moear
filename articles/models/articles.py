@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.html import format_html
 
 from .components import Source
@@ -27,7 +28,9 @@ class Article(models.Model):
     fmt_url_info.short_description = '链接信息'
 
     def __str__(self):
-        return '<{}>{}'.format(self.pub_datetime, self.title)
+        tz = timezone.get_current_timezone()
+        return '<{}>{}'.format(timezone.datetime.fromtimestamp(
+            self.pub_datetime.timestamp(), tz=tz).strftime('%Y-%m-%d'), self.title)
 
     class Meta:
         verbose_name = '文章信息'
