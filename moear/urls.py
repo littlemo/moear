@@ -17,10 +17,9 @@ from django.conf.urls import include
 from django.conf.urls import url
 from django.contrib import admin
 
-from articles import views
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
+    url(r'^$', include('index.urls')),
     url(r'^articles/', include('articles.urls')),
     url(r'^admin/', admin.site.urls),
 ]

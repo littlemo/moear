@@ -2,7 +2,6 @@ import logging
 import os
 
 from django.http import FileResponse
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.utils.html import format_html
@@ -11,10 +10,6 @@ from spider.spider.settings import PAGE_STORE, IMAGES_STORE
 from .models import Article
 
 logger = logging.getLogger(__name__)
-
-
-def home(request):
-    return HttpResponseRedirect('/admin')
 
 
 def article_view(request, url_local):
