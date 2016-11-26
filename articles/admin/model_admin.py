@@ -7,6 +7,7 @@ class ArticleAdmin(admin.ModelAdmin):
         ('链接信息', {'fields': ['url', 'url_local', 'cover_image', 'cover_image_local']}),
     ]
     list_display = ('pub_datetime', 'source', 'title', 'fmt_url_info')
+    list_filter = ('pub_datetime',)
 
     search_fields = ['title']
     date_hierarchy = 'pub_datetime'
