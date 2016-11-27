@@ -44,7 +44,8 @@
         <div id="navbar" class="navbar-collapse collapse">
             <div class="navbar-right">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-success navbar-btn btn-md" data-toggle="modal" data-target="#LoginModal">
+                <button type="button" class="btn btn-success navbar-btn btn-md" data-toggle="modal"
+                        data-target="#LoginModal">
                     登录
                 </button>
             </div>
@@ -86,8 +87,14 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-signin" role="form">
-                        <input type="text" class="form-control" placeholder="用户名" required="" autofocus="">
-                        <input type="password" class="form-control" placeholder="密码" required="">
+                        <div class="input-group">
+                            <span class="input-group-addon glyphicon glyphicon-user"></span>
+                            <input type="text" class="form-control" placeholder="用户名" required="" autofocus="">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon glyphicon glyphicon-lock"></span>
+                            <input type="password" class="form-control" placeholder="密码" required="">
+                        </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" value="remember-me"> 记住我
