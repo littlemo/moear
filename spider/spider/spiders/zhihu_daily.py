@@ -140,14 +140,9 @@ class ZhihuItem(scrapy.Item):
     top = scrapy.Field()  # 热文标志
 
     def save_to_db_by_article(self, article, spider):
-        try:
-            zhihu = ZhihuDaily.objects.get(article=article)
-            zhihu.daily_id = self.get('daily_id')
-            zhihu.top = self.get('top')
-            zhihu.save()
-        except models.ObjectDoesNotExist:
-            zhihu = ZhihuDaily.objects.create(article=article, daily_id=self.get('daily_id'),
-                                              top=self.get('top'))
+        zhihu, created = ZhihuDaily.objects.update_or_create(article=article,
+                                                             defaults={'daily_id': self.get('daily_id'),
+                                                                       'top': self.get('top')})
 
     def exists(self, spider):
         try:

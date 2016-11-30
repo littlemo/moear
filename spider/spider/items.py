@@ -7,7 +7,6 @@
 import time
 
 import scrapy
-from django.db import models
 from django.utils import timezone
 
 from articles.models import Article
@@ -34,20 +33,14 @@ class ArticleItem(scrapy.Item):
     def save_to_db(self, spider):
         pub_datetime = timezone.datetime.fromtimestamp(time.mktime(self.get('pub_datetime')),
                                                        tz=timezone.get_current_timezone())
-        try:
-            article = Article.objects.get(url=self.get('url'))
-            article.pub_datetime = pub_datetime
-            article.title = self.get('title')
-            article.source = self.get('source')
-            article.url_local = self.get('url_local')
-            article.cover_image = self.get('cover_image')
-            article.cover_image_local = self.get('cover_image_local')
-            article.save()
-        except models.ObjectDoesNotExist:
-            article = Article.objects.create(pub_datetime=pub_datetime, title=self.get('title'),
-                                             source=self.get('source'), url=self.get('url'),
-                                             url_local=self.get('url_local'), cover_image=self.get('cover_image'),
-                                             cover_image_local=self.get('cover_image_local'))
+        article, created = Article.objects.update_or_create(url=self.get('url'),
+                                                            defaults={'pub_datetime': pub_datetime,
+                                                                      'title': self.get('title'),
+                                                                      'source': self.get('source'),
+                                                                      'url_local': self.get('url_local'),
+                                                                      'cover_image': self.get('cover_image'),
+                                                                      'cover_image_local': self.get(
+                                                                          'cover_image_local')})
 
         try:
             if any([self.get('addition_info')]):
@@ -66,14 +59,8 @@ class SourceItem(scrapy.Item):
     description = scrapy.Field()  # 描述信息，长度<255
 
     def save_to_db(self):
-        try:
-            src = Source.objects.get(name=self.get('name'))
-            src.author = self.get('author', None)
-            src.verbose_name = self.get('verbose_name')
-            src.description = self.get('description', None)
-            src.save()
-        except models.ObjectDoesNotExist:
-            src = Source.object.create(name=self.get('name'), author=self.get('author', None),
-                                       verbose_name=self.get('verbose_name'),
-                                       description=self.get('description', None))
+        src, created = Source.objects.update_or_create(name=self.get('name'),
+                                                       defaults={'author': self.get('author', None),
+                                                                 'verbose_name': self.get('verbose_name'),
+                                                                 'description': self.get('description', None)})
         return src
