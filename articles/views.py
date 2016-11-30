@@ -28,7 +28,7 @@ def article_view(request, url_local):
 
     # 处理文章页中的页面本体
     article = get_object_or_404(Article, url_local__contains=url_local)
-    cover_image = '/'.join(article.cover_image_local.split('/')[-2:])
+    cover_image = '/'.join(article.cover_image_local.split('/')[-2:]) if any([article.cover_image_local]) else ''
 
     content_path = os.path.join(PAGE_STORE, article.url_local)
     logger.debug('文章本地路径：{}'.format(content_path))
