@@ -34,3 +34,4 @@ class ReadRecord(models.Model):
     class Meta:
         verbose_name = '阅读记录'
         verbose_name_plural = verbose_name
+        unique_together = ('reader', 'article')

@@ -16,3 +16,4 @@ class SubscribeInfo(models.Model):
     class Meta:
         verbose_name = '订阅信息'
         verbose_name_plural = verbose_name
+        unique_together = ('user', 'source')
