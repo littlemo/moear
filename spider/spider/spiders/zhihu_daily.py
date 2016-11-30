@@ -84,7 +84,7 @@ class ZhihuDailySpider(scrapy.Spider):
                         break
                 self.logger.debug(item)
 
-        self.logger.info('处理今日文章')
+        self.logger.info('处理今日文章，共{:>2}篇'.format(len(content['stories'])))
         for item in content['stories']:
             self.logger.info(item)
 
