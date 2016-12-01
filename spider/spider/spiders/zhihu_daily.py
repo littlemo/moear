@@ -115,11 +115,19 @@ class ZhihuDailySpider(scrapy.Spider):
         content = json.loads(response.body.decode(), encoding='UTF-8')
         a = response.meta['item']
 
+        a['url'] = content.get('share_url', '')
+        a['title'] = content.get('title', '')
+        if not any([a['title']]):
+            self.logger.warn('遇到标题为空的文章 - {}'.format(a['url']))
+
+        # 单独处理type字段为1的情况，即该文章为站外转发文章
+        if content.get('type') == 1:
+            self.logger.warn('遇到站外文章，单独处理 - {}'.format(a['title']))
+            return a
+
         # 继续填充ArticleItem数据
-        a['title'] = content['title']
-        a['url'] = content['share_url']
         a['cover_image'] = content.get('image', content.get('images', [None])[0])
-        a['content'] = content['body']
+        a['content'] = content.get('body', '')
         self.logger.debug(a)
 
         # 为图片持久化pipeline执行做数据准备
