@@ -35,8 +35,13 @@ if date_begin > date_end:
     print('Error: 起始日期晚于结束日期！')
     sys.exit(1)
 
+log_file = ' --logfile {}.log'.format(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                 'log', datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')))
+
 while date_current < date_end:
-    result = os.popen('scrapy crawl zhihu_daily -a date={} -a force=True'.format(date_current.strftime(formater)))
+    result = os.popen('scrapy crawl zhihu_daily -a date={} -a force=True{}'
+                      .format(date_current.strftime(formater), log_file))
     for line in result:
         print(line)
     date_current += datetime.timedelta(days=1)
