@@ -10,6 +10,7 @@ from spider.items import ArticleItem
 from spider.items import SourceItem
 
 from articles.models import ZhihuDaily
+# TODO 实现爬取指定文章URL命令参数，知乎脚本需单独实现传入URL到真实爬取URL的转换
 
 
 class ZhihuDailySpider(scrapy.Spider):
