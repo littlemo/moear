@@ -25,7 +25,7 @@ SECRET_KEY = '7_%wji=lxr3)@1r17t$!@7z%q$kk7_sxb&i#tiadby^5la%tua'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ear.mojia.date', 'localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
