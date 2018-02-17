@@ -78,3 +78,30 @@ class Post(models.Model):
     class Meta:
         verbose_name = _('文章数据')
         verbose_name_plural = verbose_name
+
+
+class PostMeta(models.Model):
+    """
+    文章元数据模型
+
+    用于存储指定文章的元数据信息，便于插件&爬虫实现扩展功能
+    """
+    id = models.BigAutoField(
+        primary_key=True)
+    post = models.ForeignKey(
+        'Post',
+        verbose_name=_('文章数据'),
+        db_index=True,
+        on_delete=models.CASCADE)
+    key = models.CharField(
+        verbose_name=_('键名'),
+        db_index=True,
+        blank=True,
+        null=True,
+        default=None,
+        max_length=255)
+    value = models.TextField(
+        verbose_name=_('键名'),
+        blank=True,
+        null=True,
+        default=None)
