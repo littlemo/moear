@@ -27,6 +27,7 @@ SECRET_KEY = os.environ.get(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'true').lower() == 'true'
+PRODUCTION = os.environ.get('PRODUCTION', 'false').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get(
     'ALLOWED_HOSTS',
