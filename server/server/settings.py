@@ -193,6 +193,17 @@ LOGGING = {
             'filename': os.path.join(LOGS_ROOT, "middleware.log"),
             'formatter': 'standard',
         },
+        'db': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, "db.log"),
+            'formatter': 'standard',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+        },
         'restapi': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -204,41 +215,6 @@ LOGGING = {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(LOGS_ROOT, "pages.log"),
             'formatter': 'standard',
-        },
-        'db': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, "db.log"),
-            'formatter': 'standard',
-        },
-        'views': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, "views.log"),
-            'formatter': 'standard',
-        },
-        'serializers': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, "serializers.log"),
-            'formatter': 'standard',
-        },
-        'forms': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, "forms.log"),
-            'formatter': 'standard',
-        },
-        'models': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, "models.log"),
-            'formatter': 'standard',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler',
         },
         'console': {
             'level': ('INFO', 'DEBUG')[DEBUG],
@@ -274,18 +250,13 @@ LOGGING = {
         },
 
         # 应用中的模型日志
-        'articles': {
-            'handlers': ['node', 'console'],
+        'restapi': {
+            'handlers': ['restapi', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
         'pages': {
             'handlers': ['pages', 'console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'restapi': {
-            'handlers': ['restapi', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
