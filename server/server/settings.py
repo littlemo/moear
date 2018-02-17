@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # 当前项目实现
     'index.apps.IndexConfig',
     'articles.apps.ArticlesConfig',
+    'posts.apps.PostsConfig',
 ]
 
 MIDDLEWARE = [
