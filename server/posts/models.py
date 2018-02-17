@@ -101,7 +101,7 @@ class PostMeta(models.Model):
         default=None,
         max_length=255)
     value = models.TextField(
-        verbose_name=_('键名'),
+        verbose_name=_('键值'),
         blank=True,
         null=True,
         default=None)
