@@ -21,12 +21,16 @@ RUNTIME_DIR = os.path.join(BASE_DIR, '..', 'runtime')
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7_%wji=lxr3)@1r17t$!@7z%q$kk7_sxb&i#tiadby^5la%tua'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY',
+    '7_%wji=lxr3)@1r17t$!@7z%q$kk7_sxb&i#tiadby^5la%tua')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'true').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS',
+    'localhost,127.0.0.1').split(',')
 
 
 # Application definition
