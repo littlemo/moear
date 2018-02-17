@@ -25,9 +25,9 @@ class Post(models.Model):
         blank=True,
         default='',
         max_length=255)
-    source = models.ForeignKey(
-        'Source',
-        verbose_name=_('文章源'),
+    spider = models.ForeignKey(
+        'spiders.Spider',
+        verbose_name=_('爬虫信息'),
         db_index=True,
         blank=True,
         null=True,
