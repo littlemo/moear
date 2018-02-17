@@ -219,7 +219,7 @@ LOGGING = {
         'posts': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_ROOT, "app", "posts.log"),
+            'filename': os.path.join(LOGS_ROOT, "posts.log"),
             'formatter': 'standard',
         },
         'console': {
