@@ -105,3 +105,14 @@ class PostMeta(models.Model):
         blank=True,
         null=True,
         default=None)
+
+    def __str__(self):
+        output = '[{id}]{key} => {value}'.format(
+            id=self.id,
+            key=self.key,
+            value=self.value)
+        return output
+
+    class Meta:
+        verbose_name = _('文章元数据')
+        verbose_name_plural = verbose_name
