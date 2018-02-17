@@ -11,7 +11,7 @@ class Article(models.Model):
     """
     pub_datetime = models.DateTimeField(verbose_name='发布时间')
     title = models.CharField(verbose_name='标题', max_length=255)
-    source = models.ForeignKey(Source, verbose_name='来源')
+    source = models.ForeignKey(Source, verbose_name='来源', on_delete=models.SET_NULL)
     url = models.CharField(verbose_name='原文URL', unique=True, max_length=255)
     url_local = models.CharField(verbose_name='本地URL', unique=True, null=True, default=None, max_length=255)
     cover_image = models.CharField(verbose_name='封面图片', null=True, default=None, max_length=255)
