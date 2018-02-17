@@ -28,6 +28,7 @@ class Post(models.Model):
     source = models.ForeignKey(
         'Source',
         verbose_name=_('文章源'),
+        db_index=True,
         blank=True,
         null=True,
         default=None,
