@@ -136,6 +136,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 
 
+# Django Admin
+DJANGO_ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL', 'admin')
+
+
 # Logging Settings
 # https://docs.djangoproject.com/en/2.0/topics/logging/
 LOGGING = {
