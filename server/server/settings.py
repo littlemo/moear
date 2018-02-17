@@ -216,6 +216,12 @@ LOGGING = {
             'filename': os.path.join(LOGS_ROOT, "pages.log"),
             'formatter': 'standard',
         },
+        'posts': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, "app", "posts.log"),
+            'formatter': 'standard',
+        },
         'console': {
             'level': ('INFO', 'DEBUG')[DEBUG],
             'class': 'logging.StreamHandler',
@@ -257,6 +263,11 @@ LOGGING = {
         },
         'pages': {
             'handlers': ['pages', 'console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'posts': {
+            'handlers': ['posts', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
