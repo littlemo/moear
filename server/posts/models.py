@@ -32,6 +32,10 @@ class Post(models.Model):
         null=True,
         default=None,
         on_delete=models.SET_NULL)
+    origin_url = models.CharField(
+        verbose_name='原文地址',
+        unique=True,
+        max_length=255)
     date = models.DateTimeField(
         verbose_name=_('发布时间'),
         db_index=True,
