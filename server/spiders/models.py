@@ -40,3 +40,41 @@ class Spider(models.Model):
     class Meta:
         verbose_name = _('爬虫信息')
         verbose_name_plural = verbose_name
+
+
+class SpiderMeta(models.Model):
+    """
+    爬虫元数据模型
+
+    用于存储指定爬虫的元数据信息，便于对该爬虫进行参数定制修改（需爬虫自身支持）
+    """
+    id = models.BigAutoField(
+        primary_key=True)
+    spider = models.ForeignKey(
+        'Spider',
+        verbose_name=_('爬虫信息'),
+        db_index=True,
+        on_delete=models.CASCADE)
+    key = models.CharField(
+        verbose_name=_('键名'),
+        db_index=True,
+        blank=True,
+        null=True,
+        default=None,
+        max_length=255)
+    value = models.TextField(
+        verbose_name=_('键值'),
+        blank=True,
+        null=True,
+        default=None)
+
+    def __str__(self):
+        output = '[{id}]{key} => {value}'.format(
+            id=self.id,
+            key=self.key,
+            value=self.value)
+        return output
+
+    class Meta:
+        verbose_name = _('爬虫元数据')
+        verbose_name_plural = verbose_name
