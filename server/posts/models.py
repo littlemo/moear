@@ -12,10 +12,10 @@ class Post(models.Model):
         ('publish', _('发布')),
         ('private', _('私有')),
     )
-    COMMENT_STATUS_CHOICES = (
-        ('open', _('开启')),
-        ('closed', _('关闭')),
-    )
+    # COMMENT_STATUS_CHOICES = (
+    #     ('open', _('开启')),
+    #     ('closed', _('关闭')),
+    # )
 
     id = models.BigAutoField(
         db_index=True,
@@ -57,17 +57,17 @@ class Post(models.Model):
         default='publish',
         choices=STATUS_CHOICES,
         max_length=20)
-    comment_status = models.CharField(
-        verbose_name=_('评论状态'),
-        default='open',
-        choices=COMMENT_STATUS_CHOICES,
-        max_length=20)
+    # comment_status = models.CharField(
+    #     verbose_name=_('评论状态'),
+    #     default='open',
+    #     choices=COMMENT_STATUS_CHOICES,
+    #     max_length=20)
     modified = models.DateTimeField(
         verbose_name=_('修改时间'),
         auto_now=True)
-    comment_count = models.BigIntegerField(
-        verbose_name=_('评论总数'),
-        default=0)
+    # comment_count = models.BigIntegerField(
+    #     verbose_name=_('评论总数'),
+    #     default=0)
 
     def __str__(self):
         output = '[{source}]{title}'.format(
