@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'spiders.apps.SpidersConfig',
     'core.apps.CoreConfig',
+    'terms.apps.TermsConfig',
 ]
 
 MIDDLEWARE = [
