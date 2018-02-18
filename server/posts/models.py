@@ -116,3 +116,60 @@ class PostMeta(models.Model):
     class Meta:
         verbose_name = _('文章元数据')
         verbose_name_plural = verbose_name
+
+
+class ReadRecord(models.Model):
+    """
+    阅读记录数据模型
+
+    用于保存指定用户对阅读后的文章的打分、读后感等基础信息
+    """
+    STAR_CHOICES = (
+        (0, '-'),
+        (1, '★'),
+        (2, '★★'),
+        (3, '★★★'),
+        (4, '★★★★'),
+        (5, '★★★★★'))
+
+    id = models.BigAutoField(
+        primary_key=True)
+    post = models.ForeignKey(
+        'Post',
+        verbose_name=_('文章数据'),
+        db_index=True,
+        blank=True,
+        null=True,
+        default=None,
+        on_delete=models.SET_NULL)
+    user = models.ForeignKey(
+        'auth.User',
+        verbose_name=_('用户'),
+        db_index=True,
+        blank=True,
+        null=True,
+        default=None,
+        on_delete=models.SET_NULL)
+    star = models.SmallIntegerField(
+        verbose_name=_('评级'),
+        default=0,
+        choices=STAR_CHOICES)
+    comment = models.TextField(
+        verbose_name=_('读后感'),
+        blank=True,
+        null=True,
+        default=None)
+
+    def __str__(self):
+        post_title = self.post and self.post.get('title', None)
+        output = '[{id}][{user}][{post_title}] => {star}'.format(
+            id=self.id,
+            user=self.user,
+            post_title=post_title,
+            star=self.star)
+        return output
+
+    class Meta:
+        verbose_name = _('阅读记录')
+        verbose_name_plural = verbose_name
+        unique_together = ('post', 'user')
