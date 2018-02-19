@@ -23,6 +23,7 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from articles.models import *
+from terms import models as terms_models
 
 # 初始化logger
 logger_format = '%(asctime)s [%(name)s][%(filename)s:%(lineno)d]' \
@@ -38,11 +39,32 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 METADATA_RE = re.compile(r'^\(.*\);|,$')
 
 
-# 条目数据迭代生成
-def yield_item_data(sql_file_path):
-    sql = os.path.abspath(sql_file_path)
-    logger.info('sql文件路径: {}'.format(sql))
+def migrate_tags_data():
+    """
+    将原article应用中的Tag模型数据迁移到Terms应用中的term&taxonomy模型中
+    """
+    tags = Tag.objects.all()
+    cnt_term = 0
+    cnt_taxonomy = 0
+    for tag in tags:
+        logger.info('[处理]标签 => {}'.format(tag.theme))
+        term, created = terms_models.Term.objects.get_or_create(
+            name=tag.theme,
+            slug=tag.theme)
+        if created:
+            term.save()
+            cnt_term += 1
+        taxonomy, created = terms_models.Taxonomy.objects.get_or_create(
+            term=term,
+            taxonomy_type='post_tag')
+        if created:
+            taxonomy.save()
+            cnt_taxonomy += 1
+    logger.info('共处理标签条目：{}, 分类条目：{}'.format(cnt_term, cnt_taxonomy))
 
+
+# 条目数据迭代生成
+def yield_item_data(page_html_store_path):
     # 验证传入路径文件是否存在
     if not os.path.exists(sql):
         return None
@@ -155,3 +177,4 @@ for item in yield_item_data(sql_path):
     cnt_item += 1
     item_formatter = ItemFormatter(item).save_to_db()
     logger.info('迁移文章数据：[{:5d}]{}'.format(cnt_item, item_formatter.title))
+migrate_tags_data()
