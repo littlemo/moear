@@ -62,10 +62,9 @@ class Taxonomy(models.Model):
         verbose_name=_('文章数统计'))
 
     def __str__(self):
-        term_name = self.term and self.term.get('name', None)
         output = '[{id}]{term_name} => {description}'.format(
             id=self.id,
-            term_name=term_name,
+            term_name=self.term.name,
             description=self.description)
         return output
 
