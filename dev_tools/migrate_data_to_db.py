@@ -10,9 +10,12 @@ import sys
 # 准备Django环境
 from django.core.wsgi import get_wsgi_application
 
-DJANGO_PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DJANGO_PROJECT_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    'server')
+print(DJANGO_PROJECT_PATH)
 sys.path.append(DJANGO_PROJECT_PATH)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "moear.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "server.settings")
 application = get_wsgi_application()
 
 # 导入Django工程相关模块
@@ -22,8 +25,11 @@ from django.contrib.auth.models import User
 from articles.models import *
 
 # 初始化logger
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s [%(name)s][%(filename)s:%(lineno)d][%(levelname)s] %(message)s')
+logger_format = '%(asctime)s [%(name)s][%(filename)s:%(lineno)d]' \
+                '[%(levelname)s] %(message)s'
+logging.basicConfig(
+    level=logging.INFO,
+    format=logger_format)
 logger = logging.getLogger('Tool')
 
 # 业务常量
