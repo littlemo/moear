@@ -44,8 +44,7 @@ class Taxonomy(models.Model):
         db_index=True,
         on_delete=models.CASCADE)
     taxonomy_type = models.CharField(
-        verbose_name=_('分类'),
-        unique=True,
+        verbose_name=_('分类类型'),
         max_length=32)
     description = models.TextField(
         blank=True,
@@ -59,7 +58,9 @@ class Taxonomy(models.Model):
         default=None,
         on_delete=models.SET_NULL)
     count = models.BigIntegerField(
-        verbose_name=_('文章数统计'))
+        verbose_name=_('文章计数'),
+        blank=True,
+        default=0)
 
     def __str__(self):
         output = '[{id}]{term_name} => {description}'.format(
