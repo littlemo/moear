@@ -12,6 +12,8 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = [
         'author', 'date', 'content', 'title',
         'excerpt']
+    list_filter = ('date',)
+    date_hierarchy = 'date'
 
 
 class PostMetaAdmin(admin.ModelAdmin):
