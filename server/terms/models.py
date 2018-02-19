@@ -71,3 +71,41 @@ class Taxonomy(models.Model):
     class Meta:
         verbose_name = _('分类数据')
         verbose_name_plural = verbose_name
+
+
+class relationships(models.Model):
+    """
+    分类关系模型
+
+    存储文章与对应分类的映射关系
+    """
+    id = models.BigAutoField(
+        primary_key=True)
+    post = models.ForeignKey(
+        'posts.Post',
+        verbose_name=_('文章数据'),
+        db_index=True,
+        on_delete=models.CASCADE)
+    taxonomy = models.ForeignKey(
+        'Taxonomy',
+        verbose_name=_('分类'),
+        db_index=True,
+        on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        'auth.User',
+        verbose_name=_('用户'),
+        db_index=True,
+        on_delete=models.CASCADE)
+
+    def __str__(self):
+        output = '[{id}][{username}][{term_name}] {post_title}'.format(
+            id=self.id,
+            username=self.user.auto_created,
+            term_name=self.taxonomy.term.name,
+            post_title=self.post.title)
+        return output
+
+    class Meta:
+        verbose_name = _('分类关系')
+        verbose_name_plural = verbose_name
+        unique_together = ('post', 'taxonomy', 'user')
