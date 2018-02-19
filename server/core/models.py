@@ -15,7 +15,7 @@ class Option(models.Model):
 
     id = models.BigAutoField(
         primary_key=True)
-    key = models.CharField(
+    name = models.CharField(
         verbose_name=_('键名'),
         db_index=True,
         unique=True,
@@ -30,9 +30,9 @@ class Option(models.Model):
         max_length=20)
 
     def __str__(self):
-        return '[{id}]{key} => {value}'.format(
+        return '[{id}]{name} => {value}'.format(
             id=self.id,
-            key=self.key,
+            name=self.name,
             value=self.value)
 
     class Meta:
@@ -53,7 +53,7 @@ class UserMeta(models.Model):
         verbose_name=_('用户信息'),
         db_index=True,
         on_delete=models.CASCADE)
-    key = models.CharField(
+    name = models.CharField(
         verbose_name=_('键名'),
         db_index=True,
         blank=True,
@@ -67,9 +67,9 @@ class UserMeta(models.Model):
         default=None)
 
     def __str__(self):
-        output = '[{id}]{key} => {value}'.format(
+        output = '[{id}]{name} => {value}'.format(
             id=self.id,
-            key=self.key,
+            name=self.name,
             value=self.value)
         return output
 

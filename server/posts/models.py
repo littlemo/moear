@@ -93,7 +93,7 @@ class PostMeta(models.Model):
         verbose_name=_('文章数据'),
         db_index=True,
         on_delete=models.CASCADE)
-    key = models.CharField(
+    name = models.CharField(
         verbose_name=_('键名'),
         db_index=True,
         blank=True,
@@ -107,9 +107,9 @@ class PostMeta(models.Model):
         default=None)
 
     def __str__(self):
-        output = '[{id}]{key} => {value}'.format(
+        output = '[{id}]{name} => {value}'.format(
             id=self.id,
-            key=self.key,
+            name=self.name,
             value=self.value)
         return output
 
