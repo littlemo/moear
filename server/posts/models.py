@@ -45,12 +45,12 @@ class Post(models.Model):
         verbose_name=_('文章正文'))
     title = models.CharField(
         verbose_name=_('文章标题'),
-        max_length=65535)
+        max_length=3000)
     excerpt = models.CharField(
         verbose_name=_('文章摘要'),
         blank=True,
         null=True,
-        max_length=65535)
+        max_length=5000)
     status = models.CharField(
         verbose_name=_('文章状态'),
         db_index=True,
