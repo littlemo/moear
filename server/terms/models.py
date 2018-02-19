@@ -43,7 +43,7 @@ class Taxonomy(models.Model):
         verbose_name=_('术语'),
         db_index=True,
         on_delete=models.CASCADE)
-    taxonomy = models.CharField(
+    taxonomy_type = models.CharField(
         verbose_name=_('分类'),
         unique=True,
         max_length=32)
