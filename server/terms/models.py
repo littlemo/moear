@@ -12,6 +12,7 @@ class Term(models.Model):
         primary_key=True)
     name = models.CharField(
         verbose_name=_('术语名'),
+        unique=True,
         max_length=200)
     slug = models.CharField(
         verbose_name=_('Slug'),
