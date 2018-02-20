@@ -70,7 +70,7 @@ def migrate_articles_data(page_html_store_path):
 
     # 读取数据库article模型获取到所有待处理数据条
     articles = Article.objects.filter(
-        pub_datetime__gt=timezone.datetime(2017, 7, 21)
+        pub_datetime__gt=timezone.datetime(2013, 5, 18)
     ).order_by('pub_datetime', 'id')
     spider, created = spiders_models.Spider.objects.get_or_create(
         name='zhihu_daily',
