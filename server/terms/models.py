@@ -74,7 +74,7 @@ class Taxonomy(models.Model):
         verbose_name_plural = verbose_name
 
 
-class relationships(models.Model):
+class Relationships(models.Model):
     """
     分类关系模型
 

@@ -20,7 +20,7 @@ class TaxonomyAdmin(admin.ModelAdmin):
     list_filter = ('taxonomy_type',)
 
 
-class relationshipsAdmin(admin.ModelAdmin):
+class RelationshipsAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'post', 'taxonomy', 'user')
     search_fields = [
@@ -29,4 +29,4 @@ class relationshipsAdmin(admin.ModelAdmin):
 
 admin.site.register(Term, TermAdmin)
 admin.site.register(Taxonomy, TaxonomyAdmin)
-admin.site.register(relationships, relationshipsAdmin)
+admin.site.register(Relationships, RelationshipsAdmin)
