@@ -64,10 +64,12 @@ class Taxonomy(models.Model):
         default=0)
 
     def __str__(self):
-        output = '[{id}]{term_name} => {description}'.format(
+        output = '[{id}]{term_name}'.format(
             id=self.id,
-            term_name=self.term.name,
-            description=self.description)
+            term_name=self.term.name)
+        if self.description:
+            output += ' => {description}'.format(
+                description=self.description)
         return output
 
     class Meta:
