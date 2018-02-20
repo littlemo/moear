@@ -49,7 +49,7 @@ class Post(models.Model):
     excerpt = models.CharField(
         verbose_name=_('文章摘要'),
         blank=True,
-        null=True,
+        default='',
         max_length=5000)
     status = models.CharField(
         verbose_name=_('文章状态'),
@@ -96,15 +96,11 @@ class PostMeta(models.Model):
     name = models.CharField(
         verbose_name=_('键名'),
         db_index=True,
-        blank=True,
-        null=True,
-        default=None,
         max_length=255)
     value = models.TextField(
         verbose_name=_('键值'),
         blank=True,
-        null=True,
-        default=None)
+        default='')
 
     def __str__(self):
         output = '[{id}]{name} => {value}'.format(
@@ -157,8 +153,7 @@ class ReadRecord(models.Model):
     comment = models.TextField(
         verbose_name=_('读后感'),
         blank=True,
-        null=True,
-        default=None)
+        default='')
 
     def __str__(self):
         post_title = self.post and self.post.get('title', None)

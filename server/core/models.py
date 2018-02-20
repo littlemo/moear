@@ -56,15 +56,11 @@ class UserMeta(models.Model):
     name = models.CharField(
         verbose_name=_('键名'),
         db_index=True,
-        blank=True,
-        null=True,
-        default=None,
         max_length=255)
     value = models.TextField(
         verbose_name=_('键值'),
         blank=True,
-        null=True,
-        default=None)
+        default='')
 
     def __str__(self):
         output = '[{id}]{name} => {value}'.format(
