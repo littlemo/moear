@@ -70,8 +70,8 @@ class Post(models.Model):
     #     default=0)
 
     def __str__(self):
-        output = '[{source}]{title}'.format(
-            source=self.source,
+        output = '[{spider}]{title}'.format(
+            spider=self.spider,
             title=self.title)
         return output
 
