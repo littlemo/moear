@@ -7,10 +7,10 @@ from .models import *
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'author', 'spider', 'origin_url',
-        'date', 'content', 'title', 'excerpt',
+        'date', 'title', 'excerpt',
         'status', 'modified')
     search_fields = [
-        'author', 'date', 'content', 'title',
+        'author', 'content', 'title',
         'excerpt']
     list_filter = ('date',)
     date_hierarchy = 'date'
