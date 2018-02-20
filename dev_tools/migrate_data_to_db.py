@@ -192,7 +192,7 @@ def migrate_articles_data(page_html_store_path):
             tags = [tag for tag in Tag.objects.filter(readrecord=readrecord)]
             for tag in tags:
                 taxonomy = terms_models.Taxonomy.objects.get(
-                    term=terms_models.Term.objects.get(slug=tag))
+                    term=terms_models.Term.objects.get(slug=tag.theme))
                 relation, created = \
                     terms_models.Relationships.objects.get_or_create(
                         post=post,
