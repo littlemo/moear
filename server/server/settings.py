@@ -147,6 +147,17 @@ STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 DJANGO_ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL', 'admin')
 
 
+# Django-rest-framework
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+}
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
+        'rest_framework.renderers.BrowsableAPIRenderer')
+
+
 # Logging Settings
 # https://docs.djangoproject.com/en/2.0/topics/logging/
 LOGS_ROOT = os.path.join(RUNTIME_DIR, 'log', 'app')
