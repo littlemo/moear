@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # 第三方库
+    'rest_framework',
+
     # 当前项目实现
     'index.apps.IndexConfig',
     'articles.apps.ArticlesConfig',
