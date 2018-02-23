@@ -23,6 +23,16 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class PostMetaSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        """若存在指定post的指定name字段数据，则执行更新操作，否则执行创建"""
+        try:
+            postmeta = PostMeta.objects.get(
+                post=validated_data.get('post', ''),
+                name=validated_data.get('name', ''))
+            return super().update(postmeta, validated_data)
+        except PostMeta.DoesNotExist:
+            return super().create(validated_data)
+
     class Meta:
         model = PostMeta
         exclude = ('id',)
