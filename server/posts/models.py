@@ -70,8 +70,9 @@ class Post(models.Model):
     #     default=0)
 
     def __str__(self):
-        output = '[{spider}]{title}'.format(
-            spider=self.spider,
+        output = '[{id}][{spider_name}]{title}'.format(
+            id=self.id,
+            spider_name=self.spider.name,
             title=self.title)
         return output
 
@@ -103,8 +104,9 @@ class PostMeta(models.Model):
         default='')
 
     def __str__(self):
-        output = '[{id}]{name} => {value}'.format(
+        output = '[{id}][{post_id}]{name} => {value}'.format(
             id=self.id,
+            post_id=self.post.id,
             name=self.name,
             value=self.value)
         return output
