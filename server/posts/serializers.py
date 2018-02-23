@@ -31,6 +31,11 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         exclude = ('id', 'modified',)
+        extra_kwargs = {
+            'origin_url': {
+                'validators': []
+            }
+        }
 
 
 class PostMetaSerializer(serializers.ModelSerializer):
