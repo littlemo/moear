@@ -14,6 +14,8 @@ class PostAdmin(admin.ModelAdmin):
         'excerpt']
     list_filter = ('date',)
     date_hierarchy = 'date'
+    readonly_fields = (
+        'date', 'modified')
 
 
 class PostMetaAdmin(admin.ModelAdmin):
