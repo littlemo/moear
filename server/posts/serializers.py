@@ -47,3 +47,8 @@ class PostMetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostMeta
         exclude = ('id',)
+        extra_kwargs = {
+            'post': {
+                'required': False
+            }
+        }
