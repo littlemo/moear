@@ -7,7 +7,7 @@ from .models import *
 class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'author', 'spider', 'origin_url',
-        'date', 'title', 'excerpt',
+        'date', 'title',
         'status', 'modified')
     search_fields = [
         'author', 'content', 'title',
