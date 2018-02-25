@@ -73,7 +73,7 @@ class Post(models.Model):
     def __str__(self):
         output = '[{id}][{spider_name}]{title}'.format(
             id=self.id,
-            spider_name=self.spider.name,
+            spider_name=self.spider and self.spider.name,
             title=self.title)
         return output
 
