@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -40,7 +41,7 @@ class Post(models.Model):
     date = models.DateTimeField(
         verbose_name=_('发布时间'),
         db_index=True,
-        auto_now_add=True)
+        default=timezone.now)
     content = models.TextField(
         verbose_name=_('文章正文'))
     title = models.CharField(

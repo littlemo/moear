@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
+import django.utils.timezone
 
 
 class Migration(migrations.Migration):
@@ -21,7 +22,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(db_index=True, primary_key=True, serialize=False)),
                 ('author', models.CharField(blank=True, default='', max_length=255, verbose_name='作者')),
                 ('origin_url', models.CharField(max_length=255, unique=True, verbose_name='原文地址')),
-                ('date', models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='发布时间')),
+                ('date', models.DateTimeField(db_index=True, default=django.utils.timezone.now, verbose_name='发布时间')),
                 ('content', models.TextField(verbose_name='文章正文')),
                 ('title', models.CharField(max_length=3000, verbose_name='文章标题')),
                 ('excerpt', models.CharField(blank=True, default='', max_length=5000, verbose_name='文章摘要')),
