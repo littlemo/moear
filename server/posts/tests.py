@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils import timezone
 
 import logging
 
@@ -86,6 +87,10 @@ class PostMetaSerializerTests(TestCase):
             defaults=fake_data_spider)
         log.debug('获取Spider: {}， 创建: {}'.format(spider, created))
         fake_data['spider'] = spider
+        date = timezone.datetime.strptime(
+            fake_data.get('date', ''), '%Y-%m-%d %H:%M:%S')
+        fake_data['date'] = timezone.make_aware(
+            date, timezone.get_current_timezone())
         post, created = Post.objects.get_or_create(
             origin_url=fake_data['origin_url'],
             defaults=fake_data)
