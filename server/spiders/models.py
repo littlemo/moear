@@ -31,7 +31,8 @@ class Spider(models.Model):
         default=True)
 
     def __str__(self):
-        output = '[{name}]({author}){display_name}'.format(
+        output = '[{id}][{name}]({author}){display_name}'.format(
+            id=self.id,
             name=self.name,
             author=self.author,
             display_name=self.display_name)
