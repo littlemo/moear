@@ -1,4 +1,5 @@
 import logging
+import copy
 
 from rest_framework import serializers
 from .models import *
@@ -11,12 +12,13 @@ log = logging.getLogger(__name__)
 class PostSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         """对传入的data进行修饰处理"""
-        spider_name = data.get('spider', None)
+        d = copy.deepcopy(data)
+        spider_name = d.get('spider', None)
         try:
-            data['spider'] = Spider.objects.get(name=spider_name).pk
+            d['spider'] = Spider.objects.get(name=spider_name).pk
         except Spider.DoesNotExist:
-            data['spider'] = None
-        ret = super().to_internal_value(data)
+            d['spider'] = None
+        ret = super().to_internal_value(d)
         return ret
 
     def create(self, validated_data):
