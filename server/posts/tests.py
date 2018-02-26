@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 
 class PostSerializerTests(TestCase):
-    def test_create_with_fake_data(self):
+    def test_create(self):
         """
         根据假定数据进行Post模型序列化处理，并验证结果是否符合预期
         """
@@ -107,7 +107,7 @@ class PostSerializerTests(TestCase):
                 "value": "https://pic2.zhimg.com/v2-42bc560718c89adc1aa77e0c0a44af01.jpg"
             }]
         }
-        self.test_create_with_fake_data()
+        self.test_create()
         post_serializer = PostSerializer(data=fake_data_post)
         if not post_serializer.is_valid():
             log.error(post_serializer.errors)
@@ -121,7 +121,7 @@ class PostSerializerTests(TestCase):
 
 
 class PostMetaSerializerTests(TestCase):
-    def test_create_with_fake_data(self):
+    def test_create(self):
         """
         根据假定数据进行Post&PostMeta模型序列化处理，并验证结果是否符合预期
         """
@@ -194,7 +194,7 @@ class PostMetaSerializerTests(TestCase):
                 "value": "https://pic2.zhimg.com/v2-42bc560718c89adc1aa77e0c0a44af01.jpg"
             }]
         }
-        self.test_create_with_fake_data()
+        self.test_create()
         fake_postmeta_data = fake_data_post.pop('meta')
         post = Post.objects.get(
             origin_url=fake_data_post['origin_url'])
