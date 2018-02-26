@@ -76,12 +76,18 @@ class PostSerializerTests(TestCase):
         """
         测试更新Post数据
         """
+        # 创建原始条目
         self.test_create()
+
+        # 执行条目更新
+        self.fake_data_post['title'] = \
+            '(修改后)《红海行动》和《战狼 2》相比，突出了我们是人不是神'
         post_serializer = PostSerializer(data=self.fake_data_post)
         if not post_serializer.is_valid():
             log.error(post_serializer.errors)
         self.assertIs(post_serializer.is_valid(), True)
         post_serializer.save()
+
         log.debug(post_serializer.instance)
         self.assertEqual(
             Post.objects.get(
