@@ -93,6 +93,9 @@ class PostSerializerTests(TestCase):
             Post.objects.get(
                 origin_url=self.fake_data_post['origin_url']),
             post_serializer.instance)
+        self.assertEqual(
+            self.spider,
+            post_serializer.instance.spider)
 
 
 class PostMetaSerializerTests(TestCase):
