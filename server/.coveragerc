@@ -6,6 +6,7 @@ omit =
     *migrations*
     *articles*
     *tests.py
+    *server/settings.py
 
 [report]
 # Regexes for lines to exclude from consideration
