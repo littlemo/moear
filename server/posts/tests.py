@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 class PostSerializerTests(TestCase):
     def setUp(self):
-        self.fake_data_spider = {
+        fake_data_spider = {
             "name": "zhihu_daily",
             "display_name": "知乎日报",
             "author": "小貘",
@@ -35,8 +35,8 @@ class PostSerializerTests(TestCase):
             }]
         }
         self.spider, created = Spider.objects.get_or_create(
-            name=self.fake_data_spider['name'],
-            defaults=self.fake_data_spider)
+            name=fake_data_spider['name'],
+            defaults=fake_data_spider)
         log.debug('获取Spider: {}， 创建: {}'.format(self.spider, created))
 
     def test_create(self):
