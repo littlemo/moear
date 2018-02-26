@@ -46,7 +46,7 @@ class PostSerializerTests(TestCase):
         post_serializer = PostSerializer(data=self.fake_data_post)
         if not post_serializer.is_valid():
             log.error(post_serializer.errors)
-        self.assertIs(post_serializer.is_valid(), True)
+        self.assertTrue(post_serializer.is_valid())
         post_serializer.save()
         log.debug(post_serializer.instance)
         self.assertEqual(
@@ -68,9 +68,7 @@ class PostSerializerTests(TestCase):
             log.error(post_serializer.errors)
         post_serializer.save()
         log.debug(post_serializer.instance)
-        self.assertEqual(
-            None,
-            post_serializer.instance.spider)
+        self.assertIsNone(post_serializer.instance.spider)
 
     def test_update(self):
         """
@@ -85,7 +83,7 @@ class PostSerializerTests(TestCase):
         post_serializer = PostSerializer(data=self.fake_data_post)
         if not post_serializer.is_valid():
             log.error(post_serializer.errors)
-        self.assertIs(post_serializer.is_valid(), True)
+        self.assertTrue(post_serializer.is_valid())
         post_serializer.save()
 
         log.debug(post_serializer.instance)
@@ -147,7 +145,7 @@ class PostMetaSerializerTests(TestCase):
             data=self.fake_postmeta_data, many=True)
         if not postmeta_serializer.is_valid():
             log.error(postmeta_serializer.errors)
-        self.assertIs(postmeta_serializer.is_valid(), True)
+        self.assertTrue(postmeta_serializer.is_valid())
 
         postmeta_serializer.save(post=self.post)
         log.debug(postmeta_serializer.instance)
@@ -167,7 +165,7 @@ class PostMetaSerializerTests(TestCase):
             data=self.fake_postmeta_data, many=True)
         if not postmeta_serializer.is_valid():
             log.error(postmeta_serializer.errors)
-        self.assertIs(postmeta_serializer.is_valid(), True)
+        self.assertTrue(postmeta_serializer.is_valid())
         postmeta_serializer.save(post=post)
 
         log.debug(postmeta_serializer.instance)
