@@ -70,6 +70,11 @@ class Post(models.Model):
     #     verbose_name=_('评论总数'),
     #     default=0)
 
+    def fmt_spider_display_name(self):
+        return self.spider.display_name
+
+    fmt_spider_display_name.short_description = '爬虫名称'
+
     def __str__(self):
         output = '[{id}][{spider_name}]{title}'.format(
             id=self.id,
