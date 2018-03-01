@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # 当前项目实现
-    'index.apps.IndexConfig',
     'articles.apps.ArticlesConfig',
     'posts.apps.PostsConfig',
     'spiders.apps.SpidersConfig',
