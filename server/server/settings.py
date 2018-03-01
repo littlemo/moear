@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # 第三方库
     'rest_framework',
+    'django_celery_beat',
 
     # 当前项目实现
     'articles.apps.ArticlesConfig',
