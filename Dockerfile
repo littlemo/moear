@@ -31,10 +31,11 @@ RUN apt-get update --fix-missing && apt-get install -y \
 
 # 添加Python软件包需求文件
 RUN mkdir -p /app/requirements
-ADD ./requirements/pip.txt /app/requirements
+ADD ./requirements /app/requirements
 
 # 安装Python相关Packages
 WORKDIR /app
+RUN pip install requirements/wheels/*.whl
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
 # 删除镜像初始化用的文件，并创建用于挂载的路径
