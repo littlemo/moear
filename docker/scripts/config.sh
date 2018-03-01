@@ -2,7 +2,7 @@
 
 # 初始化数据库表格
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput
-python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput node
+python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core
 python manage.py migrate --settings=$SERVER_SETTINGS --noinput
 
 # 归集静态文件
