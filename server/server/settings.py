@@ -160,6 +160,40 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer')
 
 
+# Celeryd
+CELERY_BROKER_URL = os.environ.get(
+    'CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get(
+    'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+
+CELERY_APP = 'server'
+CELERY_TASK_DEFAULT_QUEUE = 'moear'
+CELERY_TASK_TIME_LIMIT = 1800
+CELERY_WORKER_CONCURRENCY = int(os.environ.get(
+    'CELERY_WORKER_CONCURRENCY', '10'))
+CELERY_WORKER_PREFETCH_MULTIPLIER = int(os.environ.get(
+    'CELERY_WORKER_PREFETCH_MULTIPLIER', '5'))
+
+CELERY_CREATE_DIRS = []
+CELERY_WORKER_LOG_PATH = os.path.dirname(os.environ.get(
+    'CELERY_WORKER_LOG_FILE',
+    os.path.join(RUNTIME_DIR, 'log', 'celery', '%n%I.log')))
+CELERY_CREATE_DIRS.append(CELERY_WORKER_LOG_PATH)
+
+# celerybeat
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_LOG_PATH = os.path.dirname(os.environ.get(
+    'CELERY_BEAT_LOG_FILE',
+    os.path.join(RUNTIME_DIR, 'log', 'celery', 'celeryd.log')))
+CELERY_CREATE_DIRS.append(CELERY_BEAT_LOG_PATH)
+
+if not PRODUCTION:
+    for path in CELERY_CREATE_DIRS:
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+
 # Logging Settings
 # https://docs.djangoproject.com/en/2.0/topics/logging/
 LOGS_ROOT = os.path.join(RUNTIME_DIR, 'log', 'app')
