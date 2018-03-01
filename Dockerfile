@@ -49,6 +49,7 @@ EXPOSE 80 443
 
 # 添加Server源码文件
 ADD ./server /app/server
+RUN rm -rf server/htmlcov
 
 # 添加启动脚本文件
 ADD ./docker/scripts/*.sh /app/run/
