@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-if [ "$PRODUCTION" = "True" ];then
-    # 执行额外的配置文件
-    bash /app/run/config.sh
-fi
+# 执行额外的配置文件
+bash /app/run/config.sh
 
 # 设置环境变量默认值
 if [ -z $CELERY_BEAT_LOG_LEVEL ];then
