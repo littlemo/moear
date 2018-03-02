@@ -35,7 +35,7 @@ ADD ./requirements /app/requirements
 
 # 安装Python相关Packages
 WORKDIR /app
-RUN pip install requirements/wheels/*.whl
+RUN pip install --no-cache-dir requirements/wheels/*.whl
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
 # 删除镜像初始化用的文件，并创建用于挂载的路径
