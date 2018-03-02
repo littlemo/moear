@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
+from posts import tasks as posts_tasks
+from celery import group
 
 
 class SpiderAdmin(admin.ModelAdmin):
@@ -12,6 +14,21 @@ class SpiderAdmin(admin.ModelAdmin):
         'name', 'display_name', 'author',
         'email', 'description']
     list_filter = ('author',)
+    actions = [
+        'action_spider_post']
+
+    def action_spider_post(self, request, queryset):
+        """异步爬取Post信息"""
+        c = (group(
+            posts_tasks.spider_post.s(spider.pk) for spider in queryset
+        ))
+        c.delay()
+        self.message_user(
+            request,
+            _('共触发 {num} 个爬虫源').format(
+                num=len(queryset)))
+
+    action_spider_post.short_description = _('异步爬取Post信息')
 
 
 class SpiderMetaAdmin(admin.ModelAdmin):
