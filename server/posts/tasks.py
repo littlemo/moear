@@ -1,4 +1,5 @@
 import logging
+import json
 
 from django.utils import timezone
 from celery import shared_task
@@ -16,7 +17,9 @@ def spider_post(spider_pk):
     爬取文章数据
     """
     zhihu = entry.ZhihuDaily()
-    data = zhihu.crawl()
+    rc = zhihu.crawl()
+    log.info('爬取返回包：{}'.format(rc))
+    data = json.loads(rc, encoding='UTF-8')
 
     for d in data:
         post_serializer = PostSerializer(data=d)
