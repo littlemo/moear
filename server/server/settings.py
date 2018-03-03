@@ -285,6 +285,12 @@ LOGGING = {
             'filename': os.path.join(LOGS_ROOT, "posts.log"),
             'formatter': 'standard',
         },
+        'spiders': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, 'spiders.log'),
+            'formatter': 'standard',
+        },
         'console': {
             'level': ('INFO', 'DEBUG')[DEBUG],
             'class': 'logging.StreamHandler',
@@ -331,6 +337,11 @@ LOGGING = {
         },
         'posts': {
             'handlers': ['posts', 'console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'spiders': {
+            'handlers': ['spiders'],
             'level': 'DEBUG',
             'propagate': False,
         },
