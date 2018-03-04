@@ -10,3 +10,4 @@ moear-spider-common==1.0.0
 moear-spider-zhihudaily==1.0.0
 mysqlclient==1.3.12
 redis==2.10.6
+stevedore==1.28.0
