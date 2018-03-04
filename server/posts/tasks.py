@@ -6,6 +6,7 @@ from celery import shared_task
 from stevedore import extension
 
 from .serializers import *
+from spiders.models import Spider
 
 
 log = logging.getLogger(__name__)
@@ -16,6 +17,7 @@ def spider_post(spider_pk):
     """
     爬取文章数据
     """
+    spider = Spider.objects.get(pk=spider_pk)
     mgr = extension.ExtensionManager(
         namespace='moear.spider',
         invoke_on_load=True,
@@ -23,13 +25,16 @@ def spider_post(spider_pk):
     )
 
     def crawl(ext, *args):
-        rc = ext.obj.crawl()
-        log.info('[{name}]爬取返回包：{pack}'.format(
-            name=ext.name, pack=rc))
-        data = json.loads(rc, encoding='UTF-8')
-        return (ext.name, data)
+        if ext.name == spider.name:
+            rc = ext.obj.crawl()
+            log.info('[{name}]爬取返回包：{pack}'.format(
+                name=ext.name, pack=rc))
+            data = json.loads(rc, encoding='UTF-8')
+            return (ext.name, data)
 
     results = mgr.map(crawl)
+    log.debug('结果对象：{results}'.format(
+        results=results))
 
     for name, data in results:
         log.info('[{name}]处理爬虫返回数据，并持久化'.format(name=name))
