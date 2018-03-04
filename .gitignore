@@ -106,3 +106,6 @@ ENV/
 # Django
 mysql.conf
 runtime
+
+# Customs
+backups
