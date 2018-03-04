@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     # 当前项目实现
-    'articles.apps.ArticlesConfig',
     'posts.apps.PostsConfig',
     'spiders.apps.SpidersConfig',
     'core.apps.CoreConfig',
