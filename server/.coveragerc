@@ -4,7 +4,6 @@ branch = True
 omit =
     *venv*
     *migrations*
-    *articles*
     *tests.py
     *server/settings.py
 
