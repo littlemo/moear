@@ -1,9 +1,9 @@
 import logging
 import json
 
+import stevedore
 from django.utils import timezone
 from celery import shared_task
-from stevedore import extension
 
 from .serializers import *
 from spiders.models import Spider
@@ -18,19 +18,19 @@ def spider_post(spider_pk):
     爬取文章数据
     """
     spider = Spider.objects.get(pk=spider_pk)
-    mgr = extension.ExtensionManager(
+    mgr = stevedore.NamedExtensionManager(
         namespace='moear.spider',
+        names=[spider.name],
         invoke_on_load=True,
         invoke_args=(),
     )
 
     def crawl(ext, *args):
-        if ext.name == spider.name:
-            rc = ext.obj.crawl()
-            log.info('[{name}]爬取返回包：{pack}'.format(
-                name=ext.name, pack=rc))
-            data = json.loads(rc, encoding='UTF-8')
-            return (ext.name, data)
+        rc = ext.obj.crawl()
+        log.info('[{name}]爬取返回包：{pack}'.format(
+            name=ext.name, pack=rc))
+        data = json.loads(rc, encoding='UTF-8')
+        return (ext.name, data)
 
     results = mgr.map(crawl)
     log.debug('结果对象：{results}'.format(
