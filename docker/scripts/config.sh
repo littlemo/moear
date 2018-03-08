@@ -3,7 +3,7 @@
 # 仅在调试模式下进行Python包的重新安装
 if [ "$DEBUG" = "True" ];then
 
-pip install --no-cache-dir -e /app/requirements/source/moear-spider-common
+pip install --no-cache-dir -e /app/requirements/source/moear-api-common
 pip install --no-cache-dir -e /app/requirements/source/moear-spider-*
 pip install --no-cache-dir -r /app/requirements/pip.txt
 
