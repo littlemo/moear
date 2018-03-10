@@ -31,11 +31,11 @@ fi
 
 # 启动celery beat服务
 echo "Exec: celery beat"
-celery -A server beat -l $CELERY_BEAT_LOG_LEVEL --logfile=$CELERY_BEAT_LOG_FILE --pidfile=/tmp/celerybeat.pid --detach
+celery -A server beat -l $CELERY_BEAT_LOG_LEVEL --logfile=$CELERY_BEAT_LOG_FILE --pidfile= --detach
 
 # 启动celery worker服务
 echo "Exec: celery worker"
-celery -A server worker -l $CELERY_WORKER_LOG_LEVEL --logfile=$CELERY_WORKER_LOG_FILE --pidfile=/tmp/celeryd.pid --detach
+celery -A server worker -l $CELERY_WORKER_LOG_LEVEL --logfile=$CELERY_WORKER_LOG_FILE --pidfile= --detach
 
 if [ "$PRODUCTION" = "True" ];then
     echo "> Production Mode"
