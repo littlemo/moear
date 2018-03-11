@@ -40,20 +40,29 @@ RUN pip install --no-cache-dir -r requirements/pip.txt
 
 # 删除镜像初始化用的文件，并创建用于挂载的路径
 RUN rm -rf * && \
+    mkdir -p /app/bin && \
     mkdir -p /app/run && \
-    mkdir -p /app/server && \
+    mkdir -p ${WORK_DIR} && \
     mkdir -p /app/runtime/log/nginx
+
+# 设置全局环境变量
+ENV WORK_DIR=/app/server \
+    PATH="/app/run:/app/bin:${PATH}"
 
 # 开放对外端口
 EXPOSE 80 443
 
 # 添加Server源码文件
-ADD ./server /app/server
+ADD ./server ${WORK_DIR}
 RUN rm -rf server/htmlcov
 
 # 添加启动脚本文件
 ADD ./docker/scripts/*.sh /app/run/
 RUN chmod a+x /app/run/*.sh
+
+# 添加相关工具
+ADD ./docker/bin /app/bin
+RUN chmod a+x /app/bin/*
 
 # Volumes 挂载点配置
 VOLUME ["/app", "/etc/nginx"]
