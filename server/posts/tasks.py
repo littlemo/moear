@@ -36,9 +36,9 @@ def spider_post(spider_pk):
     log.debug('结果对象：{results}'.format(
         results=results))
 
-    results.reverse()
     for name, data in results:
         log.info('[{name}]处理爬虫返回数据，并持久化'.format(name=name))
+        data.reverse()
         for d in data:
             post_serializer = PostSerializer(data=d)
             if not post_serializer.is_valid():
