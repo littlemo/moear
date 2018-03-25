@@ -53,7 +53,7 @@ class SpiderSerializerTests(TestCase):
         self.test_create()
 
         # 修改数据
-        self.fake_data_spider['display_name'] = '哔乎日报'
+        self.fake_data_spider['description'] = 'Or2'
 
         # 执行条目更新
         self.test_create()

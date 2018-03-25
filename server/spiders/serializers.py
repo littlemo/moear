@@ -25,6 +25,9 @@ class SpiderSerializer(serializers.ModelSerializer):
             'name': {
                 'validators': [],
             },
+            'display_name': {
+                'validators': [],
+            },
         }
 
 
