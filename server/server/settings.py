@@ -340,7 +340,7 @@ LOGGING = {
             'propagate': False,
         },
         'spiders': {
-            'handlers': ['spiders'],
+            'handlers': ['spiders', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
