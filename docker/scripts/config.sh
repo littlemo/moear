@@ -15,6 +15,9 @@ python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core
 python manage.py migrate --settings=$SERVER_SETTINGS --noinput
 
+# 注册全部 Spider
+python manage.py register_spiders
+
 # 仅在生产模式下执行静载资源归集&翻译文件生成等操作
 if [ "$PRODUCTION" = "True" ];then
 
