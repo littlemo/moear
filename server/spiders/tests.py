@@ -39,6 +39,28 @@ class SpiderSerializerTests(TestCase):
         self.assertTrue(spider_serializer.is_valid())
 
         spider_serializer.save()
+        log.debug(spider_serializer.instance)
+
+        self.assertEqual(
+            Spider.objects.get(name=self.fake_data_spider.get('name')),
+            spider_serializer.instance)
+
+    def test_update(self):
+        '''
+        测试更新 Spider 数据
+        '''
+        # 创建原始条目
+        self.test_create()
+
+        # 执行条目更新
+        self.fake_data_spider['display_name'] = '哔乎日报'
+        spider_serializer = SpiderSerializer(data=self.fake_data_spider)
+        if not spider_serializer.is_valid():
+            log.error(spider_serializer.errors)
+        self.assertTrue(spider_serializer.is_valid())
+
+        spider_serializer.save()
+        log.debug(spider_serializer.instance)
 
         self.assertEqual(
             Spider.objects.get(name=self.fake_data_spider.get('name')),
