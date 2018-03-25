@@ -27,10 +27,10 @@ def spider_post(spider_pk):
 
     def crawl(ext, *args):
         rc = ext.obj.crawl()
+        data = json.dumps(rc, ensure_ascii=False)
         log.info('[{name}]爬取返回包：{pack}'.format(
-            name=ext.name, pack=rc))
-        data = json.loads(rc, encoding='UTF-8')
-        return (ext.name, data)
+            name=ext.name, pack=data))
+        return (ext.name, rc)
 
     results = mgr.map(crawl)
     log.debug('结果对象：{results}'.format(
