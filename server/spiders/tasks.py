@@ -5,7 +5,7 @@ import stevedore
 from django.utils import timezone
 from celery import shared_task
 
-from .serializers import *
+from posts.serializers import *
 from spiders.models import Spider
 
 
