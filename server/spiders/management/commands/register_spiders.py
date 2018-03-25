@@ -2,7 +2,8 @@ import stevedore
 
 from django.core.management.base import BaseCommand, CommandError
 
-from spiders.models import Spider, SpiderMeta
+from spiders.models import *
+from spiders.serializers import *
 
 
 class Command(BaseCommand):
@@ -14,9 +15,23 @@ class Command(BaseCommand):
             invoke_on_load=True)
 
         def register_spdier(ext):
-            self.stdout.write(self.style.SUCCESS(
-                '注册: [{name}]{data}'.format(
-                    name=ext.name,
-                    data=ext.obj.register())))
+            data = ext.obj.register()
+            spider_serializer = SpiderSerializer(data=data)
+            if not spider_serializer.is_valid():
+                self.stderr.write(self.style.ERROR(spider_serializer.errors))
+                raise CommandError(spider_serializer.errors)
+            spider_serializer.save()
 
-        results = mgr.map(register_spdier)
+            spidermeta_serializer = SpiderMetaSerializer(
+                data=data.get('meta', {}), many=True)
+            if not spidermeta_serializer.is_valid():
+                self.stderr.write(self.style.ERROR(
+                    spidermeta_serializer.errors))
+                raise CommandError(spidermeta_serializer.errors)
+            spidermeta_serializer.save(spider=spider_serializer.instance)
+
+            self.stdout.write(self.style.SUCCESS(
+                '[{name}] 注册成功！'.format(
+                    name=ext.name)))
+
+        mgr.map(register_spdier)
