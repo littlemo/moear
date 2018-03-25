@@ -35,8 +35,8 @@ class PostSerializer(serializers.ModelSerializer):
         exclude = ('id', 'modified',)
         extra_kwargs = {
             'origin_url': {
-                'validators': []
-            }
+                'validators': [],
+            },
         }
 
 
@@ -86,6 +86,6 @@ class PostMetaSerializer(serializers.ModelSerializer):
         exclude = ('id',)
         extra_kwargs = {
             'post': {
-                'required': False
-            }
+                'required': False,
+            },
         }
