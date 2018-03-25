@@ -155,7 +155,7 @@ class PostMetaSerializerTests(TestCase):
         self.test_create()
 
         # 执行条目更新
-        self.fake_postmeta_data['spider.zhihu_daily.top'] = 0
+        self.fake_postmeta_data['spider.zhihu_daily.top'] = '0'
         post = Post.objects.get(
             origin_url=self.fake_data_post['origin_url'])
         postmeta_serializer = PostMetaSerializer(
