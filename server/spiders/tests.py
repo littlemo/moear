@@ -79,7 +79,7 @@ class SpiderMetaSerializerTests(TestCase):
                 '5 分钟，而在知乎日报，这个数字是 21',
             'meta': {
                 'img_cover': 'img_cover_path',
-                'image_filter': '["equation\\?tex="]',
+                'image_filter': '["zhihu.com/equation"]',
                 'book_mode': 'periodical',
                 'language': 'zh-CN',
                 'img_masthead': 'img_masthead_path',
