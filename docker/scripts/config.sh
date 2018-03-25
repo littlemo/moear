@@ -4,6 +4,7 @@
 if [ "$DEBUG" = "True" ];then
 
 pip install --no-cache-dir -e /app/requirements/source/moear-api-common
+pip install --no-cache-dir -e /app/requirements/source/moear-package-*
 pip install --no-cache-dir -e /app/requirements/source/moear-spider-*
 pip install --no-cache-dir -r /app/requirements/pip.txt
 
