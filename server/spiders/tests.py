@@ -52,19 +52,11 @@ class SpiderSerializerTests(TestCase):
         # 创建原始条目
         self.test_create()
 
-        # 执行条目更新
+        # 修改数据
         self.fake_data_spider['display_name'] = '哔乎日报'
-        spider_serializer = SpiderSerializer(data=self.fake_data_spider)
-        if not spider_serializer.is_valid():
-            log.error(spider_serializer.errors)
-        self.assertTrue(spider_serializer.is_valid())
 
-        spider_serializer.save()
-        log.debug(spider_serializer.instance)
-
-        self.assertEqual(
-            Spider.objects.get(name=self.fake_data_spider.get('name')),
-            spider_serializer.instance)
+        # 执行条目更新
+        self.test_create()
 
 
 class SpiderMetaSerializerTests(TestCase):
