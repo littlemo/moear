@@ -110,3 +110,16 @@ class SpiderMetaSerializerTests(TestCase):
         self.assertEqual(
             self.fake_data_spider.get('meta'),
             spidermeta_serializer.data)
+
+    def test_update(self):
+        '''
+        测试更新 Spider 元数据
+        '''
+        # 创建原始条目
+        self.test_create()
+
+        # 修改元数据
+        self.fake_data_spider['meta']['css_package'] = 'css/package/path'
+
+        # 执行条目更新
+        self.test_create()
