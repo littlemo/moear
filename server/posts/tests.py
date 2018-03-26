@@ -72,23 +72,12 @@ class PostSerializerTests(TestCase):
         # 创建原始条目
         self.test_create()
 
-        # 执行条目更新
+        # 修改数据
         self.fake_data_post['title'] = \
             '(修改后)《红海行动》和《战狼 2》相比，突出了我们是人不是神'
-        post_serializer = PostSerializer(data=self.fake_data_post)
-        if not post_serializer.is_valid():
-            log.error(post_serializer.errors)
-        self.assertTrue(post_serializer.is_valid())
-        post_serializer.save()
 
-        log.debug(post_serializer.instance)
-        self.assertEqual(
-            Post.objects.get(
-                origin_url=self.fake_data_post['origin_url']),
-            post_serializer.instance)
-        self.assertEqual(
-            self.spider,
-            post_serializer.instance.spider)
+        # 执行条目更新
+        self.test_create()
 
 
 class PostMetaSerializerTests(TestCase):
@@ -154,19 +143,13 @@ class PostMetaSerializerTests(TestCase):
         # 创建原始条目
         self.test_create()
 
-        # 执行条目更新
+        # 修改数据
         self.fake_postmeta_data['spider.zhihu_daily.top'] = '0'
-        post = Post.objects.get(
-            origin_url=self.fake_data_post['origin_url'])
-        postmeta_serializer = PostMetaSerializer(
-            data=self.fake_postmeta_data, many=True)
-        if not postmeta_serializer.is_valid():
-            log.error(postmeta_serializer.errors)
-        self.assertTrue(postmeta_serializer.is_valid())
-        postmeta_serializer.save(post=post)
 
-        log.debug(postmeta_serializer.instance)
+        # 执行条目更新
+        self.test_create()
+
         self.assertEqual(
             PostMeta.objects.get(
-                post=post, name='spider.zhihu_daily.top').value,
+                post=self.post, name='spider.zhihu_daily.top').value,
             self.fake_postmeta_data['spider.zhihu_daily.top'])
