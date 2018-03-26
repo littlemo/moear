@@ -28,20 +28,23 @@ def package_post(post_pk_list):
 
     package_group = OrderedDict()
     for post in post_list:
+        # 生成文章数据的字典数据（含元数据）
         postmeta_list = PostMeta.objects.filter(post=post)
         postmeta_data = PostMetaSerializer(postmeta_list, many=True).data
         post_data = PostSerializer(post).data
         post_data['meta'] = postmeta_data
 
-        spider_name = post.spider.name
-
+        # 生成爬虫数据的字典数据（含元数据）
         spider_data = SpiderSerializer(post.spider).data
         spdiermeta_list = SpiderMeta.objects.filter(spider=post.spider)
         spidermeta_data = SpiderMetaSerializer(spdiermeta_list, many=True).data
         spider_data['meta'] = spidermeta_data
 
+        # 定义输出字典所用到的键名
+        spider_name = post.spider.name
         package_module = spidermeta_data.get('package_module', '')
 
+        # 组装输出字典数据
         package_group.setdefault(package_module, OrderedDict())
         package_group[package_module].setdefault(spider_name, OrderedDict())
         package_group[package_module][spider_name].setdefault(
