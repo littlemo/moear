@@ -1,0 +1,65 @@
+[
+{
+    "model": "spiders.spidermeta",
+    "pk": 1,
+    "fields": {
+        "spider": 1,
+        "name": "package_module",
+        "value": "mobi"
+    }
+},
+{
+    "model": "spiders.spidermeta",
+    "pk": 2,
+    "fields": {
+        "spider": 1,
+        "name": "img_cover",
+        "value": "/Users/moore/Develop/moear/plugin/moear-spider-zhihudaily/moear_spider_zhihudaily/assets/images/cv_zhihudaily.jpg"
+    }
+},
+{
+    "model": "spiders.spidermeta",
+    "pk": 3,
+    "fields": {
+        "spider": 1,
+        "name": "css_package",
+        "value": "/Users/moore/Develop/moear/plugin/moear-spider-zhihudaily/moear_spider_zhihudaily/assets/css/package.css"
+    }
+},
+{
+    "model": "spiders.spidermeta",
+    "pk": 4,
+    "fields": {
+        "spider": 1,
+        "name": "language",
+        "value": "zh-CN"
+    }
+},
+{
+    "model": "spiders.spidermeta",
+    "pk": 5,
+    "fields": {
+        "spider": 1,
+        "name": "image_filter",
+        "value": "[\"zhihu.com/equation\"]"
+    }
+},
+{
+    "model": "spiders.spidermeta",
+    "pk": 6,
+    "fields": {
+        "spider": 1,
+        "name": "img_masthead",
+        "value": "/Users/moore/Develop/moear/plugin/moear-spider-zhihudaily/moear_spider_zhihudaily/assets/images/mh_zhihudaily.gif"
+    }
+},
+{
+    "model": "spiders.spidermeta",
+    "pk": 7,
+    "fields": {
+        "spider": 1,
+        "name": "book_mode",
+        "value": "periodical"
+    }
+}
+]
