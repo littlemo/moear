@@ -81,7 +81,7 @@ def package_post(post_pk_list):
                 name=package_module,
                 invoke_on_load=True,
                 invoke_args=(spider_dict,),
-                invoke_kwds=usermeta,
+                invoke_kwds={'usermeta': usermeta},
             )
             book_file, book_ext = package_mgr.driver.generate(posts_data)
 
