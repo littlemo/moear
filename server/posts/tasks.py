@@ -1,5 +1,7 @@
+import os
 import json
 import logging
+import datetime
 import stevedore
 from collections import OrderedDict
 
@@ -51,7 +53,11 @@ def package_post(post_pk_list):
     for package_module, spider_group in package_group.items():
         for spider_name, package_group in spider_group.items():
             # 定义相关配置数据
+            usermeta = {}
             posts_data_raw = package_group.get('data', [])
+            usermeta['publish_date'] = posts_data_raw[0].get(
+                'date',
+                datetime.date.today().strftime('%Y-%m-%d')).split('T')[0]
 
             # 通过调用指定 Spider 驱动，对文章列表数据进行格式化
             spider_mgr = stevedore.driver.DriverManager(
@@ -70,6 +76,7 @@ def package_post(post_pk_list):
                 name=package_module,
                 invoke_on_load=True,
                 invoke_args=(spider_dict,),
+                invoke_kwds=usermeta,
             )
             mobi_file = package_mgr.driver.generate(posts_data)
             # TODO 从系统settings中获取mobi暂存路径，并将mobi_file保存成文件
