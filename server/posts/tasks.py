@@ -5,6 +5,8 @@ import datetime
 import stevedore
 from collections import OrderedDict
 
+from django.conf import settings
+
 from celery import shared_task
 from posts.models import *
 from posts.serializers import *
@@ -78,5 +80,17 @@ def package_post(post_pk_list):
                 invoke_args=(spider_dict,),
                 invoke_kwds=usermeta,
             )
-            mobi_file = package_mgr.driver.generate(posts_data)
-            # TODO 从系统settings中获取mobi暂存路径，并将mobi_file保存成文件
+            book_file, book_ext = package_mgr.driver.generate(posts_data)
+
+            # 从系统settings中获取mobi暂存路径，并将book_file保存成文件
+            book_filename = \
+                '{spider_display_name}[{publish_date}]_{md5}.{ext}'.format(
+                    spider_display_name=spider_dict.get('display_name'),
+                    publish_date=usermeta.get('publish_date'),
+                    md5='',
+                    ext=book_ext,
+                )
+            book_abspath = os.path.join(
+                settings.BOOK_PACKAGE_ROOT, book_filename)
+            with open(book_abspath, 'wb') as fh:
+                fh.write(book_file)
