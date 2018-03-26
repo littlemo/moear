@@ -11,13 +11,9 @@ log = logging.getLogger(__name__)
 
 
 class PostSerializerTests(TestCase):
+    fixtures = ['Spider.json']
+
     def setUp(self):
-        fake_data_spider = {
-            "name": "zhihu_daily",
-            "display_name": "知乎日报",
-            "author": "小貘",
-            "email": "xx@xxxx.com",
-        }
         self.fake_data_post = {
             "spider": "zhihu_daily",
             "origin_url": "http://daily.zhihu.com/story/9670933",
@@ -30,10 +26,7 @@ class PostSerializerTests(TestCase):
                 'moear.cover_image_slug': 'https://pic2.zhimg.com/v2-42bc560718c89adc1aa77e0c0a44af01.jpg',
             },
         }
-        self.spider, created = Spider.objects.get_or_create(
-            name=fake_data_spider['name'],
-            defaults=fake_data_spider)
-        log.debug('获取Spider: {}， 创建: {}'.format(self.spider, created))
+        self.spider = Spider.objects.get(name='zhihu_daily')
 
     def test_create(self):
         """
@@ -82,13 +75,9 @@ class PostSerializerTests(TestCase):
 
 
 class PostMetaSerializerTests(TestCase):
+    fixtures = ['Spider.json']
+
     def setUp(self):
-        fake_data_spider = {
-            "name": "zhihu_daily",
-            "display_name": "知乎日报",
-            "author": "小貘",
-            "email": "xx@xxxx.com",
-        }
         self.fake_data_post = {
             "spider": "zhihu_daily",
             "origin_url": "http://daily.zhihu.com/story/9670933",
@@ -103,10 +92,7 @@ class PostMetaSerializerTests(TestCase):
         }
 
         self.fake_postmeta_data = self.fake_data_post.pop('meta')
-        spider, created = Spider.objects.get_or_create(
-            name=fake_data_spider['name'],
-            defaults=fake_data_spider)
-        log.debug('获取Spider: {}， 创建: {}'.format(spider, created))
+        spider = Spider.objects.get(name='zhihu_daily')
         self.fake_data_post['spider'] = spider
         date = timezone.datetime.strptime(
             self.fake_data_post.get('date', ''), '%Y-%m-%d %H:%M:%S')
