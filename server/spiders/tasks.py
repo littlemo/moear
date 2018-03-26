@@ -22,7 +22,6 @@ def spider_post(spider_pk):
         namespace='moear.spider',
         names=[spider.name],
         invoke_on_load=True,
-        invoke_args=(),
     )
 
     def crawl(ext, *args):
