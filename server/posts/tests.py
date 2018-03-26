@@ -4,6 +4,7 @@ from django.utils import timezone
 import logging
 
 from .serializers import *
+from . import tasks
 
 
 log = logging.getLogger(__name__)
@@ -153,3 +154,14 @@ class PostMetaSerializerTests(TestCase):
             PostMeta.objects.get(
                 post=self.post, name='spider.zhihu_daily.top').value,
             self.fake_postmeta_data['spider.zhihu_daily.top'])
+
+
+class PackagePostTaskTests(TestCase):
+    fixtures = [
+        'Post.json', 'PostMeta.json',
+        'Spider.json', 'SpiderMeta.json']
+
+    def test_100_package_post(self):
+        '''测试打包 Post 任务'''
+        post_pk_list = [post.pk for post in Post.objects.all()]
+        tasks.package_post(post_pk_list)
