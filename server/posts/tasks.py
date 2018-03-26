@@ -1,7 +1,7 @@
 import json
 import logging
 import stevedore
-from collections import defaultdict
+from collections import OrderedDict
 
 from celery import shared_task
 from posts.models import *
@@ -22,7 +22,7 @@ def package_post(post_pk_list):
     # 将文章列表以时间倒序排列
     post_list.sort(key=lambda post: post.date, reverse=True)
 
-    package_group = defaultdict(dict)
+    package_group = OrderedDict()
     for post in post_list:
         postmeta_list = PostMeta.objects.filter(post=post)
         postmeta_data = PostMetaSerializer(postmeta_list, many=True).data
@@ -38,7 +38,8 @@ def package_post(post_pk_list):
 
         package_module = spidermeta_data.get('package_module', '')
 
-        package_group[package_module].setdefault(spider_name, {})
+        package_group.setdefault(package_module, OrderedDict())
+        package_group[package_module].setdefault(spider_name, OrderedDict())
         package_group[package_module][spider_name].setdefault(
             'spider', spider_data)
         package_group[package_module][spider_name].setdefault('data', [])
