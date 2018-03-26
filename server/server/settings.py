@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from moear_api_common import utils
 from django.utils.translation import gettext_noop
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -196,6 +197,9 @@ CELERY_BEAT_LOG_PATH = os.path.dirname(os.environ.get(
     'CELERY_BEAT_LOG_FILE',
     os.path.join(RUNTIME_DIR, 'log', 'celery', 'celeryd.log')))
 CELERY_CREATE_DIRS.append(CELERY_BEAT_LOG_PATH)
+
+# 书籍打包输出根路径
+BOOK_PACKAGE_ROOT = utils.mkdirp(os.path.join(RUNTIME_DIR, 'books'))
 
 if not PRODUCTION:
     for path in CELERY_CREATE_DIRS:
