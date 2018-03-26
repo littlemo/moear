@@ -1,4 +1,6 @@
+import json
 import logging
+import stevedore
 from collections import defaultdict
 
 from celery import shared_task
@@ -37,9 +39,33 @@ def package_post(post_pk_list):
         package_module = spidermeta_data.get('package_module', '')
 
         package_group[package_module].setdefault(spider_name, {})
-        log.debug(package_group)
         package_group[package_module][spider_name].setdefault(
             'spider', spider_data)
-        log.debug(package_group)
         package_group[package_module][spider_name].setdefault('data', [])
         package_group[package_module][spider_name]['data'].append(post_data)
+
+    log.debug('根据Package&Spider分组并序列化后的数据字典: {}'.format(
+        json.dumps(package_group, ensure_ascii=False)))
+
+    for package_module, spider_group in package_group.items():
+        for spider_name, package_group in spider_group.items():
+            # 通过调用指定 Spider 驱动，对文章列表数据进行格式化
+            spider_mgr = stevedore.driver.DriverManager(
+                namespace='moear.spider',
+                name=spider_name,
+                invoke_on_load=True,
+            )
+            posts_data = spider_mgr.driver.format(
+                package_group.get('data', []))
+            log.debug('经过Spider格式化后的文章列表: {}'.format(
+                json.dumps(posts_data, ensure_ascii=False)))
+
+            # 通过调用指定 Package 驱动，获取最终打包返回的mobi文件数据
+            package_mgr = stevedore.driver.DriverManager(
+                namespace='moear.package',
+                name=package_module,
+                invoke_on_load=True,
+                invoke_args=(package_group.get('spider', {}),)
+            )
+            mobi_file = package_mgr.driver.generate(posts_data)
+            # TODO 从系统settings中获取mobi暂存路径，并将mobi_file保存成文件
