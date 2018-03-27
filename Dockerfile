@@ -35,9 +35,9 @@ ADD ./requirements /app/requirements
 
 # 安装Python相关Packages
 WORKDIR /app
-RUN pip install --no-cache-dir requirements/wheels/moear-api-common*.whl
-RUN pip install --no-cache-dir requirements/wheels/moear-package-*.whl
-RUN pip install --no-cache-dir requirements/wheels/moear-spider-*.whl
+RUN pip install --no-cache-dir requirements/wheels/moear_api_common*.whl
+RUN pip install --no-cache-dir requirements/wheels/moear_package_*.whl
+RUN pip install --no-cache-dir requirements/wheels/moear_spider_*.whl
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
 # 设置全局环境变量
