@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.utils import timezone
+from django.conf import settings
 
 import logging
 
@@ -150,4 +151,7 @@ class PackagePostTaskTests(TestCase):
     def test_100_package_post(self):
         '''测试打包 Post 任务'''
         post_pk_list = [post.pk for post in Post.objects.all()]
-        tasks.package_post(post_pk_list)
+        usermeta = {
+            'package_build_dir': settings.BOOK_PACKAGE_ROOT,
+        }
+        tasks.package_post(post_pk_list, usermeta=usermeta)
