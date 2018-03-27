@@ -1,7 +1,12 @@
+import logging
+
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
+from . import tasks
+
+log = logging.getLogger(__name__)
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -15,6 +20,20 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
     readonly_fields = (
         'date', 'modified')
+    actions = [
+        'action_package_post']
+
+    def action_package_post(self, request, queryset):
+        '''异步打包指定文章列表'''
+        post_pk_list = [post.pk for post in queryset]
+        log.debug('传入的Post PK列表: {}'.format(post_pk_list))
+        tasks.package_post.delay(post_pk_list)
+        self.message_user(
+            request,
+            _('将 {num} 篇文章打包').format(
+                num=len(queryset)))
+
+    action_package_post.short_description = _('异步打包指定文章列表')
 
 
 class PostMetaAdmin(admin.ModelAdmin):
