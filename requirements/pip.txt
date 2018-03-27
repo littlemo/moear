@@ -1,6 +1,7 @@
 celery==4.1.0
 coverage==4.5.1
 Django==2.0.2
+django-allauth==0.35.0
 django-celery-beat==1.1.1
 django-filter==1.1.0
 djangorestframework==3.7.7
