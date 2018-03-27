@@ -19,6 +19,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('{}/'.format(settings.DJANGO_ADMIN_URL), admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('api-auth/',
          include('rest_framework.urls', namespace='rest_framework')),
 ]

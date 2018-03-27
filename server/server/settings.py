@@ -44,8 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # 第三方库
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'rest_framework',
     'django_celery_beat',
 
@@ -85,6 +89,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
+
+
+# 身份认证后端配置
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 
 # Database
@@ -157,6 +171,10 @@ STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 
 # Django Admin
 DJANGO_ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL', 'admin')
+
+
+# django-allauth
+SITE_ID = 1
 
 
 # Django-rest-framework
