@@ -40,16 +40,16 @@ RUN pip install --no-cache-dir requirements/wheels/moear-package-*.whl
 RUN pip install --no-cache-dir requirements/wheels/moear-spider-*.whl
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
+# 设置全局环境变量
+ENV WORK_DIR=/app/server \
+    PATH="/app/run:/app/bin:${PATH}"
+
 # 删除镜像初始化用的文件，并创建用于挂载的路径
 RUN rm -rf * && \
     mkdir -p /app/bin && \
     mkdir -p /app/run && \
     mkdir -p ${WORK_DIR} && \
     mkdir -p /app/runtime/log/nginx
-
-# 设置全局环境变量
-ENV WORK_DIR=/app/server \
-    PATH="/app/run:/app/bin:${PATH}"
 
 # 开放对外端口
 EXPOSE 80 443
