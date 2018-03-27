@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+export INSTALL_LOCK_FILE="/app/runtime/install/install.lock"
+
+# 创建install.lock所在路径
+install_lock_path=`dirname $INSTALL_LOCK_FILE`
+if [ ! -d $install_lock_path ]; then
+    mkdir -p $install_lock_path
+    echo "Init: Create Path: " $install_lock_path
+fi
+
 # 执行额外的配置文件
 bash /app/run/config.sh
 
@@ -36,6 +45,11 @@ celery -A server beat -l $CELERY_BEAT_LOG_LEVEL --logfile=$CELERY_BEAT_LOG_FILE 
 # 启动celery worker服务
 echo "Exec: celery worker"
 celery -A server worker -l $CELERY_WORKER_LOG_LEVEL --logfile=$CELERY_WORKER_LOG_FILE --pidfile= --detach
+
+# 完成全部安装初始化工作后创建安装锁文件
+if [ ! -f "$INSTALL_LOCK_FILE" ]; then
+    touch "$INSTALL_LOCK_FILE"
+fi
 
 if [ "$PRODUCTION" = "True" ];then
     echo "> Production Mode"

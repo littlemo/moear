@@ -10,13 +10,25 @@ pip install --no-cache-dir -r /app/requirements/pip.txt
 
 fi
 
+
 # 初始化数据库表格
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core
 python manage.py migrate --settings=$SERVER_SETTINGS --noinput
 
+
+# 填充DB默认数据
+if [ ! -f "$INSTALL_LOCK_FILE" ]; then
+
+# 填充站点数据
+python manage.py loaddata --settings=$SERVER_SETTINGS Site.json
+
+fi
+
+
 # 注册全部 Spider
-python manage.py register_spiders
+python manage.py register_spiders --settings=$SERVER_SETTINGS
+
 
 # 仅在生产模式下执行静载资源归集&翻译文件生成等操作
 if [ "$PRODUCTION" = "True" ];then
