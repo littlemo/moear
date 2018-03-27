@@ -1,4 +1,5 @@
 import os
+import copy
 import json
 import logging
 import hashlib
@@ -18,11 +19,12 @@ log = logging.getLogger(__name__)
 
 
 @shared_task
-def package_post(post_pk_list):
+def package_post(post_pk_list, usermeta={}):
     '''
     将传入的 Post 列表打包成 Mobi 文件
     '''
     post_list = [Post.objects.get(pk=pk) for pk in post_pk_list]
+    log.debug('Post对象列表: {}'.format(post_list))
 
     # 将文章列表以时间倒序排列
     post_list.sort(key=lambda post: post.date, reverse=True)
@@ -59,9 +61,9 @@ def package_post(post_pk_list):
     for package_module, spider_group in package_group.items():
         for spider_name, package_group in spider_group.items():
             # 定义相关配置数据
-            usermeta = {}
+            um = copy.deepcopy(usermeta)
             posts_data_raw = package_group.get('data', [])
-            usermeta['publish_date'] = posts_data_raw[0].get(
+            um['publish_date'] = posts_data_raw[0].get(
                 'date',
                 datetime.date.today().strftime('%Y-%m-%d')).split('T')[0]
 
@@ -82,7 +84,7 @@ def package_post(post_pk_list):
                 name=package_module,
                 invoke_on_load=True,
                 invoke_args=(spider_dict,),
-                invoke_kwds={'usermeta': usermeta},
+                invoke_kwds={'usermeta': um},
             )
             book_file, book_ext = package_mgr.driver.generate(posts_data)
 
@@ -90,7 +92,7 @@ def package_post(post_pk_list):
             book_filename = \
                 '{spider_display_name}[{publish_date}]_{md5}.{ext}'.format(
                     spider_display_name=spider_dict.get('display_name'),
-                    publish_date=usermeta.get('publish_date'),
+                    publish_date=um.get('publish_date'),
                     md5=_md5_posts_list(posts_data_raw),
                     ext=book_ext,
                 )
