@@ -39,7 +39,7 @@ fi
 python manage.py register_spiders --settings=$SERVER_SETTINGS
 
 
-# 仅在生产模式下执行静载资源归集&翻译文件生成等操作
+# 仅在生产模式下执行静态资源归集&翻译文件生成等操作
 if [ "$PRODUCTION" = "True" ]; then
 
 # 归集静态文件
