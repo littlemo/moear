@@ -14,6 +14,23 @@ import os
 from moear_api_common import utils
 from django.utils.translation import gettext_noop
 
+
+# 创建辅助用的工具函数
+def _get_config(name, default=None):
+    return os.environ.get(name, default)
+
+
+def _get_config_int(name, default):
+    assert isinstance(default, int)
+    return int(_get_config(name, default))
+
+
+def _get_config_bool(name, default):
+    assert isinstance(default, bool)
+    default = 'true' if default else 'false'
+    return _get_config(name, default).lower() == 'true'
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RUNTIME_DIR = os.path.join(BASE_DIR, '..', 'runtime')
