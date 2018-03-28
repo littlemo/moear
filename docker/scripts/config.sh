@@ -1,12 +1,21 @@
 #!/bin/bash -x
 
-# 仅在调试模式下进行Python包的重新安装
 if [ "$DEBUG" = "True" ]; then
+# 在调试模式下，进行Python包的可编辑安装
 
+# 以可编辑模式安装插件包以及项目包依赖
 pip install --no-cache-dir -e /app/requirements/source/moear-api-common
 pip install --no-cache-dir -e /app/requirements/source/moear-package-*
 pip install --no-cache-dir -e /app/requirements/source/moear-spider-*
 pip install --no-cache-dir -r /app/requirements/pip.txt
+
+else
+# 在非调试模式下，进行 wheel 包的更新安装
+
+# 更新插件包安装
+pip install --no-cache-dir /app/requirements/wheels/moear_api_common*.whl
+pip install --no-cache-dir /app/requirements/wheels/moear_package_*.whl
+pip install --no-cache-dir /app/requirements/wheels/moear_spider_*.whl
 
 fi
 
