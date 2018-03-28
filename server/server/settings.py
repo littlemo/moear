@@ -196,6 +196,7 @@ EMAIL_PORT = _get_config_int('EMAIL_PORT', 0)
 EMAIL_HOST_USER = _get_config('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = _get_config('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_SSL = _get_config_bool('EMAIL_USE_SSL', True)
+EMAIL_TIME_LIMIT = _get_config_int('EMAIL_TIME_LIMIT', 30)
 
 DEFAULT_FROM_EMAIL = _get_config('DEFAULT_FROM_EMAIL', '')
 
