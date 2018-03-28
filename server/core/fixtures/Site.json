@@ -3,7 +3,7 @@
     "model": "sites.site",
     "pk": 1,
     "fields": {
-        "domain": "moear.moorehy.com",
+        "domain": "localhost",
         "name": "MoEar"
     }
 }
