@@ -13,16 +13,16 @@ fi
 bash /app/run/config.sh
 
 # 设置环境变量默认值
-if [ -z $CELERY_BEAT_LOG_LEVEL ];then
+if [ -z $CELERY_BEAT_LOG_LEVEL ]; then
     CELERY_BEAT_LOG_LEVEL=DEBUG
 fi
-if [ -z $CELERY_BEAT_LOG_FILE ];then
+if [ -z $CELERY_BEAT_LOG_FILE ]; then
     CELERY_BEAT_LOG_FILE=/app/runtime/log/celery/celeryd.log
 fi
-if [ -z $CELERY_WORKER_LOG_LEVEL ];then
+if [ -z $CELERY_WORKER_LOG_LEVEL ]; then
     CELERY_WORKER_LOG_LEVEL=DEBUG
 fi
-if [ -z $CELERY_WORKER_LOG_FILE ];then
+if [ -z $CELERY_WORKER_LOG_FILE ]; then
     CELERY_WORKER_LOG_FILE=/app/runtime/log/celery/%n%I.log
 fi
 
@@ -51,7 +51,7 @@ if [ ! -f "$INSTALL_LOCK_FILE" ]; then
     touch "$INSTALL_LOCK_FILE"
 fi
 
-if [ "$PRODUCTION" = "True" ];then
+if [ "$PRODUCTION" = "True" ]; then
     echo "> Production Mode"
     # 启动nginx
     echo "Exec: nginx"

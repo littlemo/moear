@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # 仅在调试模式下进行Python包的重新安装
-if [ "$DEBUG" = "True" ];then
+if [ "$DEBUG" = "True" ]; then
 
 pip install --no-cache-dir -e /app/requirements/source/moear-api-common
 pip install --no-cache-dir -e /app/requirements/source/moear-package-*
@@ -31,7 +31,7 @@ python manage.py register_spiders --settings=$SERVER_SETTINGS
 
 
 # 仅在生产模式下执行静载资源归集&翻译文件生成等操作
-if [ "$PRODUCTION" = "True" ];then
+if [ "$PRODUCTION" = "True" ]; then
 
 # 归集静态文件
 python manage.py collectstatic --noinput
