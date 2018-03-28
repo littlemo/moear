@@ -190,6 +190,16 @@ STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 DJANGO_ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL', 'admin')
 
 
+# Email
+EMAIL_HOST = _get_config('EMAIL_HOST', '')
+EMAIL_PORT = _get_config_int('EMAIL_PORT', 0)
+EMAIL_HOST_USER = _get_config('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = _get_config('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_SSL = _get_config_bool('EMAIL_USE_SSL', True)
+
+DEFAULT_FROM_EMAIL = _get_config('DEFAULT_FROM_EMAIL', '')
+
+
 # django-allauth
 SITE_ID = 1
 
