@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 
@@ -24,3 +25,6 @@ admin.site.register(UserMeta, UserMetaAdmin)
 admin.AdminSite.site_header = _('MoEar 后台管理')
 admin.AdminSite.site_title = _('MoEar')
 admin.AdminSite.index_title = _('站点管理')
+
+# 强制 admin 使用 AllAuth 的 login 策略
+admin.site.login = login_required(admin.site.login)
