@@ -20,3 +20,7 @@ class UserMetaAdmin(admin.ModelAdmin):
 
 admin.site.register(Option, OptionAdmin)
 admin.site.register(UserMeta, UserMetaAdmin)
+
+admin.AdminSite.site_header = _('MoEar 后台管理')
+admin.AdminSite.site_title = _('MoEar')
+admin.AdminSite.index_title = _('站点管理')
