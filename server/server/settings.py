@@ -203,7 +203,7 @@ DEFAULT_FROM_EMAIL = _get_config('DEFAULT_FROM_EMAIL', '')
 
 # django-allauth
 SITE_ID = 1
-ACCOUNT_LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
 ACCOUNT_ADAPTER = 'core.adapters.AccountAdapter'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
