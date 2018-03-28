@@ -40,15 +40,15 @@ RUNTIME_DIR = os.path.join(BASE_DIR, '..', 'runtime')
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
+SECRET_KEY = _get_config(
     'SECRET_KEY',
     '7_%wji=lxr3)@1r17t$!@7z%q$kk7_sxb&i#tiadby^5la%tua')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'true').lower() == 'true'
-PRODUCTION = os.environ.get('PRODUCTION', 'false').lower() == 'true'
+DEBUG = _get_config_bool('DEBUG', True)
+PRODUCTION = _get_config_bool('PRODUCTION', False)
 
-ALLOWED_HOSTS = os.environ.get(
+ALLOWED_HOSTS = _get_config(
     'ALLOWED_HOSTS',
     'localhost,127.0.0.1').split(',')
 
@@ -131,7 +131,7 @@ DATABASES = {
             'charset': 'utf8mb4',
         },
         'TEST': {
-            'NAME': os.environ.get('TEST_DATABASE_NAME', 'mo_ear_test'),
+            'NAME': _get_config('TEST_DATABASE_NAME', 'mo_ear_test'),
         },
     }
 }
@@ -187,7 +187,7 @@ STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 
 
 # Django Admin
-DJANGO_ADMIN_URL = os.environ.get('DJANGO_ADMIN_URL', 'admin')
+DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL', 'admin')
 
 
 # Email
@@ -216,21 +216,21 @@ if DEBUG:
 
 
 # Celeryd
-CELERY_BROKER_URL = os.environ.get(
+CELERY_BROKER_URL = _get_config(
     'CELERY_BROKER_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.environ.get(
+CELERY_RESULT_BACKEND = _get_config(
     'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 
 CELERY_APP = 'server'
 CELERY_TASK_DEFAULT_QUEUE = 'moear'
 CELERY_TASK_TIME_LIMIT = 1800
-CELERY_WORKER_CONCURRENCY = int(os.environ.get(
-    'CELERY_WORKER_CONCURRENCY', '10'))
-CELERY_WORKER_PREFETCH_MULTIPLIER = int(os.environ.get(
-    'CELERY_WORKER_PREFETCH_MULTIPLIER', '5'))
+CELERY_WORKER_CONCURRENCY = _get_config_int(
+    'CELERY_WORKER_CONCURRENCY', 10)
+CELERY_WORKER_PREFETCH_MULTIPLIER = _get_config_int(
+    'CELERY_WORKER_PREFETCH_MULTIPLIER', 5)
 
 CELERY_CREATE_DIRS = []
-CELERY_WORKER_LOG_PATH = os.path.dirname(os.environ.get(
+CELERY_WORKER_LOG_PATH = os.path.dirname(_get_config(
     'CELERY_WORKER_LOG_FILE',
     os.path.join(RUNTIME_DIR, 'log', 'celery', '%n%I.log')))
 CELERY_CREATE_DIRS.append(CELERY_WORKER_LOG_PATH)
@@ -238,7 +238,7 @@ CELERY_CREATE_DIRS.append(CELERY_WORKER_LOG_PATH)
 # celerybeat
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-CELERY_BEAT_LOG_PATH = os.path.dirname(os.environ.get(
+CELERY_BEAT_LOG_PATH = os.path.dirname(_get_config(
     'CELERY_BEAT_LOG_FILE',
     os.path.join(RUNTIME_DIR, 'log', 'celery', 'celeryd.log')))
 CELERY_CREATE_DIRS.append(CELERY_BEAT_LOG_PATH)
