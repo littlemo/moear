@@ -2,18 +2,13 @@ import os
 import copy
 import json
 import logging
-import hashlib
 import stevedore
-from collections import OrderedDict
 
+from celery import shared_task
 from django.conf import settings
 from django.utils import timezone
 
-from celery import shared_task
-from posts.models import *
-from posts.serializers import *
-from spiders.models import *
-from spiders.serializers import *
+from .utils import trans_to_package_group, posts_list_md5
 
 log = logging.getLogger(__name__)
 
@@ -23,40 +18,7 @@ def package_post(post_pk_list, usermeta={}):
     '''
     将传入的 Post 列表打包成 Mobi 文件
     '''
-    post_list = [Post.objects.get(pk=pk) for pk in post_pk_list]
-    log.debug('Post对象列表: {}'.format(post_list))
-
-    # 将文章列表以时间倒序排列
-    post_list.sort(key=lambda post: post.date, reverse=True)
-
-    package_group = OrderedDict()
-    for post in post_list:
-        # 生成文章数据的字典数据（含元数据）
-        postmeta_list = PostMeta.objects.filter(post=post)
-        postmeta_data = PostMetaSerializer(postmeta_list, many=True).data
-        post_data = PostSerializer(post).data
-        post_data['meta'] = postmeta_data
-
-        # 生成爬虫数据的字典数据（含元数据）
-        spider_data = SpiderSerializer(post.spider).data
-        spdiermeta_list = SpiderMeta.objects.filter(spider=post.spider)
-        spidermeta_data = SpiderMetaSerializer(spdiermeta_list, many=True).data
-        spider_data['meta'] = spidermeta_data
-
-        # 定义输出字典所用到的键名
-        spider_name = post.spider.name
-        package_module = spidermeta_data.get('package_module', '')
-
-        # 组装输出字典数据
-        package_group.setdefault(package_module, OrderedDict())
-        package_group[package_module].setdefault(spider_name, OrderedDict())
-        package_group[package_module][spider_name].setdefault(
-            'spider', spider_data)
-        package_group[package_module][spider_name].setdefault('data', [])
-        package_group[package_module][spider_name]['data'].append(post_data)
-
-    log.debug('根据Package&Spider分组并序列化后的数据字典: {}'.format(
-        json.dumps(package_group, ensure_ascii=False)))
+    package_group = trans_to_package_group(post_pk_list)
 
     for package_module, spider_group in package_group.items():
         for spider_name, package_group in spider_group.items():
