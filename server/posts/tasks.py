@@ -3,11 +3,11 @@ import copy
 import json
 import logging
 import hashlib
-import datetime
 import stevedore
 from collections import OrderedDict
 
 from django.conf import settings
+from django.utils import timezone
 
 from celery import shared_task
 from posts.models import *
@@ -65,7 +65,7 @@ def package_post(post_pk_list, usermeta={}):
             posts_data_raw = package_group.get('data', [])
             um['publish_date'] = posts_data_raw[0].get(
                 'date',
-                datetime.date.today().strftime('%Y-%m-%d')).split('T')[0]
+                timezone.now().strftime('%Y-%m-%d')).split('T')[0]
 
             # 通过调用指定 Spider 驱动，对文章列表数据进行格式化
             spider_mgr = stevedore.driver.DriverManager(
