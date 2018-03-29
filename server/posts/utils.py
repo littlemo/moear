@@ -73,3 +73,15 @@ def posts_list_md5(posts):
     log.debug('origin_url_list: {}'.format(origin_url_list))
     origin_url_str = ''.join(origin_url_list)
     return hashlib.md5(origin_url_str.encode('utf-8')).hexdigest()[:16].upper()
+
+
+def yield_sec_level_dict(dictionary):
+    '''
+    用于遍历嵌套字典中前两级的生成器
+
+    :param dictionary: 三级嵌套字典
+    :type dictionsry: dict(str, dict(str, type))
+    '''
+    for top_key, top_val in dictionary.items():
+        for sec_key, sec_val in top_val.items():
+            yield (top_key, sec_key, sec_val)
