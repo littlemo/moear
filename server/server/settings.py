@@ -404,7 +404,7 @@ LOGGING = {
         },
         'posts': {
             'handlers': ['posts', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         'spiders': {
@@ -414,7 +414,7 @@ LOGGING = {
         },
         'deliver': {
             'handlers': ['deliver', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
 
