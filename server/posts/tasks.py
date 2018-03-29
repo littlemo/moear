@@ -21,10 +21,10 @@ def package_post(post_pk_list, usermeta={}):
     package_group = trans_to_package_group(post_pk_list)
 
     for package_module, spider_group in package_group.items():
-        for spider_name, package_group in spider_group.items():
+        for spider_name, book_group in spider_group.items():
             # 定义相关配置数据
             um = copy.deepcopy(usermeta)
-            posts_data_raw = package_group.get('data', [])
+            posts_data_raw = book_group.get('data', [])
             um['publish_date'] = posts_data_raw[0].get(
                 'date',
                 timezone.now().strftime('%Y-%m-%d')).split('T')[0]
@@ -40,7 +40,7 @@ def package_post(post_pk_list, usermeta={}):
                 json.dumps(posts_data, ensure_ascii=False)))
 
             # 通过调用指定 Package 驱动，获取最终打包返回的mobi文件数据
-            spider_dict = package_group.get('spider', {})
+            spider_dict = book_group.get('spider', {})
             package_mgr = stevedore.driver.DriverManager(
                 namespace='moear.package',
                 name=package_module,
