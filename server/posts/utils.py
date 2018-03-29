@@ -56,3 +56,20 @@ def trans_to_package_group(post_pk_list):
         json.dumps(package_group, ensure_ascii=False)))
 
     return package_group
+
+
+def posts_list_md5(posts):
+    '''
+    计算Post对象列表的特征值
+
+    仅使用 ``origin_url`` 作为数据计算摘要信息
+
+    :param posts: 文章对象列表
+    :type posts: list(posts.models.Post)
+    :return: MD5 值的前 16 位，大写
+    :rtype: str
+    '''
+    origin_url_list = [post.get('origin_url', '') for post in posts]
+    log.debug('origin_url_list: {}'.format(origin_url_list))
+    origin_url_str = ''.join(origin_url_list)
+    return hashlib.md5(origin_url_str.encode('utf-8')).hexdigest()[:16].upper()

@@ -55,17 +55,10 @@ def package_post(post_pk_list, usermeta={}):
                 '{spider_display_name}[{publish_date}]_{md5}.{ext}'.format(
                     spider_display_name=spider_dict.get('display_name'),
                     publish_date=um.get('publish_date'),
-                    md5=_md5_posts_list(posts_data_raw),
+                    md5=posts_list_md5(posts_data_raw),
                     ext=book_ext,
                 )
             book_abspath = os.path.join(
                 settings.BOOK_PACKAGE_ROOT, book_filename)
             with open(book_abspath, 'wb') as fh:
                 fh.write(book_file)
-
-
-def _md5_posts_list(posts):
-    origin_url_list = [post.get('origin_url', '') for post in posts]
-    log.debug('origin_url_list: {}'.format(origin_url_list))
-    origin_url_str = ''.join(origin_url_list)
-    return hashlib.md5(origin_url_str.encode('utf-8')).hexdigest()[:16].upper()
