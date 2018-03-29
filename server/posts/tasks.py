@@ -9,14 +9,22 @@ from django.conf import settings
 from django.utils import timezone
 
 from .utils import trans_to_package_group, posts_list_md5, yield_sec_level_dict
+from core.models import UserMeta
+from deliver.tasks import deliver_book_task
 
 log = logging.getLogger(__name__)
 
 
 @shared_task
-def package_post(post_pk_list, usermeta={}):
+def package_post(post_pk_list, usermeta={}, dispatch=True):
     '''
-    将传入的 Post 列表打包成 Mobi 文件
+    将传入的 Post 列表打包成 Mobi 文件，并进行投递
+
+    :param post_pk_list: 文章主键列表
+    :type post_pk_list: list(int)
+    :param dict usermeta: 关键字参数，可选，用于提供定制的配置项，以覆盖插件中的默认配置
+    :param bool dispatch: 关键字参数，可选，
+        用于指定是否在打包后立刻执行投递逻辑，默认为True
     '''
     package_group = trans_to_package_group(post_pk_list)
     for package_module, spider_name, book_group \
@@ -62,3 +70,27 @@ def package_post(post_pk_list, usermeta={}):
             settings.BOOK_PACKAGE_ROOT, book_filename)
         with open(book_abspath, 'wb') as fh:
             fh.write(book_file)
+
+        # 将生成的书籍文件分发到订阅的设备地址上
+        if not dispatch:
+            return
+
+        feed_usermeta = UserMeta.objects.filter(
+            name='moear.spider.feeds',
+            value__contains=spider_name)
+
+        email_addr_list = []
+        for usermeta in feed_usermeta:
+            feed_address_usermeta = UserMeta.objects.get(
+                user=usermeta.user,
+                name='moear.device.addr')
+            email_addr_list.append(feed_address_usermeta.value)
+
+        log.info('订阅了【{spider_name}】的用户设备地址: {addr_list}'.format(
+            spider_name=spider_name,
+            addr_list=email_addr_list))
+
+        deliver_book_task.delay(
+            email_addr_list,
+            book_filename.split('_')[0],
+            book_abspath)
