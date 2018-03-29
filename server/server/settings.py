@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'spiders.apps.SpidersConfig',
     'core.apps.CoreConfig',
     'terms.apps.TermsConfig',
+    'deliver.apps.DeliverConfig',
 ]
 
 MIDDLEWARE = [
@@ -350,6 +351,12 @@ LOGGING = {
             'filename': os.path.join(LOGS_ROOT, 'spiders.log'),
             'formatter': 'standard',
         },
+        'deliver': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, 'deliver.log'),
+            'formatter': 'standard',
+        },
         'console': {
             'level': ('INFO', 'DEBUG')[DEBUG],
             'class': 'logging.StreamHandler',
@@ -401,6 +408,11 @@ LOGGING = {
         },
         'spiders': {
             'handlers': ['spiders', 'console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'deliver': {
+            'handlers': ['deliver', 'console'],
             'level': 'DEBUG',
             'propagate': False,
         },
