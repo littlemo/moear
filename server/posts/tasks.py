@@ -47,7 +47,8 @@ def package_post(post_pk_list, usermeta={}):
             invoke_args=(spider_dict,),
             invoke_kwds={'usermeta': um},
         )
-        book_file, book_ext = package_mgr.driver.generate(posts_data)
+        book_ext = package_mgr.driver.ext
+        book_file = package_mgr.driver.generate(posts_data)
 
         # 从系统settings中获取mobi暂存路径，并将book_file保存成文件
         book_filename = \
