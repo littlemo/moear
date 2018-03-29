@@ -25,13 +25,15 @@ class PostAdmin(admin.ModelAdmin):
         'date', 'modified')
     actions = [
         'action_package_post',
-        'action_deliver_book']
+        'action_deliver_book',
+        'action_package_deliver',
+    ]
 
     def action_package_post(self, request, queryset):
         '''异步打包指定文章列表'''
         post_pk_list = [post.pk for post in queryset]
-        log.debug('传入的Post PK列表: {}'.format(post_pk_list))
-        tasks.package_post.delay(post_pk_list)
+        log.info('待打包的文章PK列表: {}'.format(post_pk_list))
+        tasks.package_post.delay(post_pk_list, dispatch=False)
         self.message_user(
             request,
             _('将 {num} 篇文章打包').format(
@@ -70,8 +72,19 @@ class PostAdmin(admin.ModelAdmin):
                 book_filename.split('_')[0],
                 book_abspath)
 
+    def action_package_deliver(self, request, queryset):
+        '''异步打包并投递书籍'''
+        post_pk_list = [post.pk for post in queryset]
+        log.info('待打包并投递的文章PK列表: {}'.format(post_pk_list))
+        tasks.package_post.delay(post_pk_list)
+        self.message_user(
+            request,
+            _('将 {num} 篇文章打包并投递').format(
+                num=len(queryset)))
+
     action_package_post.short_description = _('异步打包指定文章列表')
     action_deliver_book.short_description = _('异步投递书籍文件')
+    action_package_deliver.short_description = _('异步打包并投递书籍')
 
 
 class PostMetaAdmin(admin.ModelAdmin):
