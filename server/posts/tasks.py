@@ -26,6 +26,9 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
     :param bool dispatch: 关键字参数，可选，
         用于指定是否在打包后立刻执行投递逻辑，默认为True
     '''
+    log.info('待打包文章列表({num}): {post_pk_list}'.format(
+        num=len(post_pk_list),
+        post_pk_list=post_pk_list))
     package_group = trans_to_package_group(post_pk_list)
     for package_module, spider_name, book_group \
             in yield_sec_level_dict(package_group):
