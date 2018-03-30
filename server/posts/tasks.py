@@ -51,6 +51,12 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
 
         # 通过调用指定 Package 驱动，获取最终打包返回的mobi文件数据
         spider_dict = book_group.get('spider', {})
+        # 此处为便于在Amazon后台以及设备中识别期刊日期，故作为Trick使用
+        # 因为，在新版Kindle系统中会在书籍下方显示作者信息，而非旧版时的日期信息，
+        # 对于每日更新的期刊很容易混淆，故在作者信息后追加期刊发布日期
+        spider_dict['author'] = '{author}[{pub_date}]'.format(
+            author=spider_dict['author'],
+            pub_date=um['publish_date'])
         package_mgr = stevedore.driver.DriverManager(
             namespace='moear.package',
             name=package_module,
