@@ -40,6 +40,12 @@ RUN pip install --no-cache-dir requirements/wheels/moear_package_*.whl
 RUN pip install --no-cache-dir requirements/wheels/moear_spider_*.whl
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
+# 设置时区
+RUN rm -rf /etc/localtime \
+    && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone
+ENV TZ="Asia/Shanghai"
+
 # 设置全局环境变量
 ENV WORK_DIR=/app/server \
     PATH="/app/run:/app/bin:${PATH}"
