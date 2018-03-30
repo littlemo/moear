@@ -68,4 +68,4 @@ def crawl_schedule_with_random_delay_task(spider_name):
     log.info('随机延迟【{delay}】秒爬取【{name}】源'.format(
         delay=delay,
         name=spider.display_name))
-    spider_post.delay(spider_name, countdown=delay)
+    spider_post.apply_async((spider_name,), countdown=delay)
