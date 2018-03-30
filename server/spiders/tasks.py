@@ -28,7 +28,7 @@ def spider_post(spider_name):
     def crawl(ext, *args):
         rc = ext.obj.crawl()
         data = json.dumps(rc, ensure_ascii=False)
-        log.info('[{name}]爬取返回包：{pack}'.format(
+        log.debug('[{name}]爬取返回包：{pack}'.format(
             name=ext.name, pack=data))
         return (ext.name, rc)
 
