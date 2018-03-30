@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_celery_beat.models import PeriodicTask
 
 
 class Spider(models.Model):
@@ -37,6 +38,18 @@ class Spider(models.Model):
             author=self.author,
             display_name=self.display_name)
         return output
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        try:
+            periodic_task = PeriodicTask.objects.get(
+                name='Crawl Spider [{}]'.format(self.name))
+            periodic_task.enabled = self.enabled
+            periodic_task.save()
+        except PeriodicTask.DoesNotExist:
+            pass
+        super(Spider, self).save(
+            force_insert, force_update, using, update_fields)
 
     class Meta:
         verbose_name = _('爬虫信息')
