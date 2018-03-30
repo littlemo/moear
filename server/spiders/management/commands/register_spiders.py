@@ -47,16 +47,18 @@ class Command(BaseCommand):
                 day_of_week=crawl_schedule_list[2],
                 day_of_month=crawl_schedule_list[3],
                 month_of_year=crawl_schedule_list[4])
+            task_name = 'core.tasks.periodic_chain_crawl_package_deliver'
             try:
                 periodic_task = PeriodicTask.objects.get(
                     name='Crawl Spider [{}]'.format(spider.name))
                 periodic_task.crontab = schedule
+                periodic_task.task = task_name
                 periodic_task.save()
             except PeriodicTask.DoesNotExist:
                 periodic_task = PeriodicTask.objects.create(
                     crontab=schedule,
                     name='Crawl Spider [{}]'.format(spider.name),
-                    task='spiders.tasks.crawl_schedule_with_random_delay_task',
+                    task=task_name,
                     args=json.dumps([spider.name]),
                 )
             spider.save()  # 根据Spider使能配置，更新计划任务的使能状态

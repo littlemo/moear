@@ -1,13 +1,12 @@
 import json
 import logging
-import random
 
 import stevedore
 from django.utils import timezone
 from celery import shared_task
 
 from posts.serializers import *
-from spiders.models import Spider, SpiderMeta
+from spiders.models import Spider
 
 
 log = logging.getLogger(__name__)
@@ -59,18 +58,6 @@ def spider_post(spider_name):
                 log.error(postmeta_serializer.errors)
                 break
             postmeta_serializer.save(post=post_serializer.instance)
-
-
-@shared_task
-def crawl_schedule_with_random_delay_task(spider_name):
-    spider = Spider.objects.get(name=spider_name)
-    crawl_random_delay = SpiderMeta.objects.get(
-        spider=spider, name='crawl_random_delay').value
-    delay = random.randint(0, int(crawl_random_delay))
-    log.info('随机延迟【{delay}】秒爬取【{name}】源'.format(
-        delay=delay,
-        name=spider.display_name))
-    spider_post.apply_async((spider_name,), countdown=delay)
     log.info('完成文章爬取({num}): {post_pk_list}'.format(
         num=len(post_pk_list),
         post_pk_list=post_pk_list))
