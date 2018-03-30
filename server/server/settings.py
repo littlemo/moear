@@ -334,6 +334,12 @@ LOGGING = {
             'filename': os.path.join(LOGS_ROOT, "api.log"),
             'formatter': 'standard',
         },
+        'core': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGS_ROOT, "core.log"),
+            'formatter': 'standard',
+        },
         'pages': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -395,6 +401,11 @@ LOGGING = {
         'restapi': {
             'handlers': ['restapi', 'console'],
             'level': 'DEBUG',
+            'propagate': False,
+        },
+        'core': {
+            'handlers': ['core', 'console'],
+            'level': 'INFO',
             'propagate': False,
         },
         'pages': {
