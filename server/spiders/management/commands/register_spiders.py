@@ -1,9 +1,11 @@
+import json
 import stevedore
 
 from django.core.management.base import BaseCommand, CommandError
+from django_celery_beat.models import CrontabSchedule, PeriodicTask
 
-from spiders.models import *
-from spiders.serializers import *
+from spiders.models import SpiderMeta
+from spiders.serializers import SpiderSerializer, SpiderMetaSerializer
 
 
 class Command(BaseCommand):
@@ -32,6 +34,32 @@ class Command(BaseCommand):
                     spidermeta_serializer.errors))
                 raise CommandError(spidermeta_serializer.errors)
             spidermeta_serializer.save(spider=spider_serializer.instance)
+
+            # 创建计划任务
+            spider = spider_serializer.instance
+            crawl_schedule = SpiderMeta.objects.get(
+                spider=spider,
+                name='crawl_schedule').value
+            crawl_schedule_list = crawl_schedule.split()
+            schedule, _ = CrontabSchedule.objects.get_or_create(
+                minute=crawl_schedule_list[0],
+                hour=crawl_schedule_list[1],
+                day_of_week=crawl_schedule_list[2],
+                day_of_month=crawl_schedule_list[3],
+                month_of_year=crawl_schedule_list[4])
+            try:
+                periodic_task = PeriodicTask.objects.get(
+                    name='Crawl Spider [{}]'.format(spider.name))
+                periodic_task.crontab = schedule
+                periodic_task.save()
+            except PeriodicTask.DoesNotExist:
+                periodic_task = PeriodicTask.objects.create(
+                    crontab=schedule,
+                    name='Crawl Spider [{}]'.format(spider.name),
+                    task='spiders.tasks.crawl_schedule_with_random_delay_task',
+                    args=json.dumps([spider.name]),
+                )
+            spider.save()  # 根据Spider使能配置，更新计划任务的使能状态
 
             self.stdout.write(self.style.SUCCESS(
                 '[{name}] 注册成功！'.format(
