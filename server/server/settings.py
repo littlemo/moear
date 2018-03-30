@@ -409,7 +409,7 @@ LOGGING = {
         },
         'spiders': {
             'handlers': ['spiders', 'console'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': False,
         },
         'deliver': {
