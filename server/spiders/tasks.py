@@ -13,11 +13,11 @@ log = logging.getLogger(__name__)
 
 
 @shared_task
-def spider_post(spider_pk):
+def spider_post(spider_name):
     """
     爬取文章数据
     """
-    spider = Spider.objects.get(pk=spider_pk)
+    spider = Spider.objects.get(name=spider_name)
     mgr = stevedore.NamedExtensionManager(
         namespace='moear.spider',
         names=[spider.name],

@@ -20,7 +20,7 @@ class SpiderAdmin(admin.ModelAdmin):
     def action_spider_post(self, request, queryset):
         """异步爬取Post信息"""
         c = (group(
-            tasks.spider_post.s(spider.pk) for spider in queryset
+            tasks.spider_post.s(spider.name) for spider in queryset
         ))
         c.delay()
         self.message_user(
