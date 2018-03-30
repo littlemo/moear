@@ -36,6 +36,7 @@ def spider_post(spider_name):
     log.debug('结果对象：{results}'.format(
         results=results))
 
+    post_pk_list = []
     for name, data in results:
         log.info('[{name}]处理爬虫返回数据，并持久化'.format(name=name))
         data.reverse()
@@ -49,6 +50,7 @@ def spider_post(spider_name):
             date = timezone.make_aware(date, timezone.get_current_timezone())
             # TODO Fix 如果强制设置date(文章创建时间)
             post_serializer.save()
+            post_pk_list.append(post_serializer.instance.pk)
 
             metadata = d.pop('meta', [])
             postmeta_serializer = PostMetaSerializer(
@@ -69,3 +71,7 @@ def crawl_schedule_with_random_delay_task(spider_name):
         delay=delay,
         name=spider.display_name))
     spider_post.apply_async((spider_name,), countdown=delay)
+    log.info('完成文章爬取({num}): {post_pk_list}'.format(
+        num=len(post_pk_list),
+        post_pk_list=post_pk_list))
+    return post_pk_list
