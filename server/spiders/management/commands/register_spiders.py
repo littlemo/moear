@@ -16,12 +16,15 @@ class Command(BaseCommand):
 
         def register_spdier(ext):
             data = ext.obj.register()
+
+            # 持久化Spider数据
             spider_serializer = SpiderSerializer(data=data)
             if not spider_serializer.is_valid():
                 self.stderr.write(self.style.ERROR(spider_serializer.errors))
                 raise CommandError(spider_serializer.errors)
             spider_serializer.save()
 
+            # 持久化SpiderMeta数据
             spidermeta_serializer = SpiderMetaSerializer(
                 data=data.get('meta', {}), many=True)
             if not spidermeta_serializer.is_valid():
