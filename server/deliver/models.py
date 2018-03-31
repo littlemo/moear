@@ -7,6 +7,7 @@ class DeliverLog(models.Model):
     投递日志
     '''
     STATUS_CHOICES = (
+        ('packaging', _('打包中')),
         ('packaged', _('已打包')),
         ('delivering', _('投递中')),
         ('completed', _('完成')),
