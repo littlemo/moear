@@ -6,17 +6,22 @@ class DeliverLog(models.Model):
     '''
     投递日志
     '''
+    PACKAGING = 'packaging'
+    PACKAGED = 'packaged'
+    DELIVERING = 'delivering'
+    COMPLETED = 'completed'
+    FAILED = 'failed'
     STATUS_CHOICES = (
-        ('packaging', _('打包中')),
-        ('packaged', _('已打包')),
-        ('delivering', _('投递中')),
-        ('completed', _('完成')),
-        ('failed', _('失败')),
+        (PACKAGING, _('打包中')),
+        (PACKAGED, _('已打包')),
+        (DELIVERING, _('投递中')),
+        (COMPLETED, _('完成')),
+        (FAILED, _('失败')),
     )
 
     id = models.BigAutoField(
         primary_key=True)
-    user = models.ManyToManyField(
+    users = models.ManyToManyField(
         'auth.User',
         verbose_name=_('投递用户'))
     spider = models.ForeignKey(
@@ -29,6 +34,8 @@ class DeliverLog(models.Model):
         on_delete=models.SET_NULL)
     file_name = models.CharField(
         verbose_name=_('附件名称'),
+        blank=True,
+        default='',
         max_length=255)
     file_size = models.BigIntegerField(
         verbose_name=_('附件大小'),
