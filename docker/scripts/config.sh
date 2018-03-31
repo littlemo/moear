@@ -22,7 +22,7 @@ fi
 
 # 初始化数据库表格
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput
-python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core
+python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core deliver
 python manage.py migrate --settings=$SERVER_SETTINGS --noinput
 
 
