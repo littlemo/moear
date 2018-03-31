@@ -5,7 +5,7 @@ from .models import DeliverLog
 
 class DeliverLogAdmin(admin.ModelAdmin):
     list_display = (
-        'date', 'spider', 'file_name', 'file_size', 'status')
+        'date', 'spider', 'file_name', 'fmt_file_size_mb', 'status')
     search_fields = [
         'file_name']
     list_filter = ('date',)

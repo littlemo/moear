@@ -49,6 +49,12 @@ class DeliverLog(models.Model):
         verbose_name=_('投递时间'),
         auto_now_add=True)
 
+    def fmt_file_size_mb(self):
+        return '{:.2f}MB'.format(self.file_size / float(1024 * 1024))
+
+    fmt_file_size_mb.short_description = _('附件大小')
+    fmt_file_size_mb.admin_order_field = 'file_size'
+
     class Meta:
         verbose_name = _('投递日志')
         verbose_name_plural = verbose_name
