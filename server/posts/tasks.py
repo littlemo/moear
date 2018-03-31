@@ -120,14 +120,14 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             spider_name=spider_name,
             addr_list=email_addr_list))
 
+        deliver_log.users.set(user_list)
+        deliver_log.status = DeliverLog.DELIVERING
+        deliver_log.save()
         # HINT 此处为了节省流量，进行了合并投递，但传说一份邮件超过15个不同
         # 的【发送至Kindle】电子邮箱，会被认定为垃圾邮件而被Amazon拒绝接收，
         # 但我没有验证条件，故当前仅留下说明信息
 
         # HINT 同样传说附加大于50MB会投递失败，待验证
-        deliver_log.users.set(user_list)
-        deliver_log.status = DeliverLog.DELIVERING
-        deliver_log.save()
         try:
             deliver_book_task.delay(
                 email_addr_list,
