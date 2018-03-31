@@ -252,7 +252,7 @@ _default_exchange = Exchange('default', type='direct')
 _email_exchange = Exchange('email', type='topic')
 _crawl_exchange = Exchange('crawl', type='topic')
 
-CELERY_QUEUES = {
+CELERY_TASK_QUEUES = {
     Queue('default', _default_exchange, routing_key='default'),
     Queue('email', _email_exchange, routing_key='email.#'),
     Queue('crawl', _crawl_exchange, routing_key='crawl.#'),
@@ -262,7 +262,7 @@ CELERY_TASK_DEFAULT_EXCHANGE = 'default'
 CELERY_TASK_DEFAULT_EXCHANGE_TYPE = 'direct'
 CELERY_TASK_DEFAULT_ROUTING_KEY = 'default'
 
-CELERY_ROUTES = {
+CELERY_TASK_ROUTES = {
     'core.tasks.periodic_chain_crawl_package_deliver': {
         'queue': 'default',
         'routing_key': 'default',
