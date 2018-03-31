@@ -10,6 +10,8 @@ from django.utils import timezone
 
 from .utils import trans_to_package_group, posts_list_md5, yield_sec_level_dict
 from core.models import UserMeta
+from deliver.models import DeliverLog
+from spiders.models import Spider
 from deliver.tasks import deliver_book_task
 
 log = logging.getLogger(__name__)
@@ -49,6 +51,13 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         log.debug('经过Spider格式化后的文章列表: {}'.format(
             json.dumps(posts_data, ensure_ascii=False)))
 
+        # 创建投递日志
+        deliver_log = DeliverLog(
+            spider=Spider.objects.get(name=spider_name),
+            status=DeliverLog.PACKAGING,
+        )
+        deliver_log.save()
+
         # 通过调用指定 Package 驱动，获取最终打包返回的mobi文件数据
         spider_dict = book_group.get('spider', {})
         # 此处为便于在Amazon后台以及设备中识别期刊日期，故作为Trick使用
@@ -64,8 +73,13 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             invoke_args=(spider_dict,),
             invoke_kwds={'usermeta': um},
         )
-        book_ext = package_mgr.driver.ext
-        book_file = package_mgr.driver.generate(posts_data)
+        try:
+            book_ext = package_mgr.driver.ext
+            book_file = package_mgr.driver.generate(posts_data)
+        except Exception as e:
+            deliver_log.status = DeliverLog.FAILED
+            deliver_log.save()
+            raise e
 
         # 从系统settings中获取mobi暂存路径，并将book_file保存成文件
         book_filename = \
@@ -80,6 +94,10 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         # TODO 增加对文件的zip压缩支持，从而减小投递流量消耗
         with open(book_abspath, 'wb') as fh:
             fh.write(book_file)
+        deliver_log.file_name = book_filename
+        deliver_log.file_size = os.path.getsize(book_abspath)
+        deliver_log.status = DeliverLog.PACKAGED
+        deliver_log.save()
 
         # 将生成的书籍文件分发到订阅的设备地址上
         if not dispatch:
@@ -90,11 +108,13 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             value__contains=spider_name)
 
         email_addr_list = []
+        user_list = []
         for usermeta in feed_usermeta:
             feed_address_usermeta = UserMeta.objects.get(
                 user=usermeta.user,
                 name='moear.device.addr')
             email_addr_list.append(feed_address_usermeta.value)
+            user_list.append(usermeta.user)
 
         log.info('订阅了【{spider_name}】的用户设备地址: {addr_list}'.format(
             spider_name=spider_name,
@@ -105,7 +125,16 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         # 但我没有验证条件，故当前仅留下说明信息
 
         # HINT 同样传说附加大于50MB会投递失败，待验证
-        deliver_book_task.delay(
-            email_addr_list,
-            book_filename.split('_')[0],
-            book_abspath)
+        deliver_log.users.set(user_list)
+        deliver_log.status = DeliverLog.DELIVERING
+        deliver_log.save()
+        try:
+            deliver_book_task.delay(
+                email_addr_list,
+                book_filename.split('_')[0],
+                book_abspath,
+                deliver_log_pk=deliver_log.pk)
+        except Exception as e:
+            deliver_log.status = DeliverLog.FAILED
+            deliver_log.save()
+            raise e

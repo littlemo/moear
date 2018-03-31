@@ -8,6 +8,8 @@ from email.mime.base import MIMEBase
 from django.core.mail import EmailMessage
 from django.utils.translation import gettext_lazy as _
 
+from deliver.models import DeliverLog
+
 log = logging.getLogger(__name__)
 
 
@@ -16,7 +18,8 @@ def deliver_book_task(
         recipient,
         subject,
         book_abspath,
-        from_email=settings.DEFAULT_FROM_EMAIL):
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        deliver_log_pk=None):
     '''
     投递书籍任务
 
@@ -55,8 +58,20 @@ def deliver_book_task(
         recipient)
     msg.attach(att)
 
+    if deliver_log_pk:
+        deliver_log = DeliverLog.objects.get(pk=deliver_log_pk)
+        deliver_log.status = DeliverLog.COMPLETED
+        deliver_log.save()
+
     # 发送邮件
-    msg.send()
+    try:
+        msg.send()
+    except Exception as e:
+        if deliver_log_pk:
+            deliver_log.status = DeliverLog.FAILED
+            deliver_log.save()
+        raise e
+
     log.info(_('投递书籍【{subject}】到: {recipient}').format(
         subject=subject,
         recipient=', '.join(recipient)))
