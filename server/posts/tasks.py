@@ -77,6 +77,7 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             )
         book_abspath = os.path.join(
             settings.BOOK_PACKAGE_ROOT, book_filename)
+        # TODO 增加对文件的zip压缩支持，从而减小投递流量消耗
         with open(book_abspath, 'wb') as fh:
             fh.write(book_file)
 
@@ -99,6 +100,11 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             spider_name=spider_name,
             addr_list=email_addr_list))
 
+        # HINT 此处为了节省流量，进行了合并投递，但传说一份邮件超过15个不同
+        # 的【发送至Kindle】电子邮箱，会被认定为垃圾邮件而被Amazon拒绝接收，
+        # 但我没有验证条件，故当前仅留下说明信息
+
+        # HINT 同样传说附加大于50MB会投递失败，待验证
         deliver_book_task.delay(
             email_addr_list,
             book_filename.split('_')[0],
