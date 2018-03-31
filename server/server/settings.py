@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from moear_api_common import utils
 from django.utils.translation import gettext_noop
+from kombu import Queue, Exchange
 
 
 # 创建辅助用的工具函数
@@ -235,7 +236,6 @@ CELERY_RESULT_BACKEND = _get_config(
     'CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 
 CELERY_APP = 'server'
-CELERY_TASK_DEFAULT_QUEUE = 'moear'
 CELERY_TASK_TIME_LIMIT = 1800
 CELERY_WORKER_CONCURRENCY = _get_config_int(
     'CELERY_WORKER_CONCURRENCY', 10)
@@ -247,6 +247,44 @@ CELERY_WORKER_LOG_PATH = os.path.dirname(_get_config(
     'CELERY_WORKER_LOG_FILE',
     os.path.join(RUNTIME_DIR, 'log', 'celery', '%n%I.log')))
 CELERY_CREATE_DIRS.append(CELERY_WORKER_LOG_PATH)
+
+_default_exchange = Exchange('default', type='direct')
+_email_exchange = Exchange('email', type='topic')
+_crawl_exchange = Exchange('crawl', type='topic')
+
+CELERY_QUEUES = {
+    Queue('default', _default_exchange, routing_key='default'),
+    Queue('email', _email_exchange, routing_key='email.#'),
+    Queue('crawl', _crawl_exchange, routing_key='crawl.#'),
+}
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_DEFAULT_EXCHANGE = 'default'
+CELERY_TASK_DEFAULT_EXCHANGE_TYPE = 'direct'
+CELERY_TASK_DEFAULT_ROUTING_KEY = 'default'
+
+CELERY_ROUTES = {
+    'core.tasks.periodic_chain_crawl_package_deliver': {
+        'queue': 'default',
+        'routing_key': 'default',
+    },
+    'core.tasks.account_send_email_task': {
+        'queue': 'email',
+        'routing_key': 'email.account_mgr',
+    },
+    'deliver.tasks.deliver_book_task': {
+        'queue': 'email',
+        'routing_key': 'email.deliver_book',
+    },
+    'posts.tasks.package_post': {
+        'queue': 'crawl',
+        'routing_key': 'crawl.package',
+    },
+    'spiders.tasks.spider_post': {
+        'queue': 'crawl',
+        'routing_key': 'crawl.spider',
+    },
+}
+
 
 # celerybeat
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
