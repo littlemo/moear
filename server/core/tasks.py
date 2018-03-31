@@ -50,6 +50,5 @@ def periodic_chain_crawl_package_deliver(spider_name):
         name=spider.display_name))
 
     # 任务链，依次执行爬取、打包、投递，目前其中打包和投递实现在package_post任务中
-    spider_post.apply_async((spider_name,), countdown=delay)
     c = spider_post.s(spider_name).set(countdown=delay) | package_post.s()
     c.delay()
