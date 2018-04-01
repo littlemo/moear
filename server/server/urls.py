@@ -23,4 +23,5 @@ urlpatterns = [
     path('invitations/', include('invitations.urls', namespace='invitations')),
     path('api-auth/',
          include('rest_framework.urls', namespace='rest_framework')),
+    path('', include('pages.urls')),
 ]
