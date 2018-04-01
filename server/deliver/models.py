@@ -42,7 +42,7 @@ class DeliverLog(models.Model):
         default=0)
     status = models.CharField(
         verbose_name=_('投递状态'),
-        default='failed',
+        default=FAILED,
         choices=STATUS_CHOICES,
         max_length=20)
     date = models.DateTimeField(

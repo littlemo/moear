@@ -8,9 +8,11 @@ class Option(models.Model):
 
     网站的设置和选项，用于设置站点信息、插件相关等额外配置
     """
+    YES = 'yes'
+    NO = 'no'
     AUTOLOAD_CHOICES = (
-        ('yes', _('是')),
-        ('no', _('否')),
+        (YES, _('是')),
+        (NO, _('否')),
     )
 
     id = models.BigAutoField(
@@ -25,7 +27,7 @@ class Option(models.Model):
     autoload = models.CharField(
         verbose_name=_('自动载入'),
         blank=True,
-        default='yes',
+        default=YES,
         choices=AUTOLOAD_CHOICES,
         max_length=20)
 
