@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from spiders.models import Spider, SpiderMeta
 from spiders.tasks import spider_post
 from posts.tasks import package_post
+from .models import UserMeta
 
 log = logging.getLogger(__name__)
 
@@ -49,6 +50,25 @@ def periodic_chain_crawl_package_deliver(spider_name):
         delay=delay,
         name=spider.display_name))
 
-    # 任务链，依次执行爬取、打包、投递，目前其中打包和投递实现在package_post任务中
-    c = spider_post.s(spider_name).set(countdown=delay) | package_post.s()
+    # 获取订阅设备地址列表
+    feed_usermeta = UserMeta.objects.filter(
+        name='moear.spider.feeds',
+        value__contains=spider_name)
+    email_addr_list = []
+    for usermeta in feed_usermeta:
+        feed_address_usermeta = UserMeta.objects.get(
+            user=usermeta.user,
+            name='moear.device.addr')
+        if feed_address_usermeta.value:
+            email_addr_list.append(feed_address_usermeta.value)
+
+    # 根据订阅数量决定执行的任务内容
+    if len(email_addr_list) == 0:
+        # 仅执行爬取任务
+        log.info('该文章源【{display_name}】无订阅的设备地址，故仅执行爬取任务'.format(
+            display_name=spider.display_name))
+        c = spider_post.s(spider_name).set(countdown=delay)
+    else:
+        # 任务链，依次执行爬取、打包、投递，目前其中打包和投递实现在package_post任务中
+        c = spider_post.s(spider_name).set(countdown=delay) | package_post.s()
     c.delay()
