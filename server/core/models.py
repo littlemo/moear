@@ -67,6 +67,17 @@ class Option(models.Model):
             return value
         return str(value)
 
+    @staticmethod
+    def _set_value_by_name(name, value):
+        opt, created = Option.objects.get_or_create(
+            name=name,
+            defaults={
+                'value': value,
+            })
+        if not created:
+            opt.value = value
+            opt.save()
+
     def __str__(self):
         return '[{id}]{name} => {value}'.format(
             id=self.id,
