@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from allauth.account.adapter import DefaultAccountAdapter
 
 from .tasks import account_send_email_task
+from .models import Option
 
 log = logging.getLogger(__name__)
 
@@ -35,3 +36,6 @@ class AccountAdapter(DefaultAccountAdapter):
                     raise
 
         account_send_email_task.delay(subject, bodies, from_email, email)
+
+    def is_open_for_signup(self, request):
+        return Option().open_for_signup
