@@ -110,11 +110,12 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         email_addr_list = []
         user_list = []
         for usermeta in feed_usermeta:
+            user_list.append(usermeta.user)
             feed_address_usermeta = UserMeta.objects.get(
                 user=usermeta.user,
                 name='moear.device.addr')
-            email_addr_list.append(feed_address_usermeta.value)
-            user_list.append(usermeta.user)
+            if feed_address_usermeta.value:
+                email_addr_list.append(feed_address_usermeta.value)
 
         log.info('订阅了【{spider_name}】的用户设备地址: {addr_list}'.format(
             spider_name=spider_name,
