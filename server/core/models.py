@@ -40,6 +40,33 @@ class Option(models.Model):
             })
         return opt.value
 
+    @staticmethod
+    def get_bool_value(name, default=False):
+        if not isinstance(default, str):
+            default = 'true' if default else 'false'
+        value = Option._get_value_by_name(name, default)
+        if isinstance(value, bool):
+            return value
+        return value.lower() == 'true'
+
+    @staticmethod
+    def get_int_value(name, default=0):
+        if not isinstance(default, str):
+            default = str(default)
+        value = Option._get_value_by_name(name, default)
+        if isinstance(value, int):
+            return value
+        return int(value)
+
+    @staticmethod
+    def get_str_value(name, default=''):
+        if not isinstance(default, str):
+            default = str(default)
+        value = Option._get_value_by_name(name, default)
+        if isinstance(value, str):
+            return value
+        return str(value)
+
     def __str__(self):
         return '[{id}]{name} => {value}'.format(
             id=self.id,
