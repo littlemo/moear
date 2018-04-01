@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'terms.apps.TermsConfig',
     'deliver.apps.DeliverConfig',
+    'pages.apps.PagesConfig',
 ]
 
 MIDDLEWARE = [
