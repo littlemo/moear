@@ -31,6 +31,15 @@ class Option(models.Model):
         choices=AUTOLOAD_CHOICES,
         max_length=20)
 
+    @staticmethod
+    def _get_value_by_name(name, default=''):
+        opt, _ = Option.objects.get_or_create(
+            name=name,
+            defaults={
+                'value': default
+            })
+        return opt.value
+
     def __str__(self):
         return '[{id}]{name} => {value}'.format(
             id=self.id,
