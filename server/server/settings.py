@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'invitations',
     'rest_framework',
     'django_celery_beat',
 

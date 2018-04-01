@@ -4,6 +4,7 @@ from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
 
 from allauth.account.adapter import DefaultAccountAdapter
+from allauth.account.signals import user_signed_up
 
 from .tasks import account_send_email_task
 from .models import Option
@@ -38,4 +39,10 @@ class AccountAdapter(DefaultAccountAdapter):
         account_send_email_task.delay(subject, bodies, from_email, email)
 
     def is_open_for_signup(self, request):
+        if hasattr(request, 'session') and request.session.get(
+                'account_verified_email'):
+            return True
         return Option().open_for_signup
+
+    def get_user_signed_up_signal(self):
+        return user_signed_up
