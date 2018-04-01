@@ -190,6 +190,11 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 
 
+# 静态站点生成器
+SITE_PAGES_DIR = utils.mkdirp(os.path.join(
+    BASE_DIR, 'pages', 'templates', 'pages'))
+
+
 # Django Admin
 DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL', 'admin')
 
