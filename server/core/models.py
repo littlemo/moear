@@ -78,6 +78,26 @@ class Option(models.Model):
             opt.value = value
             opt.save()
 
+    @staticmethod
+    def set_bool_value(name, value):
+        if not isinstance(value, bool):
+            raise TypeError('value 类型错误：{}'.format(type(value)))
+        value = 'true' if value else 'false'
+        Option._set_value_by_name(name, value)
+
+    @staticmethod
+    def set_int_value(name, value):
+        if not isinstance(value, int):
+            raise TypeError('value 类型错误：{}'.format(type(value)))
+        value = str(value)
+        Option.set_value_by_name(name, value)
+
+    @staticmethod
+    def set_str_value(name, value):
+        if not isinstance(value, str):
+            raise TypeError('value 类型错误：{}'.format(type(value)))
+        Option.set_value_by_name(name, value)
+
     def __str__(self):
         return '[{id}]{name} => {value}'.format(
             id=self.id,
