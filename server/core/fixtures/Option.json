@@ -1,0 +1,11 @@
+[
+{
+    "model": "core.option",
+    "pk": 1,
+    "fields": {
+        "name": "open_for_signup",
+        "value": "false",
+        "autoload": "yes"
+    }
+}
+]

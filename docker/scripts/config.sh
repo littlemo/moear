@@ -31,6 +31,8 @@ if [ ! -f "$INSTALL_LOCK_FILE" ]; then
 
 # 填充站点数据
 python manage.py loaddata --settings=$SERVER_SETTINGS Site.json
+# 填充站点配置数据
+python manage.py loaddata --settings=$SERVER_SETTINGS Option.json
 
 fi
 
