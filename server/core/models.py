@@ -15,6 +15,9 @@ class Option(models.Model):
         (NO, _('否')),
     )
 
+    # 系统配置项属性名
+    OPEN_FOR_SIGNUP = 'open_for_signup'  # 开放注册
+
     id = models.BigAutoField(
         primary_key=True)
     name = models.CharField(
@@ -30,6 +33,14 @@ class Option(models.Model):
         default=YES,
         choices=AUTOLOAD_CHOICES,
         max_length=20)
+
+    @property
+    def open_for_signup(self):
+        return Option.get_bool_value(Option.OPEN_FOR_SIGNUP, False)
+
+    @open_for_signup.setter
+    def open_for_signup(self, value):
+        Option.set_bool_value(Option.OPEN_FOR_SIGNUP, value)
 
     @staticmethod
     def _get_value_by_name(name, default=''):
