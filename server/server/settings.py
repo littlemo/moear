@@ -194,7 +194,7 @@ STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 
 # 静态站点生成器
 SITE_PAGES_DIR = utils.mkdirp(os.path.join(
-    BASE_DIR, 'pages', 'templates', 'pages'))
+    BASE_DIR, 'templates', 'pages'))
 
 
 # Django Admin
