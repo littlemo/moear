@@ -197,6 +197,10 @@ SITE_PAGES_DIR = utils.mkdirp(os.path.join(
     BASE_DIR, 'templates', 'pages'))
 
 
+# 设置日期时间显示格式
+DATETIME_FORMAT = 'Y/m/d H:i:s'
+
+
 # Django Admin
 DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL', 'admin')
 
