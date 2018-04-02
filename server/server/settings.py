@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 from moear_api_common import utils
 from django.utils.translation import gettext_noop
+from django.contrib import messages
 from kombu import Queue, Exchange
 
 
@@ -195,6 +196,16 @@ STATIC_ROOT = os.path.join(RUNTIME_DIR, 'static')
 # 静态站点生成器
 SITE_PAGES_DIR = utils.mkdirp(os.path.join(
     BASE_DIR, 'templates', 'pages'))
+
+
+# 模板消息Tags名称重定义
+MESSAGE_TAGS = {
+    messages.DEBUG: 'dark',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 
 # 设置日期时间显示格式
