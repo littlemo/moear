@@ -17,8 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
-urlpatterns = [
-    path('{}/'.format(settings.DJANGO_ADMIN_URL), admin.site.urls),
+urlpatterns = []
+
+if settings.DJANGO_ADMIN_URL:
+    urlpatterns.append(
+        path('{}/'.format(settings.DJANGO_ADMIN_URL), admin.site.urls))
+
+urlpatterns += [
     path('accounts/', include('allauth.urls')),
     path('invitations/', include('invitations.urls', namespace='invitations')),
     path('api-auth/',

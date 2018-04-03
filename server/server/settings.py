@@ -213,7 +213,7 @@ DATETIME_FORMAT = 'Y/m/d H:i:s'
 
 
 # Django Admin
-DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL', 'admin')
+DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL')
 
 
 # Email
