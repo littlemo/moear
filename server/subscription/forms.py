@@ -33,8 +33,8 @@ class DeliverSettingsForm(forms.Form):
 
     def as_div(self):
         return self._html_output(
-            normal_row='<div class="form-group my-1 form-inline">'
-                       '%(field)s%(errors)s%(help_text)s</div>',
+            normal_row='<div class="form-group my-1">'
+                       '%(label)s %(field)s%(errors)s%(help_text)s</div>',
             error_row='<span class="text-danger mx-2">%s</span>',
             row_ender='</div>',
             help_text_html='<br /><span class="helptext">%s</span>',
