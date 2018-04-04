@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from core.models import UserMeta
 from deliver.models import DeliverLog
@@ -34,6 +35,10 @@ class DeliverSettingsView(FormView):
     def dispatch(self, request, *args, **kwargs):
         return super(DeliverSettingsView, self).dispatch(
             request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        kwargs['default_from_email'] = settings.DEFAULT_FROM_EMAIL
+        return super().get_context_data(**kwargs)
 
     def get(self, request, *args, **kwargs):
         try:
