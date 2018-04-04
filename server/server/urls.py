@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
+from core.views import SendInvite
+
 urlpatterns = []
 
 if settings.DJANGO_ADMIN_URL:
@@ -25,6 +27,8 @@ if settings.DJANGO_ADMIN_URL:
 
 urlpatterns += [
     path('accounts/', include('allauth.urls')),
+    path('invitations/send-invite/', SendInvite.as_view(),
+         name='send-invite'),
     path('invitations/', include('invitations.urls', namespace='invitations')),
     path('api-auth/',
          include('rest_framework.urls', namespace='rest_framework')),
