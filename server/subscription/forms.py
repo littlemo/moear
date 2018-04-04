@@ -13,8 +13,9 @@ class DeliverSettingsForm(forms.Form):
         required=True,
         widget=forms.TextInput(
             attrs={
+                'class': 'form-control',
                 'type': 'email',
-                'placeholder': _('E-mail address')}))
+                'placeholder': _('Kindle收件地址')}))
 
     def save(self, request, **kwargs):
         device_email = self.cleaned_data['device_email']
@@ -28,3 +29,12 @@ class DeliverSettingsForm(forms.Form):
             um.value = device_email
             um.save()
         return um
+
+    def as_div(self):
+        return self._html_output(
+            normal_row='<div class="form-group my-1 form-inline">'
+                       '%(field)s%(errors)s%(help_text)s</div>',
+            error_row='<span class="text-danger mx-2">%s</span>',
+            row_ender='</div>',
+            help_text_html='<br /><span class="helptext">%s</span>',
+            errors_on_separate_row=False)
