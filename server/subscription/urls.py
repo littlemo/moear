@@ -6,4 +6,7 @@ urlpatterns = [
     path(
         'deliver_log/', views.DeliverLogView.as_view(),
         name='subscription_deliver_log'),
+    path(
+        'deliver_settings/', views.DeliverSettingsView.as_view(),
+        name='subscription_deliver_settings'),
 ]

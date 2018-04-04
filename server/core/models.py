@@ -126,6 +126,8 @@ class UserMeta(models.Model):
 
     用于存储指定用户的元数据信息，便于对该用户进行参数定制修改，可与插件/爬虫配合使用
     """
+    # 用户元数据项属性名
+    MOEAR_DEVICE_ADDR = 'moear.device.addr'  # 设备收件地址
     id = models.BigAutoField(
         primary_key=True)
     user = models.ForeignKey(
