@@ -45,7 +45,7 @@ class DeliverSettingsView(FormView):
             }
         except UserMeta.DoesNotExist:
             settings_data = None
-        form = DeliverSettingsForm(
+        form = self.form_class(
             data=settings_data)
         return self.render_to_response(self.get_context_data(form=form))
 
