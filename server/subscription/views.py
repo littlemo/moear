@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from core.models import UserMeta
 from deliver.models import DeliverLog
-from subscription.forms import DeliverSettingsForm
+from subscription.forms import DeliverSettingsForm, PostSubscribeForm
 
 
 class DeliverLogView(TemplateView):
@@ -57,6 +57,45 @@ class DeliverSettingsView(FormView):
             return self.form_invalid(form)
         msg = _('投递地址【{device_email}】设置成功！').format(
             device_email=device_email)
+        messages.add_message(self.request, messages.SUCCESS, msg)
+        return self.render_to_response(self.get_context_data())
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
+
+class PostSubscribeView(FormView):
+    """
+    文章订阅视图
+    """
+    template_name = 'subscription/post_subscribe.html'
+    form_class = PostSubscribeForm
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PostSubscribeView, self).dispatch(
+            request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            um = UserMeta.objects.get(
+                user=request.user,
+                name=UserMeta.MOEAR_SPIDER_FEEDS)
+            settings_data = {
+                'feeds': um.value.split(','),
+            }
+        except UserMeta.DoesNotExist:
+            settings_data = None
+        form = self.form_class(
+            data=settings_data)
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def form_valid(self, form):
+        try:
+            form.save(self.request)
+        except Exception:
+            return self.form_invalid(form)
+        msg = _('订阅设置成功！')
         messages.add_message(self.request, messages.SUCCESS, msg)
         return self.render_to_response(self.get_context_data())
 

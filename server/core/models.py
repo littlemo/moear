@@ -128,6 +128,8 @@ class UserMeta(models.Model):
     """
     # 用户元数据项属性名
     MOEAR_DEVICE_ADDR = 'moear.device.addr'  # 设备收件地址
+    MOEAR_SPIDER_FEEDS = 'moear.spider.feeds'  # 用户订阅列表
+
     id = models.BigAutoField(
         primary_key=True)
     user = models.ForeignKey(
