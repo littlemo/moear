@@ -31,7 +31,6 @@ urlpatterns += [
     path('invitations/send-invite/', SendInvite.as_view(),
          name='send-invite'),
     path('invitations/', include('invitations.urls', namespace='invitations')),
-    path('api-auth/',
-         include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include('restapi.urls')),
     path('', include('pages.urls')),
 ]
