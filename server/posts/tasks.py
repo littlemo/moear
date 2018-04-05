@@ -124,6 +124,11 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         deliver_log.users.set(user_list)
         deliver_log.status = DeliverLog.DELIVERING
         deliver_log.save()
+
+        if len(email_addr_list) == 0:
+            deliver_log.status = DeliverLog.FAILED
+            deliver_log.save()
+            return
         # HINT 此处为了节省流量，进行了合并投递，但传说一份邮件超过15个不同
         # 的【发送至Kindle】电子邮箱，会被认定为垃圾邮件而被Amazon拒绝接收，
         # 但我没有验证条件，故当前仅留下说明信息
