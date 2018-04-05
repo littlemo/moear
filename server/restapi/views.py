@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 class SpiderEnabledSwitchAPIView(APIView):
     '''
     爬虫开关切换接口
-    --------
+    ----------------
 
     列出所有 Spider ，或者更新某一个 Spider 的开关状态
     '''
@@ -40,7 +40,8 @@ class SpiderEnabledSwitchAPIView(APIView):
         spider_name = request.data.get('name', None)
         spider_enabled = request.data.get('enabled', True)
         if not spider_name:
-            return Response(_('name 字段为空'), status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                _('name 字段为空'), status=status.HTTP_400_BAD_REQUEST)
         try:
             spider = Spider.objects.get(name=spider_name)
         except Spider.DoesNotExist:
