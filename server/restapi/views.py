@@ -13,9 +13,9 @@ from spiders.serializers import SpiderSerializer
 log = logging.getLogger(__name__)
 
 
-class SpiderAPIView(APIView):
+class SpiderEnabledSwitchAPIView(APIView):
     '''
-    爬虫列表
+    爬虫开关切换接口
     --------
 
     列出所有 Spider ，或者更新某一个 Spider 的开关状态
