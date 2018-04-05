@@ -10,10 +10,83 @@ from rest_framework import status
 from rest_framework import permissions
 from invitations.models import Invitation
 
+from core.models import UserMeta
 from spiders.models import Spider
 from spiders.serializers import SpiderSerializer
 
 log = logging.getLogger(__name__)
+
+
+class SpiderSubscribeSwitchAPIView(APIView):
+    '''
+    爬虫订阅切换接口
+    ----------------
+
+    列出所有 Spider ，或者更新某一个 Spider 的开关状态
+    '''
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        spiders_obj = Spider.objects.filter(enabled=True)
+        spiders_list = SpiderSerializer(
+            spiders_obj, many=True, exclude=['enabled'])
+        log.debug(_('爬虫订阅列表: {}'.format(spiders_list.data)))
+
+        um, created = UserMeta.objects.get_or_create(
+            user=request.user,
+            name=UserMeta.MOEAR_SPIDER_FEEDS,
+            defaults={
+                'value': '',
+            })
+        subscribe_list = um.value and um.value.split(',')
+        return Response(
+            {
+                'spiders_list': spiders_list.data,
+                'subscribe_list': subscribe_list or [],
+            }, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        '''
+        用例::
+
+            {
+                "name": "zhihu_daily",
+                "subscribe": false
+            }
+        '''
+        spider_name = request.data.get('name', None)
+        spider_subscribe = request.data.get('subscribe', True)
+        if not spider_name:
+            return Response(
+                _('name 字段为空'), status=status.HTTP_400_BAD_REQUEST)
+        try:
+            Spider.objects.get(name=spider_name)
+        except Spider.DoesNotExist:
+            return Response(_('指定的 Spider【{name}】 不存在').format(
+                name=spider_name), status=status.HTTP_404_NOT_FOUND)
+
+        feed = spider_name if spider_subscribe else ''
+        um, created = UserMeta.objects.get_or_create(
+            user=request.user,
+            name=UserMeta.MOEAR_SPIDER_FEEDS,
+            defaults={
+                'value': feed,
+            })
+        if not created:
+            feeds = set(um.value.split(','))
+            log.info(feeds)
+            if spider_subscribe:
+                feeds.add(spider_name)
+                log.info(feeds)
+            if not spider_subscribe and spider_name in feeds:
+                feeds.remove(spider_name)
+                log.info(feeds)
+            if '' in feeds:
+                feeds.remove('')
+            um.value = ','.join(feeds)
+            log.info(um.value)
+            um.save()
+        return Response(feeds, status=status.HTTP_201_CREATED)
 
 
 class SpiderEnabledSwitchAPIView(APIView):
