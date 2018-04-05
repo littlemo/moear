@@ -20,7 +20,8 @@ class Command(BaseCommand):
             data = ext.obj.register()
 
             # 持久化Spider数据
-            spider_serializer = SpiderSerializer(data=data)
+            spider_serializer = SpiderSerializer(
+                data=data, exclude=['enabled'])
             if not spider_serializer.is_valid():
                 self.stderr.write(self.style.ERROR(spider_serializer.errors))
                 raise CommandError(spider_serializer.errors)

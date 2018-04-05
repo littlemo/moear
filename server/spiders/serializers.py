@@ -8,7 +8,28 @@ from core.serializers import MetaListSerializer
 log = logging.getLogger(__name__)
 
 
-class SpiderSerializer(serializers.ModelSerializer):
+class DynamicFieldsModelSerializer(serializers.ModelSerializer):
+    """
+    动态字段数据模型序列化器
+
+    通过 ``exclude`` 字段从目标输出 ``fields`` 中排除指定的 field ，从而控制最终输出
+    """
+
+    def __init__(self, *args, **kwargs):
+        # 不将 ``exclude`` 字段传到父类中
+        fields = kwargs.pop('exclude', None)
+
+        # 正常调用父类初始化方法
+        super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
+
+        if fields is not None:
+            # 去除所有列在 ``exclude`` 中的字段
+            exclude = set(fields)
+            for field_name in exclude:
+                self.fields.pop(field_name, None)
+
+
+class SpiderSerializer(DynamicFieldsModelSerializer):
     def create(self, validated_data):
         '''若存在指定 name 字段值的条目，则执行更新操作，否则执行创建'''
         try:
@@ -20,7 +41,7 @@ class SpiderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Spider
-        exclude = ('id', 'enabled')
+        exclude = ('id',)
         extra_kwargs = {
             'name': {
                 'validators': [],

@@ -35,7 +35,7 @@ def trans_to_package_group(post_pk_list):
         post_data['meta'] = postmeta_data
 
         # 生成爬虫数据的字典数据（含元数据）
-        spider_data = SpiderSerializer(post.spider).data
+        spider_data = SpiderSerializer(post.spider, exclude=['enabled']).data
         spdiermeta_list = SpiderMeta.objects.filter(spider=post.spider)
         spidermeta_data = SpiderMetaSerializer(spdiermeta_list, many=True).data
         spider_data['meta'] = spidermeta_data

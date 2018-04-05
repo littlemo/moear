@@ -33,7 +33,8 @@ class SpiderSerializerTests(TestCase):
         '''
         根据砖数据进行Spider模型的序列化创建
         '''
-        spider_serializer = SpiderSerializer(data=self.fake_data_spider)
+        spider_serializer = SpiderSerializer(
+            data=self.fake_data_spider, exclude=['enabled'])
         if not spider_serializer.is_valid():
             log.error(spider_serializer.errors)
         self.assertTrue(spider_serializer.is_valid())
@@ -79,7 +80,8 @@ class SpiderMetaSerializerTests(TestCase):
                 'package_module': 'mobi',
             }
         }
-        spider_serializer = SpiderSerializer(data=self.fake_data_spider)
+        spider_serializer = SpiderSerializer(
+            data=self.fake_data_spider, exclude=['enabled'])
         if not spider_serializer.is_valid():
             log.error(spider_serializer.errors)
         spider_serializer.save()
