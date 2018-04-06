@@ -16,6 +16,7 @@ class DeliverLogSerializer(serializers.ModelSerializer):
             spider_pk = data.pop('spider')
             spider_obj = Spider.objects.get(pk=spider_pk)
             data['spider_display_name'] = spider_obj.display_name
+            data['status_display'] = instance.get_status_display()
         except Exception:
             data = {}
 
