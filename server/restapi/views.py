@@ -13,6 +13,8 @@ from invitations.models import Invitation
 from core.models import UserMeta
 from spiders.models import Spider
 from spiders.serializers import SpiderSerializer
+from deliver.models import DeliverLog
+from deliver.serializers import DeliverLogSerializer
 
 log = logging.getLogger(__name__)
 
@@ -87,6 +89,22 @@ class SpiderSubscribeSwitchAPIView(APIView):
             log.info(um.value)
             um.save()
         return Response(feeds, status=status.HTTP_201_CREATED)
+
+
+class DeliverLogAPIView(APIView):
+    '''
+    投递日志获取接口
+    ----------------
+
+    列出当前用户的投递日志，目前仅显示最近10条
+    '''
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        deliver_log = DeliverLog.objects.filter(
+            users=request.user).order_by('-date')[:10]
+        deliver_log_serializer = DeliverLogSerializer(deliver_log, many=True)
+        return Response(deliver_log_serializer.data, status=status.HTTP_200_OK)
 
 
 class SpiderEnabledSwitchAPIView(APIView):
