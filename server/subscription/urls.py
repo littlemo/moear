@@ -1,15 +1,9 @@
 from django.urls import path
 
-from . import views
+from subscription.views import MySubscribeView
 
 urlpatterns = [
     path(
-        'post_subscribe/', views.PostSubscribeView.as_view(),
-        name='subscription_post_subscribe'),
-    path(
-        'deliver_settings/', views.DeliverSettingsView.as_view(),
-        name='subscription_deliver_settings'),
-    path(
-        'deliver_log/', views.DeliverLogView.as_view(),
-        name='subscription_deliver_log'),
+        'my_subscribe/', MySubscribeView.as_view(),
+        name='subscription_my_subscribe'),
 ]

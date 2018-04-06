@@ -2,12 +2,14 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from restapi.views import \
+from spiders.views import \
+    SpiderEnabledSwitchAPIView
+from core.views import \
+    SendInviteAPIView
+from subscription.views import \
     SpiderSubscribeSwitchAPIView, \
     DeliverSettingsAPIView, \
-    DeliverLogAPIView, \
-    SpiderEnabledSwitchAPIView, \
-    SendInviteAPIView
+    DeliverLogAPIView
 
 
 router = routers.DefaultRouter()
