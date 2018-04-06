@@ -129,8 +129,12 @@ class DeliverSettingsAPIView(APIView):
         um_device_addr = request.data.get('device_addr', None)
         log.info('um_device_addr: {}'.format(um_device_addr))
         if not um_device_addr:
-            return Response(
-                _('um_device_addr 字段为空'), status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                'device_addr': {
+                    'rc': False,
+                    'msg': _('um_device_addr 字段为空'),
+                },
+            }, status=status.HTTP_200_OK)
         f = forms.EmailField()
         try:
             um_device_addr = f.clean(um_device_addr)
@@ -140,7 +144,7 @@ class DeliverSettingsAPIView(APIView):
                     'rc': False,
                     'msg': _('Email 值错误：{}').format(', '.join(e))
                 },
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_200_OK)
         try:
             um, created = UserMeta.objects.get_or_create(
                 user=request.user,
