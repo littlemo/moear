@@ -4,6 +4,7 @@ from rest_framework import routers
 
 from restapi.views import \
     SpiderSubscribeSwitchAPIView, \
+    DeliverSettingsAPIView, \
     DeliverLogAPIView, \
     SpiderEnabledSwitchAPIView, \
     SendInviteAPIView
@@ -22,6 +23,9 @@ subscribe_urls = [
 ]
 
 deliver_urls = [
+    path(
+        'deliver/settings/',
+        DeliverSettingsAPIView.as_view(), name='api_deliver_settings'),
     path(
         'deliver/log/',
         DeliverLogAPIView.as_view(), name='api_deliver_log')

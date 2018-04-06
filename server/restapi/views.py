@@ -91,6 +91,69 @@ class SpiderSubscribeSwitchAPIView(APIView):
         return Response(feeds, status=status.HTTP_201_CREATED)
 
 
+class DeliverSettingsAPIView(APIView):
+    '''
+    投递设置接口
+    ------------
+
+    投递参数设置，更新当前用户的投递设置
+    '''
+    permission_classes = (permissions.IsAdminUser,)
+
+    def get(self, request, format=None):
+        um_device_addr, created = UserMeta.objects.get_or_create(
+            user=request.user,
+            name=UserMeta.MOEAR_DEVICE_ADDR,
+            defaults={
+                'value': '',
+            })
+        return Response(
+            {
+                'device_addr': um_device_addr.value,
+            }, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        '''
+        用例::
+
+            {
+                "device_addr": "xx@yyy.zzz"
+            }
+        '''
+        um_device_addr = request.data.get('device_addr', None)
+        log.info('um_device_addr: {}'.format(um_device_addr))
+        if not um_device_addr:
+            return Response(
+                _('um_device_addr 字段为空'), status=status.HTTP_400_BAD_REQUEST)
+        f = forms.EmailField()
+        try:
+            um_device_addr = f.clean(um_device_addr)
+        except ValidationError as e:
+            return Response({
+                'device_addr': {
+                    'rc': False,
+                    'msg': _('Email 值错误：{}').format(', '.join(e))
+                },
+            }, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            um, created = UserMeta.objects.get_or_create(
+                user=request.user,
+                name=UserMeta.MOEAR_DEVICE_ADDR,
+                defaults={
+                    'value': um_device_addr,
+                })
+            if not created:
+                um.value = um_device_addr
+                um.save()
+        except Exception as e:
+            return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({
+            'device_addr': {
+                'rc': True,
+            }
+        }, status=status.HTTP_200_OK)
+
+
 class DeliverLogAPIView(APIView):
     '''
     投递日志获取接口
@@ -183,4 +246,5 @@ class SendInviteAPIView(APIView):
         except Exception as e:
             return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(
-            _('已发送注册邀请邮件到【{email}】').format(email=email))
+            _('已发送注册邀请邮件到【{email}】').format(email=email),
+            status=status.HTTP_200_OK)
