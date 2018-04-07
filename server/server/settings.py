@@ -212,10 +212,6 @@ MESSAGE_TAGS = {
 DATETIME_FORMAT = 'Y/m/d H:i:s'
 
 
-# Django Admin
-DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL')
-
-
 # Email
 EMAIL_HOST = _get_config('EMAIL_HOST', '')
 EMAIL_PORT = _get_config_int('EMAIL_PORT', 0)
@@ -226,6 +222,13 @@ EMAIL_SUBJECT_PREFIX = '[MoEar] '
 EMAIL_TIME_LIMIT = _get_config_int('EMAIL_TIME_LIMIT', 30)
 
 DEFAULT_FROM_EMAIL = _get_config('DEFAULT_FROM_EMAIL', '')
+
+
+# Django Admin
+DJANGO_ADMIN_URL = _get_config('DJANGO_ADMIN_URL')
+ADMIN_USERNAME = _get_config('ADMIN_USERNAME', 'admin')
+ADMIN_EMAIL = _get_config('ADMIN_EMAIL', DEFAULT_FROM_EMAIL)
+ADMIN_PASSWORD = _get_config('ADMIN_PASSWORD', 'whoisyourdaddy')
 
 
 # django-allauth
