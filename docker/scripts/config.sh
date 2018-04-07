@@ -29,6 +29,8 @@ python manage.py migrate --settings=$SERVER_SETTINGS --noinput
 # 填充DB默认数据
 if [ ! -f "$INSTALL_LOCK_FILE" ]; then
 
+# 创建超级管理员账户，若已存在则更新其密码
+python manage.py create_superuser
 # 填充站点数据
 python manage.py loaddata --settings=$SERVER_SETTINGS Site.json
 # 填充站点配置数据
