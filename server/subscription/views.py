@@ -1,5 +1,6 @@
 import logging
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.views.generic import TemplateView
 from django.utils.translation import ugettext_lazy as _
@@ -23,6 +24,10 @@ log = logging.getLogger(__name__)
 @method_decorator(login_required, name='dispatch')
 class MySubscribeView(TemplateView):
     template_name = 'subscription/my_subscribe.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['default_from_email'] = settings.DEFAULT_FROM_EMAIL
+        return super().get_context_data(**kwargs)
 
 
 class SpiderSubscribeSwitchAPIView(APIView):
