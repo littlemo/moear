@@ -12,9 +12,10 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+import sphinx_rtd_theme
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -24,7 +25,7 @@ copyright = '2018, littlemo'
 author = 'littlemo'
 
 # The short X.Y version
-version = ''
+version = '1.0'
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
 
@@ -47,6 +48,21 @@ extensions = [
     'sphinx.ext.imgmath',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+]
+
+# Autodoc
+autodoc_default_flags = [
+    'members',
+    # 'undoc-members',
+    'show-inheritance',
+]
+
+autodoc_member_order = 'bysource'
+
+# Include __init__ docstring in class level docs
+autoclass_content = 'both'
+
+autodoc_mock_imports = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -82,7 +98,8 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "sphinx_rtd_theme"
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -109,7 +126,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'moeardoc'
+htmlhelp_basename = 'moear-doc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -189,7 +206,9 @@ epub_exclude_files = ['search.html']
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3.5', None)
+}
 
 # -- Options for todo extension ----------------------------------------------
 
