@@ -2,6 +2,28 @@
 
 用来实现对网络文章的爬取、mobi打包、并推送到Kindle设备上
 
+## Badge
+
+### GitHub
+
+[![GitHub followers](https://img.shields.io/github/followers/littlemo.svg?label=github%20follow)](https://github.com/littlemo)
+[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/littlemo/moear.svg)](https://github.com/littlemo/moear)
+[![GitHub stars](https://img.shields.io/github/stars/littlemo/moear.svg?label=github%20stars)](https://github.com/littlemo/moear)
+[![GitHub release](https://img.shields.io/github/release/littlemo/moear.svg)](https://github.com/littlemo/moear/releases)
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/littlemo/moear/latest.svg)](https://github.com/littlemo/moear)
+
+[![Github All Releases](https://img.shields.io/github/downloads/littlemo/moear/total.svg)](https://github.com/littlemo/moear/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/littlemo/moear.svg)](https://github.com/littlemo/moear/releases)
+
+### 文档
+
+[![Documentation Status](https://readthedocs.org/projects/moear/badge/?version=latest)](http://moear.readthedocs.io/zh_CN/latest/?badge=latest)
+
+### 其他
+
+[![license](https://img.shields.io/github/license/littlemo/moear.svg)](https://github.com/littlemo/moear)
+[![](https://img.shields.io/badge/bitcoin-donate-green.svg)](https://keybase.io/littlemo)
+
 ## 项目描述
 
 最初需求来源于对Kindle推送工具 [狗耳朵](http://www.dogear) / [KindleEar](https://github.com/cdhigh/KindleEar) 的使用，以及对类似 [Pocket](https://getpocket.com) 的文章归档、分类的需求。
