@@ -40,3 +40,8 @@ Kindle
 
 模型设计
 ========
+
+.. hint:: 下图为 ``SVG`` 的矢量图，可右键 **在新标签页中打开图片** ，以便放大查看
+
+.. image:: images/db/er_diagram.svg
+
