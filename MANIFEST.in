@@ -1,0 +1,2 @@
+global-include *.json *.css *.js *.html
+global-exclude .coverage* .DS_Store
