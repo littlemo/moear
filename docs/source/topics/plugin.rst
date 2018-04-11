@@ -57,6 +57,14 @@
 #. `mobi`_
 
 
+.. todo::
+
+    此处考虑是否添加一个小工具插件(widget)，用以提供如：去除文章中的链接、文章末尾插入原文链接二维码、
+    文章首页加入字数统计与阅读时间预估等小工具功能。
+
+    如果添加，其调用点如何设计，应尽量避免与现有插件间的耦合，而将耦合设计在 MoEar 主服务中
+
+
 .. _stevedore: https://docs.openstack.org/stevedore/latest/
 .. _moear-api-common: http://moear-api-common.rtfd.io
 .. _moear-spider-zhihudaily: http://moear-spider-zhihudaily.rtfd.io
