@@ -16,6 +16,7 @@ MoEar
    :caption: 进阶话题
 
    topics/plugin
+   topics/deployment
    topics/author_words
 
 
