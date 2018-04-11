@@ -33,7 +33,6 @@ class MySubscribeView(TemplateView):
 class SpiderSubscribeSwitchAPIView(APIView):
     '''
     爬虫订阅切换接口
-    ----------------
 
     列出所有 Spider ，或者更新某一个 Spider 的开关状态
     '''
@@ -105,7 +104,6 @@ class SpiderSubscribeSwitchAPIView(APIView):
 class DeliverSettingsAPIView(APIView):
     '''
     投递设置接口
-    ------------
 
     投递参数设置，更新当前用户的投递设置
     '''
@@ -172,7 +170,6 @@ class DeliverSettingsAPIView(APIView):
 class DeliverLogAPIView(APIView):
     '''
     投递日志获取接口
-    ----------------
 
     列出当前用户的投递日志，目前仅显示最近10条
     '''

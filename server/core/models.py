@@ -16,7 +16,7 @@ class Option(models.Model):
     )
 
     # 系统配置项属性名
-    OPEN_FOR_SIGNUP = 'open_for_signup'  # 开放注册
+    OPEN_FOR_SIGNUP = 'open_for_signup'  #: 开放注册
 
     id = models.BigAutoField(
         primary_key=True)
@@ -127,8 +127,8 @@ class UserMeta(models.Model):
     用于存储指定用户的元数据信息，便于对该用户进行参数定制修改，可与插件/爬虫配合使用
     """
     # 用户元数据项属性名
-    MOEAR_DEVICE_ADDR = 'moear.device.addr'  # 设备收件地址
-    MOEAR_SPIDER_FEEDS = 'moear.spider.feeds'  # 用户订阅列表
+    MOEAR_DEVICE_ADDR = 'moear.device.addr'  #: 设备收件地址
+    MOEAR_SPIDER_FEEDS = 'moear.spider.feeds'  #: 用户订阅列表
 
     id = models.BigAutoField(
         primary_key=True)

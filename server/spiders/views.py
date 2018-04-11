@@ -16,7 +16,6 @@ log = logging.getLogger(__name__)
 class SpiderEnabledSwitchAPIView(APIView):
     '''
     爬虫开关切换接口
-    ----------------
 
     列出所有 Spider ，或者更新某一个 Spider 的开关状态
     '''

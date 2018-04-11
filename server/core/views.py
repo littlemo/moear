@@ -16,7 +16,6 @@ log = logging.getLogger(__name__)
 class SendInviteAPIView(APIView):
     '''
     发送邀请接口
-    ------------
 
     发送注册邀请
     '''
