@@ -12,6 +12,11 @@ MoEar
 
    intro/overview
 
+.. toctree::
+   :caption: 进阶话题
+
+   topics/author_words
+
 
 索引表
 ======
