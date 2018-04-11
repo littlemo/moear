@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "账户管理" %}{% endblock %}
+
+{% block content %}
+<div class="row my-4">
+<div class="col-sm-3 col-lg-2">
+<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+  <a class="nav-link {% block profile-chg-pwd-cls %}{% endblock %}" id="v-pills-chg-pwd-tab" href="{% url 'account_change_password' %}" role="tab" aria-controls="v-pills-chg-pwd" aria-selected="true">{% trans "修改密码" %}</a>
+  <a class="nav-link {% block profile-chg-email-cls %}{% endblock %}" id="v-pills-chg-email-tab" href="{% url 'account_email' %}" role="tab" aria-controls="v-pills-chg-email" aria-selected="false">{% trans "修改邮箱" %}</a>
+  {% if request.user.is_staff %}
+  <a class="nav-link" id="v-pills-invite-tab" data-toggle="pill" href="#v-pills-invite" role="tab" aria-controls="v-pills-invite" aria-selected="false">{% trans "注册邀请" %}</a>
+  <a class="nav-link" id="v-pills-spider-switch-tab" data-toggle="pill" href="#v-pills-spider-switch" role="tab" aria-controls="v-pills-spider-switch" aria-selected="false">{% trans "爬虫设置" %}</a>
+  {% endif %}
+</div>
+</div>
+<div class="col">
+<div class="tab-content" id="v-pills-tabContent">
+  <div class="tab-pane fade show active" id="v-pills" role="tabpanel" aria-labelledby="v-pills-tab">{% block tab-content %}{% endblock %}</div>
+  <div class="tab-pane fade" id="v-pills-invite" role="tabpanel" aria-labelledby="v-pills-invite">{% include 'pages/_partials/snippet_invite.html' %}</div>
+  <div class="tab-pane fade" id="v-pills-spider-switch" role="tabpanel" aria-labelledby="v-pills-spider-switch">{% include 'pages/_partials/snippet_spider_switch.html' %}</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+(function() {
+  var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+  var actions = document.getElementsByName('action_remove');
+  if (actions.length) {
+    actions[0].addEventListener("click", function(e) {
+      if (! confirm(message)) {
+        e.preventDefault();
+      }
+    });
+  }
+})();
+new Vue({
+  el: '#view-invite',
+  data: {
+    email: '',
+    message_success: '',
+    message_error: '',
+  },
+  methods: {
+    invite: function() {
+      var that = this;
+      $.post({
+        url: '/api/invite/',
+        data: JSON.stringify({
+          email: that.email,
+        }),
+        success: function(data) {
+          that.message_success = data;
+        },
+        error: function(xhr) {
+          if (xhr.responseJSON) {
+            that.message_error = xhr.responseJSON.detail || xhr.responseJSON
+          } else {
+            that.message_error = xhr.responseText;
+          }
+          console.log(xhr);
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    }
+  },
+  mounted: function() {
+    var that = this;
+    this.$nextTick(function() {
+      $(function () {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRFToken': $.cookie('csrftoken'),
+            'Content-Type': "application/json; charset=utf-8",
+          }
+        });
+      });
+    });
+  }
+});
+new Vue({
+  el: '#view-spider-switch',
+  data: {
+    spiders: [],
+    message_error: null,
+  },
+  methods: {
+    loadSpiders: function() {
+      var that = this;
+      $.get({
+        url: '/api/spiders/switch/',
+        success: function(data){
+          that.spiders = data;
+        },
+        error: function(xhr){
+          if (xhr.responseJSON) {
+            that.message_error = xhr.responseJSON.detail || xhr.responseJSON
+          } else {
+            that.message_error = xhr.responseText;
+          }
+          console.log(xhr.responseJSON);
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+    enabledToggle: function(spider) {
+      var that = this;
+      spider.enabled = !spider.enabled;
+      $.post({
+        url: '/api/spiders/switch/',
+        data: JSON.stringify({
+          name: spider.name,
+          enabled: spider.enabled,
+        }),
+        success: function(data) {
+          spider = data;
+        },
+        error: function(xhr) {
+          that.message_error = xhr.responseJSON || xhr.responseText;
+          console.log(xhr);
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+  },
+  mounted: function() {
+    var that = this;
+    this.$nextTick(function() {
+      $(function () {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRFToken': $.cookie('csrftoken'),
+            'Content-Type': "application/json; charset=utf-8",
+          }
+        });
+      });
+      that.loadSpiders();
+    });
+  }
+});
+</script>
+{% endblock %}

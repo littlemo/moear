@@ -1,0 +1,122 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="MoEar文章管理推送服务">
+  <meta name="keywords" content="MoEar,Kindle,推送,Amazon,文章管理,CMS">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <title>{% block head_title %}{% trans "MoEar" %}{% endblock %}</title>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% block body %}
+  {% block nav %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="/">MoEar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {% block navbar-index-active %}{% endblock %}">
+          <a class="nav-link" href="/">{% trans "主页" %}{% block navbar-index-sr %}{% endblock %}</a>
+        </li>
+      </ul>
+      <ul class="nav nav-pills mr-0">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            {{ request.user|capfirst }}
+          </a>
+          <div class="dropdown-menu">
+            <a href="{% url 'subscription_my_subscribe' %}" class="dropdown-item">{% trans "我的订阅" %}</a>
+            <a href="{% url 'account_change_password' %}" class="dropdown-item">{% trans "账户管理" %}</a>
+            <div class="dropdown-divider"></div>
+            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#logoutModel">{% trans "注销账户" %}</button>
+          </div>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'account_signup' %}">{% trans "注册" %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'account_login' %}">{% trans "登录" %}</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+  </nav>
+  {% endblock %}
+
+  <div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  {% endblock %}
+
+  {% block footer %}
+  <footer class="bg-light text-muted fixed-bottom">
+    <div class="container p-2 p-md-4">
+      <p class="float-left">
+        &copy; {% now "Y" %}
+        <a class="text-muted" href="https://github.com/littlemo/moear">MoEar</a>
+        当前版本：v1.0.0
+      </p>
+      <div class="float-right">
+        <a href="https://github.com/littlemo">
+          <span class="text-muted">@littlemo</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+  {% endblock %}
+  <div class="modal fade" id="logoutModel" tabindex="-1" role="dialog" aria-labelledby="logoutModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModelLabel">{% trans "Sign Out" %}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% trans 'Are you sure you want to sign out?' %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "取消" %}</button>
+          <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">{% trans 'Sign Out' %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  <script src="/static/js/app.js"></script>
+  {% block extra_body %}{% endblock %}
+</body>
+</html>

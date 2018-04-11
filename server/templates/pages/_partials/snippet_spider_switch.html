@@ -1,0 +1,35 @@
+{% load i18n %}
+
+<h4 class="title my-4">{% trans "爬虫列表" %}</h4>
+
+<div id="view-spider-switch">
+{% verbatim %}
+<div v-show="message_error" class="alert alert-danger">{{ message_error }}</div>
+{% endverbatim %}
+
+<table class="table table-sm table-hover text-center">
+  <thead>
+    <tr>
+      <th scope="col" width="10%">{% trans "名称" %}</th>
+      <th scope="col" width="5%">{% trans "作者" %}</th>
+      <th scope="col" width="15%">{% trans "邮箱" %}</th>
+      <th scope="col">{% trans "描述" %}</th>
+      <th scope="col" width="50px">{% trans "状态" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% verbatim %}
+    <tr v-for="spider in spiders">
+      <th class="align-middle" scope="row">{{ spider.display_name }}</th>
+      <td class="align-middle">{{ spider.author }}</td>
+      <td class="align-middle">{{ spider.email }}</td>
+      <td class="text-left align-middle">{{ spider.description }}</td>
+      <td class="align-middle">
+        <button v-if="spider.enabled" type="button" class="btn btn-success" v-on:click="enabledToggle(spider)">开启</button>
+        <button v-else type="button" class="btn btn-outline-danger" v-on:click="enabledToggle(spider)">关闭</button>
+      </td>
+    </tr>
+    {% endverbatim %}
+  </tbody>
+</table>
+</div>

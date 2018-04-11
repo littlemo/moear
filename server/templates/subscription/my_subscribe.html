@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "我的订阅" %}{% endblock %}
+
+{% block content %}
+<div class="row my-4">
+<div class="col-sm-3 col-lg-2">
+<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+  <a class="nav-link active" id="v-pills-post-subscribe-tab" data-toggle="pill" href="#v-pills-post-subscribe" role="tab" aria-controls="v-pills-post-subscribe" aria-selected="true">{% trans "文章订阅" %}</a>
+  <a class="nav-link" id="v-pills-deliver-settings-tab" data-toggle="pill" href="#v-pills-deliver-settings" role="tab" aria-controls="v-pills-deliver-settings" aria-selected="false">{% trans "投递设置" %}</a>
+  <a class="nav-link" id="v-pills-deliver-log-tab" data-toggle="pill" href="#v-pills-deliver-log" role="tab" aria-controls="v-pills-deliver-log" aria-selected="false">{% trans "投递日志" %}</a>
+</div>
+</div>
+<div class="col">
+<div class="tab-content" id="v-pills-tabContent">
+  <div class="tab-pane fade show active" id="v-pills-post-subscribe" role="tabpanel" aria-labelledby="v-pills-post-subscribe-tab">{% include 'pages/_partials/snippet_post_subscribe.html' %}</div>
+  <div class="tab-pane fade" id="v-pills-deliver-settings" role="tabpanel" aria-labelledby="v-pills-deliver-settings-tab">{% include 'pages/_partials/snippet_deliver_settings.html' %}</div>
+  <div class="tab-pane fade" id="v-pills-deliver-log" role="tabpanel" aria-labelledby="v-pills-deliver-log-tab">{% include 'pages/_partials/snippet_deliver_log.html' %}</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+new Vue({
+  el: '#view-post-subscribe',
+  data: {
+    message_error: null,
+    spiders_list: [],
+    subscribe_list: [],
+  },
+  methods: {
+    loadSubscribe: function() {
+      var that = this;
+      $.get({
+        url: '/api/subscribe/',
+        success: function(data){
+          that.spiders_list = data.spiders_list;
+          that.subscribe_list = data.subscribe_list;
+        },
+        error: function(xhr){
+          that.message_error = xhr.responseJSON.detail || xhr.responseJSON || xhr.responseText;
+          console.log(xhr.responseJSON);
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+    subscribe: function(spider_name) {
+      var that = this;
+      var subs = false;
+      if (that.subscribe_list.indexOf(spider_name) === -1) {
+        subs = true;
+      }
+      $.post({
+        url: '/api/subscribe/',
+        data: JSON.stringify({
+          name: spider_name,
+          subscribe: subs,
+        }),
+        success: function(data) {
+          that.subscribe_list = data;
+        },
+        error: function(xhr) {
+          that.message_error = xhr.responseJSON || xhr.responseText;
+          console.log(xhr);
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+  },
+  mounted: function() {
+    var that = this;
+    this.$nextTick(function() {
+      $(function () {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRFToken': $.cookie('csrftoken'),
+            'Content-Type': "application/json; charset=utf-8",
+          }
+        });
+      });
+      that.loadSubscribe();
+    });
+  }
+});
+new Vue({
+  el: '#view-deliver-settings',
+  data: {
+    settings: {
+      device_addr: '',
+    },
+    settings_rsp: {
+      device_addr: {},
+    },
+    message_error: '',
+  },
+  methods: {
+    loadSettings: function() {
+      var that = this;
+      $.get({
+        url: '/api/deliver/settings/',
+        success: function(data){
+          that.settings = data;
+        },
+        error: function(xhr){
+          that.message_error = xhr.responseText;
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+    updateSettings: function() {
+      var that = this;
+      $.post({
+        url: '/api/deliver/settings/',
+        data: JSON.stringify(that.settings),
+        success: function(rsp) {
+          if (rsp.device_addr) {
+            rsp.device_addr.class = rsp.device_addr.rc ? 'is-valid' : 'is-invalid';
+          }
+          that.settings_rsp = rsp;
+        },
+        error: function(xhr) {
+          that.message_error = xhr.responseText;
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+    clearClass: function(event) {
+      if (this.settings_rsp[event.target.id].rc) {
+        this.settings_rsp[event.target.id] = {};
+      }
+    },
+  },
+  mounted: function() {
+    var that = this;
+    this.$nextTick(function() {
+      $(function () {
+        $.ajaxSetup({
+          headers: {
+            'X-CSRFToken': $.cookie('csrftoken'),
+            'Content-Type': "application/json; charset=utf-8",
+          }
+        });
+      });
+      that.loadSettings();
+    });
+  }
+});
+new Vue({
+  el: '#view-deliver-log',
+  data: {
+    deliver_log: [],
+  },
+  methods: {
+    loadDeliverLog: function() {
+      var that = this;
+      $.get({
+        url: '/api/deliver/log/',
+        success: function(data){
+          data.forEach(function(item) {
+            // 设置状态 class 名
+            item.status_class = 'text-info'
+            if (item.status == 'completed') {
+              item.status_class = 'text-success';
+            }
+            if (item.status == 'failed') {
+              item.status_class = 'text-danger'
+            }
+
+            // 格式化附件大小
+            item.file_size = (item.file_size / 1024 / 1024).toFixed(2) + 'MB';
+
+            // 格式化时间
+            item.date = new Date(item.date).format("yyyy-MM-dd HH:mm:ss")
+          });
+          that.deliver_log = data;
+        },
+        error: function(xhr){
+          if (xhr.responseJSON) {
+            that.message_error = xhr.responseJSON.detail || xhr.responseJSON
+          } else {
+            that.message_error = xhr.responseText;
+          }
+          console.log(xhr.responseJSON);
+          console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+        },
+      });
+    },
+  },
+  mounted: function() {
+    var that = this;
+    this.$nextTick(function() {
+      that.loadDeliverLog();
+    });
+  }
+});
+</script>
+{% endblock %}

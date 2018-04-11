@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block navbar-index-active %}
+{% include "pages/_partials/snippet-active.html" %}
+{% endblock %}
+
+{% block navbar-index-sr %}
+{% include "pages/_partials/sr-only-current.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">MoEar</h1>
+  <p class="lead">{% trans "MoEar为您提供文章爬取推送服务，包括对指定文章源的爬取、本地化、mobi打包、并推送到Kindle设备上等功能" %}</p>
+  <hr class="my-4">
+  <p>{% trans "本项目为开源软件，源码托管于Github" %}</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="https://github.com/littlemo/moear" role="button">{% trans "了解更多" %} &raquo;</a>
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<h4 class="title my-4">{% trans "设置" %}</h4>
+
+<div id="view-deliver-settings">
+  {% verbatim %}
+  <div v-show='message_error' class="alert alert-danger">{{ message_error }}</div>
+  <div class="form-row">
+    <label for="device_addr">Kindle 接收地址：</label>
+    <input type="email" id="device_addr" v-model='settings.device_addr' v-on:keyup.enter="updateSettings" v-on:focus="clearClass" class="form-control" :class="settings_rsp.device_addr.class" placeholder="Email" required="true">
+    <div v-if="settings_rsp.device_addr && settings_rsp.device_addr.msg" class="invalid-feedback">{{ settings_rsp.device_addr.msg }}</div>
+  </div>
+  {% endverbatim %}
+  <button type="button" v-on:click="updateSettings" class="btn btn-primary my-4">{% trans "保存设置" %}</button>
+</div>
+
+<hr>
+
+<div class="alert alert-warning">
+  {% blocktrans %}
+  注意：您必须先激活您的 Kindle ，然后到亚马逊的<a href="https://www.amazon.cn/mn/dcw/myx.html#/home/settings/payment" class="text-info" target="_blank">账户中心</a>【管理我的内容和设备】-【设置】-【个人文档设置】，将 "<span class="text-primary">{{ default_from_email }}</span>" 加入到【已认可的发件人电子邮箱列表】。
+  {% endblocktrans %}
+</div>

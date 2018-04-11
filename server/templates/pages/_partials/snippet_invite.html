@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<h4 class="title my-4">{% trans "邀请" %}</h4>
+<div class="alert alert-info">{% trans "请添加一个邮箱地址。我们将向该地址发送一个注册邀请邮件" %}</div>
+
+<div id="view-invite">
+  {% verbatim %}
+  <div v-show='message_error' class="alert alert-danger">{{ message_error }}</div>
+  <div v-show='message_success' class="alert alert-success">{{ message_success }}</div>
+  <div class="form-group form-inline">
+    <input type="email" v-model='email' v-on:keyup.enter="invite" class="form-control validate-email" placeholder="Email" required="true">
+  </div>
+  {% endverbatim %}
+  <button type="button" v-on:click="invite" class="btn btn-primary">{% trans "发送" %}</button>
+</div>
