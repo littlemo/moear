@@ -15,6 +15,7 @@ MoEar
 .. toctree::
    :caption: 进阶话题
 
+   topics/plugin
    topics/author_words
 
 
