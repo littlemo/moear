@@ -21,6 +21,10 @@ urlpatterns = []
 
 if settings.DJANGO_ADMIN_URL:
     urlpatterns.append(
+        path(
+            '{}/doc/'.format(settings.DJANGO_ADMIN_URL),
+            include('django.contrib.admindocs.urls')))
+    urlpatterns.append(
         path('{}/'.format(settings.DJANGO_ADMIN_URL), admin.site.urls))
 
 urlpatterns += [

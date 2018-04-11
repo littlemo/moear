@@ -5,6 +5,7 @@ django-celery-beat==1.1.1
 django-filter==1.1.0
 django-invitations==1.9.2
 djangorestframework==3.7.7
+docutils~=0.14
 gunicorn==19.7.1
 Markdown==2.6.11
 moear-api-common==1.0.0
