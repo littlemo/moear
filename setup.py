@@ -43,6 +43,7 @@ setup(
     entry_points={},
     classifiers=[
         'Development Status :: 3 - Alpha',
+        'Environment :: Console',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Framework :: Django :: 2.0',
