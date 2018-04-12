@@ -7,10 +7,10 @@ ARG VERSION
 LABEL maintainer="moore@moorehy.com" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="MoEar" \
-      org.label-schema.description="貘耳朵文章抓取与推送服务" \
-      org.label-schema.url="https://hub.docker.com/r/littlemo/MoEar/" \
+      org.label-schema.description="MoEar文章抓取与推送服务" \
+      org.label-schema.url="https://hub.docker.com/r/littlemo/moear/" \
       org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/littlemo/MoEar" \
+      org.label-schema.vcs-url="https://github.com/littlemo/moear" \
       org.label-schema.vendor="littlemo" \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
@@ -35,9 +35,9 @@ ADD ./requirements /app/requirements
 
 # 安装Python相关Packages
 WORKDIR /app
-RUN pip install --no-cache-dir requirements/wheels/moear_api_common*.whl
-RUN pip install --no-cache-dir requirements/wheels/moear_package_*.whl
-RUN pip install --no-cache-dir requirements/wheels/moear_spider_*.whl
+RUN pip install --no-cache-dir moear-api-common
+RUN pip install --no-cache-dir moear-package-mobi
+RUN pip install --no-cache-dir moear-spider-zhihudaily
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
 # 设置时区
