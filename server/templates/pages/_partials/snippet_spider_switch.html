@@ -25,8 +25,8 @@
       <td class="align-middle">{{ spider.email }}</td>
       <td class="text-left align-middle">{{ spider.description }}</td>
       <td class="align-middle">
-        <button v-if="spider.enabled" type="button" class="btn btn-success" v-on:click="enabledToggle(spider)">开启</button>
-        <button v-else type="button" class="btn btn-outline-danger" v-on:click="enabledToggle(spider)">关闭</button>
+        <button v-if="spider.enabled" type="button" class="btn btn-outline-danger" v-on:click="enabledToggle(spider)">关闭</button>
+        <button v-else type="button" class="btn btn-success" v-on:click="enabledToggle(spider)">开启</button>
       </td>
     </tr>
     {% endverbatim %}
