@@ -43,6 +43,7 @@ Kindle
 .. image:: images/kindle/6-post2.png
    :scale: 21 %
 
+.. _intro-overview-deployment:
 
 部署说明
 ========
