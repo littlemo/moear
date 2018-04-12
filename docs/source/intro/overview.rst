@@ -62,8 +62,64 @@ Kindle
 `docker-compose`_ 的安装方法很多，您可以参考
 `docker-compose官方安装文档 <https://docs.docker.com/compose/install/>`_
 
-装配文件
+配置文件
 --------
+
+docker-compose.yml
+~~~~~~~~~~~~~~~~~~
+
+该文件基本不需要修改，直接在目标服务器中的项目路径下创建即可。
+
+创建路径::
+
+    $ mkdir -p path/to/project
+    $ touch docker-compose.yml
+
+将下列内容写入到 ``docker-compose.yml`` 文件中::
+
+    version: '2'
+    services:
+      moear:
+        image: littlemo/moear
+        container_name: moear-server
+        hostname: moear-server
+        restart: unless-stopped
+        ports:
+          - "8888:8000"
+        networks:
+          - frontend
+          - backend
+        volumes:
+          # 挂载运行时路径（其中包含日志、归集的静态文件）
+          - ./volumes/runtime:/app/runtime:rw
+          - ./volumes/runtime/log/nginx:/var/log/nginx:rw
+
+          # 挂载扩展插件路径，仅支持 wheels 格式的 Python 包
+          - ./volumes/plugin:/app/requirements/wheels:ro
+
+          # 挂载配置文件
+          - ./volumes/web/config/db/mysql.conf:/app/server/server/config/db/mysql.conf:ro
+          - ./volumes/web/config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+        env_file:
+          - env/moear.env
+        depends_on:
+          - redis
+
+      redis:
+        image: redis:alpine
+        container_name: moear-redis
+        hostname: moear-redis
+        restart: unless-stopped
+        networks:
+          - backend
+        volumes:
+          # 数据库数据文件路径
+          - ./volumes/redis/data:/data
+
+
+    networks:
+      frontend:
+      backend:
 
 
 启动服务
