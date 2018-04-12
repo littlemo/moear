@@ -47,6 +47,29 @@ Kindle
 部署说明
 ========
 
+本项目实现了基于 `Docker`_ 的容器部署方式，如果您对 `Docker`_ 足够熟悉，相信您会感受到丝般顺滑。
+
+如果您不是很了解 `Docker`_ ，强烈建议您学习一下，真的找不到比这个更赞的部署方案了（安利脸~~
+
+环境搭建
+--------
+
+唯一需要的环境就是 `Docker`_ 以及 `docker-compose`_ ，关于 `Docker`_
+我曾经参考官方文档编写过一个搭建教程，如果您是 Ubuntu 系统，可以参考一下
+`《Ubuntu安装部署Docker》 <https://www.moorehy.com/archives/152>`_ ，
+但是仍然更推荐您阅读 `docker官方安装文档 <https://docs.docker.com/install/>`_
+
+`docker-compose`_ 的安装方法很多，您可以参考
+`docker-compose官方安装文档 <https://docs.docker.com/compose/install/>`_
+
+装配文件
+--------
+
+
+启动服务
+--------
+
+
 
 系统设计
 ========
@@ -114,3 +137,7 @@ Kindle
 
     从模型 ER 图中您也可以看出，原本设计的功能很多，但考虑到开发周期，目前只实现了最核心的功能。
     关于文章管理、分类系统等，会在之后版本中陆续实现，但愿不会烂尾（羞~
+
+
+.. _Docker: https://docs.docker.com/
+.. _docker-compose: https://docs.docker.com/compose/
