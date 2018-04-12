@@ -51,6 +51,7 @@ def deliver_book_task(
     full_subject = '{prefix}{subject}'.format(
         prefix=subject_prefix,
         subject=subject)
+    recipient = list(set(recipient))  # 去除重复地址
     recipient = [i for i in recipient if i]  # 去掉空值
     msg = EmailMessage(
         full_subject,
