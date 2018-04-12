@@ -37,6 +37,36 @@ Kindle
 架构设计
 ========
 
+.. mermaid::
+   :caption: 系统架构设计图
+   :align: center
+
+   graph TB
+        MoEar -->|发送任务| Celery((Celery))
+        Celery -->|抓取任务<定时>| spider[moear.spider]
+        Celery -->|打包任务| package[moear.package]
+        Celery -->|投递任务| deliver
+        subgraph 邮件系统
+        deliver
+        end
+        subgraph stevedore
+            spider
+            package
+        end
+        subgraph moear-api-common
+            zhihu[moear-spider-zhihudaily]
+            mobi[moear-package-mobi]
+        end
+        spider -->|爬虫插件| zhihu
+        package -->|打包插件| mobi
+
+        click MoEar "http://moear.rtfd.io"
+        click Celery "http://docs.celeryproject.org"
+        click spider "http://moear-api-common.rtfd.io"
+        click package "http://moear-api-common.rtfd.io"
+        click zhihu "http://moear-spider-zhihudaily.rtfd.io" "知乎日报"
+        click mobi "http://moear-package-mobi.rtfd.io" "mobi"
+
 
 模型设计
 ========
