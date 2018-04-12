@@ -65,6 +65,23 @@ Kindle
 配置文件
 --------
 
+配置文件路径如下::
+
+    .
+    ├── docker-compose.yml
+    ├── env
+    │   └── moear.env
+    └── volumes
+        ├── plugin
+        └── web
+            └── config
+                ├── db
+                │   └── mysql.conf
+                └── nginx
+                    └── nginx.conf
+
+下面将逐一介绍相应文件的配置方式，以及用例
+
 docker-compose.yml
 ~~~~~~~~~~~~~~~~~~
 
