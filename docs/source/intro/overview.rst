@@ -13,21 +13,35 @@ Web
 ---
 
 .. image:: images/web/0-index.png
+   :scale: 25 %
 .. image:: images/web/1-subscription.png
+   :scale: 25 %
 .. image:: images/web/2-deliver-log.png
+   :scale: 25 %
 .. image:: images/web/3-password-change.png
+   :scale: 25 %
 .. image:: images/web/4-invitations.png
+   :scale: 25 %
 
 Kindle
 ------
 
 .. image:: images/kindle/0-books.png
+   :scale: 21 %
 .. image:: images/kindle/1-book-toc1.png
+   :scale: 21 %
+
 .. image:: images/kindle/2-book-toc2.png
+   :scale: 21 %
 .. image:: images/kindle/3-book-toc3.png
+   :scale: 21 %
 .. image:: images/kindle/4-book-toc4.png
+   :scale: 21 %
+
 .. image:: images/kindle/5-post1.png
+   :scale: 21 %
 .. image:: images/kindle/6-post2.png
+   :scale: 21 %
 
 
 部署说明
