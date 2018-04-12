@@ -222,6 +222,23 @@ EMAIL_HOST / EMAIL_PORT / EMAIL_HOST_USER / EMAIL_HOST_PASSWORD / EMAIL_USE_SSL 
     邮件服务器配置，这是必须的，不然启动后服务器无法向您的管理员账户发送验证邮件，
     且无法向您的 Kindle 发送投递邮件
 
+mysql.conf
+~~~~~~~~~~
+
+数据库配置文件如下::
+
+    [client]
+    host = mysql
+    database = moear
+    user = moear
+    password = moear_pwd
+    default-character-set = utf8mb4
+
+.. attention::
+
+    若您在之前的 ``docker-compose.yml`` 的 **MySQL** 配置中修改了数据库配置，
+    此处需做相应修改，若未修改，则可直接使用
+
 
 启动服务
 --------
