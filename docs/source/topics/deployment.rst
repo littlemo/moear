@@ -40,5 +40,8 @@
 
     环境变量中的 ``FLOWER_BASIC_AUTH`` 需要您替换为您的账户验证信息。
 
+重新执行 ``docker-compose up -d`` 命令完成容器构建，部署完成后，您可以通过浏览器访问（
+``http://127.0.0.1:8889`` ）来查看 ``Celery`` 的运行状况
+
 
 .. _docker-celery-flower: https://github.com/littlemo/docker-celery-flower
