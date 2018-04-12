@@ -45,3 +45,4 @@ Kindle
 
 .. image:: images/db/er_diagram.svg
 
+.. hint:: 具体数据模型字段信息，可查看相应应用 ``models`` 中的定义，此处不再赘述
