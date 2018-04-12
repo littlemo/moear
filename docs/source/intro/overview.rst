@@ -51,6 +51,8 @@ Kindle
 系统设计
 ========
 
+.. hint:: 下图中除了 ``deliver`` 其他实体都是可点击的哦，会在新标签页中打开相应的包文档页。
+
 .. mermaid::
    :caption: 系统架构设计图
    :align: center
