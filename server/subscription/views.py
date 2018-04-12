@@ -131,14 +131,7 @@ class DeliverSettingsAPIView(APIView):
         '''
         um_device_addr = request.data.get('device_addr', None)
         log.info('um_device_addr: {}'.format(um_device_addr))
-        if not um_device_addr:
-            return Response({
-                'device_addr': {
-                    'rc': False,
-                    'msg': _('um_device_addr 字段为空'),
-                },
-            }, status=status.HTTP_200_OK)
-        f = forms.EmailField()
+        f = forms.EmailField(required=False)
         try:
             um_device_addr = f.clean(um_device_addr)
         except ValidationError as e:
