@@ -316,10 +316,10 @@ nginx.conf
 
     此处配置极度不够优雅，一定要找到更优雅的解决方案把这步毙掉！哼(ˉ(∞)ˉ)唧
 
-启动服务
+构建容器
 --------
 
-完成上述准备工作后，启动服务就很简单了， ``docker-compose`` 的基础操作::
+完成上述准备工作后，构建容器就很简单了， ``docker-compose`` 的基础操作::
 
     $ cd path/to/project
     $ docker-compose up -d
@@ -329,6 +329,14 @@ nginx.conf
 剩下的就是用浏览器访问站点( ``http://127.0.0.1:8888`` )，完成账号的邮箱认证，执行文章订阅，
 以及配置 Kindle 收件地址等操作了，此处不再一一赘述
 
+.. hint::
+
+    列出几个常用命令::
+
+        $ docker-compose stop   # 停止服务
+        $ docker-compose start  # 启动服务
+        $ docker-compose down   # 销毁容器
+        $ docker-compose up     # 构建容器
 
 系统设计
 ========
