@@ -119,6 +119,7 @@ docker-compose.yml
         env_file:
           - env/moear.env
         depends_on:
+          - mysql
           - redis
 
       redis:
@@ -132,10 +133,34 @@ docker-compose.yml
           # 数据库数据文件路径
           - ./volumes/redis/data:/data
 
+      mysql:
+        image: mysql
+        container_name: mysql
+        restart: unless-stopped
+        volumes:
+          - ./volumes/conf.d:/etc/mysql/conf.d:ro         # my.cnf 之后，额外的配置文件，用于覆盖 my.cnf 中的配置项
+          - ./volumes/initdb:/docker-entrypoint-initdb.d  # 用于初始化数据库时执行的 .sh, .sql & .sql.gz
+          - ./volumes/datadir:/var/lib/mysql              # 数据库数据文件路径
+        networks:
+          - backend
+        environment:
+          MYSQL_ROOT_PASSWORD: root_pwd
+          MYSQL_DATABASE: moear
+          MYSQL_USER: moear
+          MYSQL_PASSWORD: moear_pwd
+          character-set-server: utf8mb4
+          collation-server: utf8mb4_unicode_ci
+          TZ: Asia/Shanghai
+        entrypoint: docker-entrypoint.sh
 
     networks:
       frontend:
       backend:
+
+.. attention::
+
+    该配置文件会在启动时创建一个 ``MySQL`` 实例，并创建指定的数据库、用户、密码，
+    如果您有需要可以自行修改数据库配置
 
 moear.env
 ~~~~~~~~~
