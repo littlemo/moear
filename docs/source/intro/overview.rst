@@ -239,6 +239,82 @@ mysql.conf
     若您在之前的 ``docker-compose.yml`` 的 **MySQL** 配置中修改了数据库配置，
     此处需做相应修改，若未修改，则可直接使用
 
+nginx.conf
+~~~~~~~~~~
+
+此文件是最应该被优化掉得，由于我没有找到一个好的低成本设置 ``Nginx.conf`` 中 **server_name**
+字段值的方式，故此处为保证 ``Nginx`` 可以正常处理外部请求中的 **host** 需添加配置如下::
+
+    worker_processes 3;
+
+    user root root;
+    # 'user nobody nobody;' for systems with 'nobody' as a group instead
+    pid /tmp/nginx.pid;
+    error_log /app/runtime/log/nginx/nginx.error.log;
+
+    events {
+      worker_connections 1024; # increase if you have lots of clients
+      accept_mutex on; # set to 'on' if nginx worker_processes > 1
+      use epoll; # to enable for Linux 2.6+
+      # 'use kqueue;' to enable for FreeBSD, OSX
+    }
+
+    http {
+      include mime.types;
+      default_type application/octet-stream;
+      access_log /app/runtime/log/nginx/nginx.access.log combined;
+      sendfile on;
+
+      upstream app_server {
+        # fail_timeout=0 means we always retry an upstream even if it failed
+        # to return a good HTTP response
+
+        # for UNIX domain socket setups
+        # server unix:/tmp/gunicorn.sock fail_timeout=0;
+
+        # for a TCP configuration
+        server 127.0.0.1:8000 fail_timeout=0;
+      }
+
+      server {
+        listen 80 default_server;
+        return 444;
+      }
+
+      server {
+        listen 80;
+        client_max_body_size 4G;
+
+        # set the correct host(s) for your site
+        server_name localhost;
+
+        keepalive_timeout 5;
+
+        # path for static files
+        location /static/ {
+            root /;
+            rewrite ^/static/(.*)$ /app/runtime/static/$1 break;
+            access_log off;
+        }
+
+        location / {
+          try_files $uri @proxy_to_app;
+        }
+
+        location @proxy_to_app {
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header Host $http_host;
+          proxy_redirect off;
+          proxy_pass http://app_server;
+        }
+      }
+    }
+
+将 ``server_name localhost;`` 修改为您的相应域名即可，多值可通过空格间隔
+
+.. todo::
+
+    此处配置极度不够优雅，一定要找到更优雅的解决方案把这步毙掉！哼(ˉ(∞)ˉ)唧
 
 启动服务
 --------
