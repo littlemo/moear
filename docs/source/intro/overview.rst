@@ -148,5 +148,14 @@ Kindle
     关于文章管理、分类系统等，会在之后版本中陆续实现，但愿不会烂尾（羞~
 
 
+捐赠
+====
+
+来杯咖啡可好~~ **⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄**
+
+.. image:: images/donate/alipay.png
+   :align: center
+
+
 .. _Docker: https://docs.docker.com/
 .. _docker-compose: https://docs.docker.com/compose/

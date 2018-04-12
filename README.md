@@ -58,3 +58,9 @@
 ## 问题
 
 如果您在使用该应用时遇到任何问题，请在 GitHub 上查看本项目 [![moear](https://img.shields.io/badge/Repo-MoEar-brightgreen.svg)](https://github.com/littlemo/moear) ，并在其中提交 [Issues](https://github.com/littlemo/moear/issues) 给我，多谢您的帮助~~
+
+## 捐赠
+
+来杯咖啡可好~~ **⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄**
+
+![支付宝](https://github.com/littlemo/moear/blob/master/docs/source/intro/images/donate/alipay.png "来杯咖啡可好~")
