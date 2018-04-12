@@ -1,1 +1,3 @@
 -r pip.txt
+
+sphinxcontrib-mermaid~=0.3.1
