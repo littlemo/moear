@@ -17,7 +17,7 @@ MoEar
 
    topics/plugin
    topics/deployment
-   topics/author_words
+   topics/nagging
 
 
 .. toctree::
