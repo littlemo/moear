@@ -138,6 +138,66 @@ docker-compose.yml
       frontend:
       backend:
 
+moear.env
+~~~~~~~~~
+
+此文件为 `docker` 具体容器实例中的环境变量，配置如下::
+
+    # General
+    SERVER_SETTINGS=server.settings
+    SECRET_KEY=adb7t$a%t_sxb5lji=lxr&%q$3)@1rk_%wi#t!@7zy^17k7iua
+    ALLOWED_HOSTS=localhost,127.0.0.1
+
+    # Tips: 该逻辑会在安装时执行创建超级管理员用户，若目标用户已存在，则仅执行密码修改操作
+    ADMIN_USERNAME=admin
+    ADMIN_EMAIL=
+    ADMIN_PASSWORD=whoisyourdaddy
+
+
+    # EMAIL
+    EMAIL_HOST=
+    EMAIL_PORT=
+    EMAIL_HOST_USER=
+    EMAIL_HOST_PASSWORD=
+    EMAIL_USE_SSL=
+    EMAIL_TIME_LIMIT=30
+
+    DEFAULT_FROM_EMAIL=
+
+
+    # Switch
+    DEBUG=False
+    PRODUCTION=True
+
+
+    # Celery
+    CELERY_BROKER_URL=redis://moear-redis:6379/0
+    CELERY_RESULT_BACKEND=redis://moear-redis:6379/0
+    CELERY_WORKER_CONCURRENCY=2
+    CELERY_WORKER_CONCURRENCY_EMAIL=1
+    CELERY_WORKER_CONCURRENCY_CRAWL=1
+    CELERY_WORKER_PREFETCH_MULTIPLIER=1
+
+    CELERY_BEAT_LOG_LEVEL=INFO
+    CELERY_BEAT_LOG_FILE=/app/runtime/log/celery/celeryd.log
+    CELERY_WORKER_LOG_LEVEL=INFO
+    CELERY_WORKER_LOG_FILE=/app/runtime/log/celery/%n%I.log
+
+留空的配置需要您填入，另外需重点关注的配置项说明如下
+
+SECRET_KEY
+    需修改为一个随机值，如果您不修改，站点安全性将大大下降
+
+ALLOWED_HOSTS
+    如果您需要使用域名访问的话，需要将其添加到此处，多个允许值可使用 ``,`` 连接
+
+ADMIN_USERNAME / ADMIN_EMAIL / ADMIN_PASSWORD
+    管理员账户配置，用户名&密码可按您需求修改
+
+EMAIL_HOST / EMAIL_PORT / EMAIL_HOST_USER / EMAIL_HOST_PASSWORD / EMAIL_USE_SSL / DEFAULT_FROM_EMAIL
+    邮件服务器配置，这是必须的，不然启动后服务器无法向您的管理员账户发送验证邮件，
+    且无法向您的 Kindle 发送投递邮件
+
 
 启动服务
 --------
