@@ -62,17 +62,16 @@ Kindle
 `docker-compose`_ 的安装方法很多，您可以参考
 `docker-compose官方安装文档 <https://docs.docker.com/compose/install/>`_
 
-配置文件
+部署文件
 --------
 
-配置文件路径如下::
+项目部署文件路径如下::
 
     .
     ├── docker-compose.yml
     ├── env
     │   └── moear.env
     └── volumes
-        ├── plugin
         └── web
             └── config
                 ├── db
