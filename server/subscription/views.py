@@ -107,7 +107,7 @@ class DeliverSettingsAPIView(APIView):
 
     投递参数设置，更新当前用户的投递设置
     '''
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, format=None):
         um_device_addr, created = UserMeta.objects.get_or_create(
