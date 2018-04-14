@@ -46,8 +46,8 @@ def periodic_chain_crawl_package_deliver(spider_name):
     crawl_random_delay = SpiderMeta.objects.get(
         spider=spider, name='crawl_random_delay').value
     delay = random.randint(0, int(crawl_random_delay))
-    log.info('随机延迟【{delay}】秒爬取【{name}】源'.format(
-        delay=delay,
+    log.info('随机延迟【{delay}】分钟爬取【{name}】源'.format(
+        delay='{minute:.2f}'.format(minute=delay / 60),
         name=spider.display_name))
 
     # 获取订阅设备地址列表
