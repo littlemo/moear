@@ -111,7 +111,7 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         user_list = []
         for usermeta in feed_usermeta:
             user_list.append(usermeta.user)
-            feed_address_usermeta = UserMeta.objects.get(
+            feed_address_usermeta, created = UserMeta.objects.get_or_create(
                 user=usermeta.user,
                 name='moear.device.addr')
             if feed_address_usermeta.value:
