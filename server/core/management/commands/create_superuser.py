@@ -40,3 +40,4 @@ class Command(BaseCommand):
             return
         log.info('待创建用户已存在，仅执行修改密码操作！')
         admin.set_password(password)
+        admin.save()
