@@ -104,7 +104,7 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             return
 
         feed_usermeta = UserMeta.objects.filter(
-            name='moear.spider.feeds',
+            name=UserMeta.MOEAR_SPIDER_FEEDS,
             value__contains=spider_name)
 
         email_addr_list = []
@@ -113,7 +113,7 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             user_list.append(usermeta.user)
             feed_address_usermeta, created = UserMeta.objects.get_or_create(
                 user=usermeta.user,
-                name='moear.device.addr')
+                name=UserMeta.MOEAR_DEVICE_ADDR)
             if feed_address_usermeta.value:
                 email_addr_list.append(feed_address_usermeta.value)
 
