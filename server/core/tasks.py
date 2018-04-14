@@ -52,13 +52,13 @@ def periodic_chain_crawl_package_deliver(spider_name):
 
     # 获取订阅设备地址列表
     feed_usermeta = UserMeta.objects.filter(
-        name='moear.spider.feeds',
+        name=UserMeta.MOEAR_SPIDER_FEEDS,
         value__contains=spider_name)
     email_addr_list = []
     for usermeta in feed_usermeta:
-        feed_address_usermeta = UserMeta.objects.get(
+        feed_address_usermeta, created = UserMeta.objects.get_or_create(
             user=usermeta.user,
-            name='moear.device.addr')
+            name=UserMeta.MOEAR_DEVICE_ADDR)
         if feed_address_usermeta.value:
             email_addr_list.append(feed_address_usermeta.value)
 
