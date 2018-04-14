@@ -117,6 +117,10 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             if feed_address_usermeta.value:
                 email_addr_list.append(feed_address_usermeta.value)
 
+        # 清洗收件地址
+        email_addr_list = list(set(email_addr_list))  # 去除重复地址
+        email_addr_list = [i for i in email_addr_list if i]  # 去掉空值
+
         log.info('订阅了【{spider_name}】的用户设备地址: {addr_list}'.format(
             spider_name=spider_name,
             addr_list=email_addr_list))
