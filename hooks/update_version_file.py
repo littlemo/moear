@@ -39,13 +39,3 @@ with open('server/server/config/version.py', 'w') as f:
         name=version_name,
         code=version_code))
     print('> Update version.py ... finish!')
-
-# 添加version.py文件到Repo
-cmd_version_name = 'git add server/server/config/version.py'
-out, err = subprocess.Popen(
-    cmd_version_name, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-    shell=True).communicate()
-if len(err) != 0:
-    print('添加version.py文件到Repo失败: {}'.format(err))
-    sys.exit(1)
-print('> Add version.py to Repo ... success!')
