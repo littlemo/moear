@@ -20,6 +20,10 @@ pip install --no-cache-dir /app/requirements/wheels/moear_spider_*.whl
 fi
 
 
+# 更新version.py
+python /app/hooks/update_version_file.py
+
+
 # 初始化数据库表格
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core deliver

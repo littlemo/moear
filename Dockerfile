@@ -37,7 +37,6 @@ ENV TZ="Asia/Shanghai"
 
 # 添加当前路径到images中
 ADD . /app
-RUN python /app/hooks/update_version_file.py
 
 # 安装Python相关Packages
 WORKDIR /app
