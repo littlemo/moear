@@ -20,17 +20,13 @@ pip install --no-cache-dir /app/requirements/wheels/moear_spider_*.whl
 fi
 
 
-# 更新version.py
-python /app/hooks/update_version_file.py
-
-
 # 初始化数据库表格
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput
 python manage.py makemigrations --settings=$SERVER_SETTINGS --noinput posts spiders terms core deliver
 python manage.py migrate --settings=$SERVER_SETTINGS --noinput
 
 
-# 填充DB默认数据
+# 仅在安装时执行的命令
 if [ ! -f "$INSTALL_LOCK_FILE" ]; then
 
 # 创建超级管理员账户，若已存在则更新其密码
@@ -39,6 +35,8 @@ python manage.py create_superuser
 python manage.py loaddata --settings=$SERVER_SETTINGS Site.json
 # 填充站点配置数据
 python manage.py loaddata --settings=$SERVER_SETTINGS Option.json
+# 生成version.py文件
+python /app/hooks/update_version_file.py
 
 fi
 
