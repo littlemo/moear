@@ -39,11 +39,10 @@ ENV TZ="Asia/Shanghai"
 ADD . /app
 
 # 安装Python相关Packages
-WORKDIR /app
 RUN pip install --no-cache-dir moear-api-common
 RUN pip install --no-cache-dir moear-package-mobi
 RUN pip install --no-cache-dir moear-spider-zhihudaily
-RUN pip install --no-cache-dir -r requirements/pip.txt
+RUN pip install --no-cache-dir -r /app/requirements/pip.txt
 
 # 设置全局环境变量
 ENV WORK_DIR=/app/server \
