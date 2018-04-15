@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Author: Moore.Huang <moore@moorehy.com>
-
+import os
 import sys
 import subprocess
 
@@ -34,7 +34,8 @@ version_code = out.decode().strip()
 print('> Current Soft VersionName is [{name}], VersionCode is [{code}]'.format(
     name=version_name,
     code=version_code))
-with open('server/server/config/version.py', 'w') as f:
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(os.path.join(BASE_DIR, 'server/server/config/version.py'), 'w') as f:
     f.write(version_content.format(
         name=version_name,
         code=version_code))
