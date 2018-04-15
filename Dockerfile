@@ -25,7 +25,7 @@ RUN sed -i 's|deb.debian.org|mirrors.ustc.edu.cn|g' /etc/apt/sources.list && \
 # 安装mysqlclient库&nginx
 RUN apt-get update --fix-missing && apt-get install -y \
         libmysqlclient-dev libssl-dev \
-        nginx gettext \
+        nginx gettext git \
         --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
