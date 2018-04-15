@@ -29,9 +29,15 @@ RUN apt-get update --fix-missing && apt-get install -y \
         --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# 添加Python软件包需求文件
-RUN mkdir -p /app/requirements
-ADD ./requirements /app/requirements
+# 设置时区
+RUN rm -rf /etc/localtime \
+    && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone
+ENV TZ="Asia/Shanghai"
+
+# 添加当前路径到images中
+ADD . /app
+RUN python /app/hooks/update_version_file.py
 
 # 安装Python相关Packages
 WORKDIR /app
@@ -40,41 +46,23 @@ RUN pip install --no-cache-dir moear-package-mobi
 RUN pip install --no-cache-dir moear-spider-zhihudaily
 RUN pip install --no-cache-dir -r requirements/pip.txt
 
-# 设置时区
-RUN rm -rf /etc/localtime \
-    && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-    && echo 'Asia/Shanghai' >/etc/timezone
-ENV TZ="Asia/Shanghai"
-
 # 设置全局环境变量
 ENV WORK_DIR=/app/server \
-    PATH="/app/run:/app/bin:${PATH}"
+    PATH="/app/docker/scripts:/app/docker/bin:${PATH}"
 
 # 删除镜像初始化用的文件，并创建用于挂载的路径
-RUN rm -rf * && \
-    mkdir -p /app/bin && \
-    mkdir -p /app/run && \
-    mkdir -p ${WORK_DIR} && \
-    mkdir -p /app/runtime/log/nginx
+RUN mkdir -p /app/runtime/log/nginx
 
 # 开放对外端口
 EXPOSE 80 443
 
-# 添加Server源码文件
-ADD ./server ${WORK_DIR}
-RUN rm -rf server/htmlcov
-
-# 添加启动脚本文件
-ADD ./docker/scripts/*.sh /app/run/
-RUN chmod a+x /app/run/*.sh
-
-# 添加相关工具
-ADD ./docker/bin /app/bin
-RUN chmod a+x /app/bin/*
+# 配置可执行文件的执行权限
+RUN chmod a+x /app/docker/scripts/*.sh
+RUN chmod a+x /app/docker/bin/*
 
 # Volumes 挂载点配置
 VOLUME ["/app", "/etc/nginx"]
 
 WORKDIR /app/server
-ENTRYPOINT ["/app/run/start.sh"]
+ENTRYPOINT ["/app/docker/scripts/start.sh"]
 CMD ["gunicorn", "-w 3", "-b 127.0.0.1:8000", "server.wsgi"]
