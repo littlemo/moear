@@ -11,7 +11,7 @@ version_code = '{code}'
 """
 
 # 获取版本名
-cmd_version_name = 'git describe --tags'
+cmd_version_name = 'git describe --tags --always'
 out, err = subprocess.Popen(
     cmd_version_name, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     shell=True).communicate()
