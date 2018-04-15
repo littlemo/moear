@@ -10,7 +10,7 @@ if [ ! -d $install_lock_path ]; then
 fi
 
 # 执行额外的配置文件
-bash /app/run/config.sh
+bash /app/docker/scripts/config.sh
 
 # 设置环境变量默认值
 if [ -z $CELERY_BEAT_LOG_LEVEL ]; then
