@@ -10,6 +10,7 @@ version_content = """version_name = '{name}'
 version_code = '{code}'
 """
 
+# 获取版本名
 cmd_version_name = 'git describe --tags'
 out, err = subprocess.Popen(
     cmd_version_name, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -19,6 +20,7 @@ if len(err) != 0:
     sys.exit(1)
 version_name = out.decode().strip()
 
+# 获取版本号
 cmd_version_name = "git rev-list HEAD | wc -l | awk '{print $1}'"
 out, err = subprocess.Popen(
     cmd_version_name, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -28,6 +30,7 @@ if len(err) != 0:
     sys.exit(1)
 version_code = out.decode().strip()
 
+# 生成version.py文件
 print('> Current Soft VersionName is [{name}], VersionCode is [{code}]'.format(
     name=version_name,
     code=version_code))
@@ -36,3 +39,13 @@ with open('server/server/config/version.py', 'w') as f:
         name=version_name,
         code=version_code))
     print('> Update version.py ... finish!')
+
+# 添加version.py文件到Repo
+cmd_version_name = 'git add server/server/config/version.py'
+out, err = subprocess.Popen(
+    cmd_version_name, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    shell=True).communicate()
+if len(err) != 0:
+    print('添加version.py文件到Repo失败: {}'.format(err))
+    sys.exit(1)
+print('> Add version.py to Repo ... success!')
