@@ -38,6 +38,9 @@ ENV TZ="Asia/Shanghai"
 # 添加当前路径到images中
 ADD . /app
 
+# 更新Repo，并设置为unshallow模式
+RUN git pull --unshallow
+
 # 安装Python相关Packages
 RUN pip install --no-cache-dir moear-api-common
 RUN pip install --no-cache-dir moear-package-mobi
