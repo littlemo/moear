@@ -35,15 +35,14 @@ python manage.py create_superuser
 python manage.py loaddata --settings=$SERVER_SETTINGS Site.json
 # 填充站点配置数据
 python manage.py loaddata --settings=$SERVER_SETTINGS Option.json
-# 生成version.py文件
-python /app/hooks/update_version_file.py
 
 fi
 
+# 生成version.py文件
+python /app/hooks/update_version_file.py
 
 # 注册全部 Spider
 python manage.py register_spiders --settings=$SERVER_SETTINGS
-
 
 # 仅在生产模式下执行静态资源归集&翻译文件生成等操作
 if [ "$PRODUCTION" = "True" ]; then
