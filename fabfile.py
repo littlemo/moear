@@ -11,15 +11,19 @@ image_name = 'moear'
 
 
 @task
-def build(ver='latest'):
+def build(ver='dev'):
     """镜像构建"""
-    local('docker build -t littlemo/{name}:{ver} .'.format(
-        name=image_name,
-        ver=ver))
+    local(
+        'docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` '
+        '--build-arg VCS_REF=`git rev-parse --short HEAD` '
+        '--build-arg VERSION=`git describe --tags --always` '
+        '-t littlemo/{name}:{ver} .'.format(
+            name=image_name,
+            ver=ver))
 
 
 @task
-def pack(ver='latest'):
+def pack(ver='dev'):
     """镜像打包成.tar.gz"""
     if not os.path.exists(build_path):
         os.mkdir(build_path)
