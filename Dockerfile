@@ -7,7 +7,7 @@ ARG VERSION
 LABEL maintainer="moore@moorehy.com" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="MoEar" \
-      org.label-schema.description="MoEar文章抓取与推送服务" \
+      org.label-schema.description="MoEar文章抓取、打包与投递服务" \
       org.label-schema.url="https://hub.docker.com/r/littlemo/moear/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/littlemo/moear" \
