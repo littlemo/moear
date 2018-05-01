@@ -58,6 +58,31 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         )
         deliver_log.save()
 
+        feed_usermeta = UserMeta.objects.filter(
+            name=UserMeta.MOEAR_SPIDER_FEEDS,
+            value__contains=spider_name)
+
+        email_addr_list = []
+        user_list = []
+        for usermeta in feed_usermeta:
+            user_list.append(usermeta.user)
+            feed_address_usermeta, created = UserMeta.objects.get_or_create(
+                user=usermeta.user,
+                name=UserMeta.MOEAR_DEVICE_ADDR)
+            if feed_address_usermeta.value:
+                email_addr_list.append(feed_address_usermeta.value)
+
+        # 清洗收件地址
+        email_addr_list = list(set(email_addr_list))  # 去除重复地址
+        email_addr_list = [i for i in email_addr_list if i]  # 去掉空值
+
+        log.info('订阅了【{spider_name}】的用户设备地址: {addr_list}'.format(
+            spider_name=spider_name,
+            addr_list=email_addr_list))
+
+        deliver_log.users.set(user_list)
+        deliver_log.save()
+
         # 通过调用指定 Package 驱动，获取最终打包返回的mobi文件数据
         spider_dict = book_group.get('spider', {})
         # 此处为便于在Amazon后台以及设备中识别期刊日期，故作为Trick使用
@@ -103,29 +128,6 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
         if not dispatch:
             return
 
-        feed_usermeta = UserMeta.objects.filter(
-            name=UserMeta.MOEAR_SPIDER_FEEDS,
-            value__contains=spider_name)
-
-        email_addr_list = []
-        user_list = []
-        for usermeta in feed_usermeta:
-            user_list.append(usermeta.user)
-            feed_address_usermeta, created = UserMeta.objects.get_or_create(
-                user=usermeta.user,
-                name=UserMeta.MOEAR_DEVICE_ADDR)
-            if feed_address_usermeta.value:
-                email_addr_list.append(feed_address_usermeta.value)
-
-        # 清洗收件地址
-        email_addr_list = list(set(email_addr_list))  # 去除重复地址
-        email_addr_list = [i for i in email_addr_list if i]  # 去掉空值
-
-        log.info('订阅了【{spider_name}】的用户设备地址: {addr_list}'.format(
-            spider_name=spider_name,
-            addr_list=email_addr_list))
-
-        deliver_log.users.set(user_list)
         deliver_log.status = DeliverLog.DELIVERING
         deliver_log.save()
 
