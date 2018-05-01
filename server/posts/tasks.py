@@ -41,6 +41,9 @@ def package_post(post_pk_list, usermeta={}, dispatch=True):
             'date',
             timezone.now().strftime('%Y-%m-%d')).split('T')[0]
 
+        # 调试时用于指定打包构建的操作路径
+        # um['package_build_dir'] = settings.BOOK_PACKAGE_ROOT
+
         # 通过调用指定 Spider 驱动，对文章列表数据进行格式化
         spider_mgr = stevedore.driver.DriverManager(
             namespace='moear.spider',
