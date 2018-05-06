@@ -67,7 +67,7 @@
 
 ## 版本说明
 
-当前最新版本（ `v1.0.0` ），已完整实现定时异步文章抓取、打包为 mobi 格式、投递到指定 kindle 设备上的核心功能。但仍有很多待完善的地方需要打磨，若您有任何想法，可以给我 Issues 。
+当前最新版本（ [![GitHub release](https://img.shields.io/github/release/littlemo/moear.svg)](https://github.com/littlemo/moear/releases) ），已完整实现定时异步文章抓取、打包为 mobi 格式、投递到指定 kindle 设备上的核心功能。但仍有很多待完善的地方需要打磨，若您有任何想法，可以给我 [Issues](https://github.com/littlemo/moear/issues) 。
 
 ## License
 
