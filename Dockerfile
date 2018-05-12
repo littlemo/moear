@@ -19,8 +19,9 @@ LABEL maintainer="moore@moorehy.com" \
 USER root
 
 # 替换为中科大软件源
-RUN sed -i 's|deb.debian.org|mirrors.ustc.edu.cn|g' /etc/apt/sources.list && \
-    sed -i 's|security.debian.org|mirrors.ustc.edu.cn/debian-security|g' /etc/apt/sources.list
+# Tip: 由于 DockerHub 上无法访问到中科大软件源，故此段配置仅在本地调试时使用
+# RUN sed -i 's|deb.debian.org|mirrors.ustc.edu.cn|g' /etc/apt/sources.list && \
+#     sed -i 's|security.debian.org|mirrors.ustc.edu.cn/debian-security|g' /etc/apt/sources.list
 
 # 安装mysqlclient库&nginx
 RUN apt-get update --fix-missing && apt-get install -y \
