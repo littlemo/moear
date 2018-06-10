@@ -43,7 +43,7 @@ def spider_post(spider_name):
             post_serializer = PostSerializer(data=d)
             if not post_serializer.is_valid():
                 log.error(post_serializer.errors)
-                break
+                continue
             date = timezone.datetime.strptime(
                 d.get('date', ''), '%Y-%m-%d %H:%M:%S')
             date = timezone.make_aware(date, timezone.get_current_timezone())
@@ -56,7 +56,7 @@ def spider_post(spider_name):
                 data=metadata, many=True)
             if not postmeta_serializer.is_valid():
                 log.error(postmeta_serializer.errors)
-                break
+                continue
             postmeta_serializer.save(post=post_serializer.instance)
     log.info('完成文章爬取({num}): {post_pk_list}'.format(
         num=len(post_pk_list),
