@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 @shared_task
-def spider_post(spider_name):
+def spider_post(spider_name, **kwargs):
     """
     爬取文章数据
     """
@@ -24,14 +24,16 @@ def spider_post(spider_name):
         invoke_on_load=True,
     )
 
-    def crawl(ext, *args):
-        rc = ext.obj.crawl()  # 测试时指定爬取日期: date='20180507'
+    def crawl(ext, **kwargs):
+        log.info('[{name}]调用爬虫传参: {kwargs}'.format(
+            name=ext.name, kwargs=kwargs))
+        rc = ext.obj.crawl(**kwargs)
         data = json.dumps(rc, ensure_ascii=False)
         log.debug('[{name}]爬取返回包：{pack}'.format(
             name=ext.name, pack=data))
         return (ext.name, rc)
 
-    results = mgr.map(crawl)
+    results = mgr.map(crawl, **kwargs)
     log.debug('结果对象：{results}'.format(
         results=results))
 

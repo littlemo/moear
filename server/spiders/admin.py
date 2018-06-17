@@ -25,7 +25,7 @@ class SpiderAdmin(admin.ModelAdmin):
         c = (group(
             tasks.spider_post.s(spider.name) for spider in queryset
         ))
-        c.delay()
+        c.delay()  # 测试时指定爬取日期: date='20180530'
         self.message_user(
             request,
             _('共触发 {num} 个爬虫源').format(
